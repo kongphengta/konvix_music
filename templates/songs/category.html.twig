@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catégorie : {{ category }}{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+
+    <h1 class="mb-4">Catégorie : {{ category|capitalize }}</h1>
+
+    <div class="row">
+        {% for song in songs %}
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5>{{ song.title }}</h5>
+
+                        <a href="{{ path('app_song_show', { slug: song.slug }) }}"
+                           class="btn btn-primary btn-sm">
+                            Écouter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>Aucune chanson dans cette catégorie.</p>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

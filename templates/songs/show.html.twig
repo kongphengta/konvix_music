@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ song.title }}
+{% endblock %}
+
+{% block body %}
+	<div class="container py-5">
+
+		<a href="{{ path('app_songs') }}" class="btn btn-secondary mb-4">
+			← Retour aux chansons
+		</a>
+
+		<div class="card shadow-lg">
+			<div class="card-body">
+
+				<h1 class="mb-3">{{ song.title }}</h1>
+
+				<p class="text-muted">
+					Catégorie :
+					<a href="{{ path('app_songs_category', { category: song.category }) }}">
+						{{ song.category|capitalize }}
+					</a>
+				</p>
+
+				<p class="text-muted">
+					Album :
+					<a href="{{ path('app_songs_album', { album: song.album }) }}">
+						{{ song.album|capitalize }}
+					</a>
+				</p>
+
+				<hr>
+
+				<div class="my-4">
+					<audio controls class="w-100">
+						<source src="{{ song.audioUrl }}" type="audio/mpeg">
+						Votre navigateur ne supporte pas la lecture audio.
+					</audio>
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}
