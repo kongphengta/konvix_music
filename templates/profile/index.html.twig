@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon profil – Konvix Music{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            {# En-tête profil #}
+            <div class="card shadow border-0 rounded-4 mb-4">
+                <div class="card-body p-4 d-flex align-items-center gap-4">
+                    <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fs-2 fw-bold"
+                         style="width:80px;height:80px;min-width:80px;">
+                        {{ user.firstName|first|upper }}{{ user.lastName|first|upper }}
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-1">{{ user.fullName }}</h3>
+                        <p class="text-muted mb-1">{{ user.email }}</p>
+                        <span class="badge {% if user.subscriptionPlan == 'premium' %}bg-warning text-dark{% else %}bg-success{% endif %} fs-6">
+                            {{ user.subscriptionPlan == 'premium' ? '⭐ Premium' : '✓ Gratuit' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            {# Informations abonnement #}
+            <div class="card shadow border-0 rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Mon abonnement</h5>
+
+                    {% if user.subscriptionPlan == 'free' %}
+                        <div class="d-flex align-items-center justify-content-between p-3 border rounded-3 bg-light">
+                            <div>
+                                <p class="fw-semibold mb-0">Plan Gratuit</p>
+                                <small class="text-muted">Accès aux chansons publiques – sans limite</small>
+                            </div>
+                            <span class="badge bg-success fs-6">Actif</span>
+                        </div>
+                        <div class="mt-3 p-3 border rounded-3 border-warning bg-warning bg-opacity-10">
+                            <p class="fw-semibold mb-1">⭐ Passez à Premium</p>
+                            <small class="text-muted">Accès illimité, qualité haute définition, téléchargement offline.</small>
+                            <div class="mt-2">
+                                <a href="#" class="btn btn-warning btn-sm fw-bold disabled">Bientôt disponible</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="d-flex align-items-center justify-content-between p-3 border rounded-3 bg-warning bg-opacity-10">
+                            <div>
+                                <p class="fw-semibold mb-0">⭐ Plan Premium</p>
+                                <small class="text-muted">Accès complet à toute la bibliothèque</small>
+                            </div>
+                            <span class="badge bg-warning text-dark fs-6">Actif</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# Infos du compte #}
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-3">Informations du compte</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between px-0">
+                            <span class="text-muted">Prénom</span>
+                            <span class="fw-semibold">{{ user.firstName }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between px-0">
+                            <span class="text-muted">Nom</span>
+                            <span class="fw-semibold">{{ user.lastName }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between px-0">
+                            <span class="text-muted">Email</span>
+                            <span class="fw-semibold">{{ user.email }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between px-0">
+                            <span class="text-muted">Membre depuis</span>
+                            <span class="fw-semibold">{{ user.createdAt|date('d/m/Y') }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

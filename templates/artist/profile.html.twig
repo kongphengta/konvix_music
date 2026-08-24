@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ artist.stageName }} – Konvix Music{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+
+    <div class="row">
+        {# Colonne gauche : infos artiste #}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow border-0 rounded-4 text-center p-4">
+                {% if artist.photo %}
+                    <img src="{{ asset('uploads/artists/' ~ artist.photo) }}"
+                         alt="{{ artist.stageName }}"
+                         class="rounded-circle mx-auto mb-3 object-fit-cover"
+                         style="width:130px;height:130px;">
+                {% else %}
+                    <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fs-1 fw-bold mx-auto mb-3"
+                         style="width:130px;height:130px;">🎤</div>
+                {% endif %}
+
+                <h3 class="fw-bold">{{ artist.stageName }}</h3>
+                <p class="text-muted mb-1">{{ artist.genre }}</p>
+                {% if artist.country %}
+                    <p class="text-muted small">📍 {{ artist.country }}</p>
+                {% endif %}
+                {% if artist.website %}
+                    <a href="{{ artist.website }}" target="_blank" rel="noopener noreferrer"
+                       class="btn btn-outline-dark btn-sm mt-2">🌐 Site web</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Colonne droite : bio + chansons #}
+        <div class="col-md-8">
+            {% if artist.bio %}
+                <div class="card shadow border-0 rounded-4 p-4 mb-4">
+                    <h5 class="fw-bold mb-2">À propos</h5>
+                    <p class="text-muted mb-0">{{ artist.bio|nl2br }}</p>
+                </div>
+            {% endif %}
+
+            <div class="card shadow border-0 rounded-4 p-4">
+                <h5 class="fw-bold mb-3">Chansons ({{ artist.songs|length }})</h5>
+                {% if artist.songs is empty %}
+                    <p class="text-muted">Aucune chanson publiée pour l'instant.</p>
+                {% else %}
+                    <div class="list-group list-group-flush">
+                        {% for song in artist.songs %}
+                            <a href="{{ path('app_song_show', { slug: song.slug }) }}"
+                               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center px-0">
+                                <span class="fw-semibold">{{ song.title }}</span>
+                                <span class="text-muted small">{{ song.category ? song.category.name : '' }}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

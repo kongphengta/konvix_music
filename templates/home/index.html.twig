@@ -1,120 +1,109 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Konvix Music — Accueil{% endblock %}
+{% block title %}Konvix Music — Accueil
+{% endblock %}
 
 {% block body %}
 
 
-<section class="py-5 bg-dark text-light text-center">
-    <div class="container">
-        <h1 class="display-4 fw-bold">Konvix Music</h1>
-        <p class="lead mt-3">
-            Le son moderne, l’énergie du dance country, et l’âme de Paksane.
-        </p>
-        <a href="{{ path('app_songs') }}" class="btn btn-primary btn-lg mt-3">
-            Écouter les chansons
-        </a>
-    </div>
-</section>
+	<section class="py-5 bg-dark text-light text-center">
+		<div class="container">
+			<h1 class="display-4 fw-bold">Konvix Music</h1>
+			<p class="lead mt-3">
+				Le son moderne, l’énergie du dance country, et l’âme de Paksane.
+			</p>
+			<a href="{{ path('app_song_index') }}" class="btn btn-primary btn-lg mt-3">
+				Écouter les chansons
+			</a>
+		</div>
+	</section>
 
-<section class="py-5 bg-light">
-    <div class="container">
-        <h2 class="text-center mb-5">Découvrir</h2>
+	<section class="py-5 bg-light">
+		<div class="container">
+			<h2 class="text-center mb-5">Découvrir</h2>
 
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Chansons</h5>
-                        <p class="card-text">Écoute les derniers titres.</p>
-                        <a href="{{ path('app_songs') }}" class="btn btn-outline-primary">
-                            Voir les chansons
-                        </a>
-                    </div>
-                </div>
-            </div>
+			<div class="row g-4">
+				<div class="col-md-4">
+					<div class="card shadow-sm h-100">
+						<div class="card-body text-center">
+							<h5 class="card-title">Chansons</h5>
+							<p class="card-text">Écoute les derniers titres.</p>
+							<a href="{{ path('app_song_index') }}" class="btn btn-outline-primary">
+								Voir les chansons
+							</a>
+						</div>
+					</div>
+				</div>
 
-            <div class="col-md-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">À propos</h5>
-                        <p class="card-text">Découvre l’histoire derrière Konvix Music.</p>
-                        <a href="{{ path('app_about') }}" class="btn btn-outline-primary">
-                            En savoir plus
-                        </a>
-                    </div>
-                </div>
-            </div>
+				<div class="col-md-4">
+					<div class="card shadow-sm h-100">
+						<div class="card-body text-center">
+							<h5 class="card-title">À propos</h5>
+							<p class="card-text">Découvre l’histoire derrière Konvix Music.</p>
+							<a href="{{ path('app_about') }}" class="btn btn-outline-primary">
+								En savoir plus
+							</a>
+						</div>
+					</div>
+				</div>
 
-            <div class="col-md-4">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Contact</h5>
-                        <p class="card-text">Envoyer un message ou une demande.</p>
-                        <a href="{{ path('app_contact') }}" class="btn btn-outline-primary">
-                            Me contacter
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+				<div class="col-md-4">
+					<div class="card shadow-sm h-100">
+						<div class="card-body text-center">
+							<h5 class="card-title">Contact</h5>
+							<p class="card-text">Envoyer un message ou une demande.</p>
+							<a href="{{ path('app_contact') }}" class="btn btn-outline-primary">
+								Me contacter
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
 
-    </div>
-</section>
+		</div>
+	</section>
 
-<div class="container py-5">
+	<div
+		class="container py-5">
 
-    <!-- HERO -->
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold">Bienvenue sur Konvix Music</h1>
-        <p class="lead mt-3">
-            Découvrez mes chansons, mes projets musicaux et mes créations originales.
-        </p>
-        <a href="#" class="btn btn-primary btn-lg mt-3">Explorer mes titres</a>
-    </div>
+		<!-- HERO -->
+		<div class="text-center mb-5">
+			<h1 class="display-4 fw-bold">Bienvenue sur Konvix Music</h1>
+			<p class="lead mt-3">
+				Découvrez mes chansons, mes projets musicaux et mes créations originales.
+			</p>
+			<a href="#" class="btn btn-primary btn-lg mt-3">Explorer mes titres</a>
+		</div>
 
-    <!-- SECTION TITRES -->
-    <h2 class="text-center mb-4">Mes dernières créations</h2>
+		<!-- SECTION TITRES -->
+		<h2 class="text-center mb-4">Mes dernières créations</h2>
 
-    <div class="row g-4">
+		<div class="row mt-4">
+			{% for song in latestSongs %}
+				<div class="col-md-4">
+					<div class="card shadow-sm mb-4">
+						{% if song.image %}
+							<img src="{{ asset('uploads/covers/' ~ song.image) }}" class="card-img-top" alt="{{ song.title }}">
+						{% endif %}
 
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <img src="/images/song1.jpg" class="card-img-top" alt="Chanson 1">
-                <div class="card-body">
-                    <h5 class="card-title">Back to Paksane</h5>
-                    <p class="card-text">Version originale — un voyage musical vers mes souvenirs.</p>
-                    <a href="#" class="btn btn-outline-primary">Écouter</a>
-                </div>
-            </div>
-        </div>
+						<div class="card-body">
+							<h5 class="card-title">{{ song.title }}</h5>
 
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <img src="/images/song2.jpg" class="card-img-top" alt="Chanson 2">
-                <div class="card-body">
-                    <h5 class="card-title">Back to Paksane (Dance)</h5>
-                    <p class="card-text">Version dance — idéale pour les soirées et playlists modernes.</p>
-                    <a href="#" class="btn btn-outline-primary">Écouter</a>
-                </div>
-            </div>
-        </div>
+							{% if song.category %}
+								<p class="text-muted">{{ song.category.name }}</p>
+							{% endif %}
 
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <img src="/images/song3.jpg" class="card-img-top" alt="Chanson 3">
-                <div class="card-body">
-                    <h5 class="card-title">Back to Paksane (Nostalgie)</h5>
-                    <p class="card-text">Version nostalgique — plus douce, plus intime.</p>
-                    <a href="#" class="btn btn-outline-primary">Écouter</a>
-                </div>
-            </div>
-        </div>
+							<a href="{{ path('app_song_show', { slug: song.slug }) }}" class="btn btn-primary">
+								Écouter
+							</a>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
 
-    </div>
 
-</div>
-
+	</div>
 
 
 {% endblock %}

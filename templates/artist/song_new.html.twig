@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ song is defined ? 'Modifier' : 'Publier' }} un morceau – {{ artist ? artist.stageName }}{% endblock %}
+
+{% block body %}
+<div class="container py-5" style="max-width: 680px;">
+
+    <a href="{{ path('app_artist_dashboard') }}" class="btn btn-outline-secondary btn-sm mb-4">
+        ← Retour au tableau de bord
+    </a>
+
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-1">
+                {{ song is defined ? '✏️ Modifier le morceau' : '🎵 Publier un nouveau morceau' }}
+            </h4>
+            <p class="text-muted small mb-4">Les fichiers sont hébergés en privé et servis de façon sécurisée.</p>
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+            {% for message in app.flashes('danger') %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
+
+            {% if form.vars.errors|length > 0 %}
+                <div class="alert alert-danger small mb-3">
+                    {{ form_errors(form) }}
+                </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data" data-turbo="false">
+                {{ form_widget(form._token) }}
+
+                {# Titre #}
+                <div class="mb-3">
+                    {{ form_label(form.title, null, { label_attr: { class: 'form-label fw-semibold' } }) }}
+                    {{ form_widget(form.title, { attr: { class: 'form-control form-control-lg' } }) }}
+                    <div class="text-danger small">{{ form_errors(form.title) }}</div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        {{ form_label(form.category, null, { label_attr: { class: 'form-label fw-semibold' } }) }}
+                        {{ form_widget(form.category, { attr: { class: 'form-select' } }) }}
+                        <div class="text-danger small">{{ form_errors(form.category) }}</div>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.album, null, { label_attr: { class: 'form-label fw-semibold' } }) }}
+                        {{ form_widget(form.album, { attr: { class: 'form-select' } }) }}
+                        <div class="text-danger small">{{ form_errors(form.album) }}</div>
+                    </div>
+                </div>
+
+                {# Cover #}
+                <div class="mb-4 p-3 border rounded-3 bg-light">
+                    <label class="form-label fw-semibold d-block">
+                        🖼️ Couverture du morceau
+                    </label>
+                    <div class="text-muted small mb-2">
+                        Format : <strong>JPG uniquement</strong> · Ratio : <strong>1:1 (carré)</strong> · Taille : <strong>1200 × 1200 px</strong> à <strong>3000 × 3000 px</strong>
+                    </div>
+
+                    {% if song is defined and song.image %}
+                        <div class="mb-2">
+                            <img src="{{ asset('uploads/covers/' ~ song.image) }}"
+                                 alt="Cover actuelle"
+                                 class="rounded-3"
+                                 style="width:120px;height:120px;object-fit:cover;">
+                            <div class="text-muted small mt-1">Cover actuelle</div>
+                        </div>
+                    {% endif %}
+
+                          <input type="file"
+                              name="cover_upload"
+                              class="form-control"
+                                  accept="image/jpeg,.jpg,.jpeg">
+
+                    <div class="text-muted small mt-2">Ou chemin du serveur web / NAS monté (option secours):</div>
+                    <input type="text"
+                           name="cover_server_path"
+                           class="form-control form-control-sm mt-1"
+                           placeholder="Ex: /mnt/nas/covers/mon-cover.jpg">
+                </div>
+
+                {# Audio #}
+                <div class="mb-4 p-3 border rounded-3 bg-light">
+                    <label class="form-label fw-semibold d-block">
+                        🎵 Fichier audio
+                    </label>
+                    <div class="text-muted small mb-2">
+                        Formats : <strong>WAV (recommande)</strong> ou MP3 · Limite par fichier: <strong>{{ phpUploadMax|default('2M') }}</strong> · Limite requete: <strong>{{ phpPostMax|default('8M') }}</strong>
+                    </div>
+                    <div class="text-muted small mb-2">
+                        Si l'upload echoue, un message detaille s'affichera ici (taille, format, interruption reseau, etc.).
+                    </div>
+
+                    {% if song is defined and song.filename %}
+                        <div class="mb-2 text-muted small">
+                            ✅ Fichier actuel : <code>{{ song.filename }}</code>
+                        </div>
+                    {% endif %}
+
+                          <input type="file"
+                              name="audio_upload"
+                              class="form-control"
+                                  accept="audio/wav,audio/x-wav,audio/mpeg,audio/mp3,.wav,.mp3">
+
+                    <div class="text-muted small mt-2">Ou chemin du serveur web / NAS monté (option secours):</div>
+                    <input type="text"
+                           name="audio_server_path"
+                           class="form-control form-control-sm mt-1"
+                           placeholder="Ex: /mnt/nas/audio/mon-titre.mp3">
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100 py-2 fw-bold fs-5">
+                    {{ song is defined ? '💾 Mettre à jour' : '🚀 Publier le morceau' }}
+                </button>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

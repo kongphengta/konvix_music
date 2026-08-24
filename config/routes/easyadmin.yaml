@@ -1,0 +1,3 @@
+easyadmin:
+    resource: '@EasyAdminBundle/config/routes.php'
+    type: easyadmin.routes

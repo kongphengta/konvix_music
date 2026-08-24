@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription – Konvix Music{% endblock %}
+
+{% block body %}
+<div class="container py-5" style="max-width: 560px;">
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-body p-4">
+            <h2 class="fw-bold text-center mb-1">Créer un compte</h2>
+            <p class="text-center text-muted mb-4">
+                Abonnement <span class="badge bg-success">Gratuit</span> – Accès immédiat
+            </p>
+
+            {{ form_start(registrationForm, { attr: { novalidate: 'novalidate' } }) }}
+
+                {% for message in app.flashes('error') %}
+                    <div class="alert alert-danger">{{ message }}</div>
+                {% endfor %}
+
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        {{ form_label(registrationForm.firstName, null, { label_attr: { class: 'form-label fw-semibold' } }) }}
+                        {{ form_widget(registrationForm.firstName, { attr: { class: 'form-control' } }) }}
+                        {{ form_errors(registrationForm.firstName) }}
+                    </div>
+                    <div class="col-6">
+                        {{ form_label(registrationForm.lastName, null, { label_attr: { class: 'form-label fw-semibold' } }) }}
+                        {{ form_widget(registrationForm.lastName, { attr: { class: 'form-control' } }) }}
+                        {{ form_errors(registrationForm.lastName) }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(registrationForm.email, null, { label_attr: { class: 'form-label fw-semibold' } }) }}
+                    {{ form_widget(registrationForm.email, { attr: { class: 'form-control' } }) }}
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(registrationForm.plainPassword.first, null, { label_attr: { class: 'form-label fw-semibold' } }) }}
+                    {{ form_widget(registrationForm.plainPassword.first, { attr: { class: 'form-control' } }) }}
+                    {{ form_errors(registrationForm.plainPassword.first) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_label(registrationForm.plainPassword.second, null, { label_attr: { class: 'form-label fw-semibold' } }) }}
+                    {{ form_widget(registrationForm.plainPassword.second, { attr: { class: 'form-control' } }) }}
+                    {{ form_errors(registrationForm.plainPassword.second) }}
+                </div>
+
+                <div class="mb-3 form-check">
+                    {{ form_widget(registrationForm.agreeTerms, { attr: { class: 'form-check-input' } }) }}
+                    {{ form_label(registrationForm.agreeTerms, null, { label_attr: { class: 'form-check-label text-muted' } }) }}
+                    {{ form_errors(registrationForm.agreeTerms) }}
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100 py-2 fw-bold">
+                    Créer mon compte gratuit
+                </button>
+
+            {{ form_end(registrationForm) }}
+
+            <hr class="my-4">
+            <p class="text-center text-muted mb-0">
+                Déjà inscrit ?
+                <a href="{{ path('app_login') }}" class="fw-semibold text-dark">Se connecter</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

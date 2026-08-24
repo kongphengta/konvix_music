@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord – {{ artist ? artist.stageName : 'Mon espace artiste' }}{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+
+    {# En-tête artiste #}
+    <div class="card shadow border-0 rounded-4 mb-4">
+        <div class="card-body p-4 d-flex align-items-center gap-4">
+            {% if artist and artist.photo %}
+                <img src="{{ asset('uploads/artists/' ~ artist.photo) }}"
+                     alt="{{ artist.stageName }}"
+                     class="rounded-circle object-fit-cover"
+                     style="width:90px;height:90px;min-width:90px;">
+            {% else %}
+                <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fs-1 fw-bold"
+                     style="width:90px;height:90px;min-width:90px;">
+                    🎤
+                </div>
+            {% endif %}
+
+            <div class="flex-grow-1">
+                <h3 class="fw-bold mb-1">
+                    {% if artist %}
+                        {{ artist.stageName }}
+                        {% if not artist.isApproved %}
+                            <span class="badge bg-warning text-dark ms-2 fs-6">En attente de validation</span>
+                        {% else %}
+                            <span class="badge bg-success ms-2 fs-6">✓ Validé</span>
+                        {% endif %}
+                    {% else %}
+                        Profil incomplet
+                    {% endif %}
+                </h3>
+                {% if artist %}
+                    <p class="text-muted mb-0">{{ artist.genre }}{% if artist.country %} · {{ artist.country }}{% endif %}</p>
+                {% endif %}
+            </div>
+
+            <a href="#" class="btn btn-outline-dark btn-sm">Modifier le profil</a>
+        </div>
+    </div>
+
+    {% if artist and not artist.isApproved %}
+        <div class="alert alert-warning rounded-4">
+            ⏳ <strong>Votre profil est en cours de validation.</strong>
+            Notre équipe le vérifiera sous 24h. Vous pouvez déjà préparer vos chansons.
+        </div>
+    {% endif %}
+
+    {# Statistiques rapides #}
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 text-center p-3">
+                <div class="fs-2 fw-bold text-dark">{{ songs|length }}</div>
+                <div class="text-muted">Chansons publiées</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 text-center p-3">
+                <div class="fs-2 fw-bold text-dark">0</div>
+                <div class="text-muted">Écoutes ce mois</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 text-center p-3">
+                <div class="fs-2 fw-bold text-dark">0</div>
+                <div class="text-muted">Abonnés</div>
+            </div>
+        </div>
+    </div>
+
+    {# Liste des chansons #}
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold mb-0">Mes chansons</h5>
+                <a href="{{ path('app_artist_song_new') }}" class="btn btn-dark btn-sm">+ Ajouter une chanson</a>
+            </div>
+
+            {% if songs is empty %}
+                <div class="text-center text-muted py-4">
+                    <div class="fs-1">🎵</div>
+                    <p>Vous n'avez pas encore publié de chanson.</p>
+                    <a href="{{ path('app_artist_song_new') }}" class="btn btn-dark">Publier ma première chanson</a>
+                </div>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Cover</th>
+                                <th>Titre</th>
+                                <th>Catégorie</th>
+                                <th>Album</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for song in songs %}
+                                <tr>
+                                    <td>
+                                        {% if song.image %}
+                                            <img src="{{ asset('uploads/covers/' ~ song.image) }}"
+                                                 alt="{{ song.title }}"
+                                                 class="rounded-3 border"
+                                                 style="width:52px;height:52px;object-fit:cover;">
+                                        {% else %}
+                                            <div class="d-flex align-items-center justify-content-center rounded-3 bg-light border"
+                                                 style="width:52px;height:52px;">
+                                                <span class="fs-5">🎵</span>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td class="fw-semibold">{{ song.title }}</td>
+                                    <td>{{ song.category ? song.category.name : '–' }}</td>
+                                    <td>{{ song.album ? song.album.title : '–' }}</td>
+                                    <td class="text-muted small">{{ song.createdAt|date('d/m/Y') }}</td>
+                                    <td>
+                                        <a href="{{ path('app_song_show', { slug: song.slug }) }}"
+                                           class="btn btn-sm btn-outline-dark">▶ Écouter</a>
+                                        <a href="{{ path('app_artist_song_edit', { id: song.id }) }}"
+                                           class="btn btn-sm btn-outline-secondary">✏️</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

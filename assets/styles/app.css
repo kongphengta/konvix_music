@@ -1,3 +1,47 @@
 body {
     background-color: skyblue;
 }
+
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #1e1e1e;
+    padding: 12px 18px;
+    border-radius: 10px;
+    color: white;
+    width: 100%;
+}
+
+.play-btn {
+    background: #ff9800;
+    border: none;
+    color: white;
+    font-size: 22px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.progress-container {
+    flex: 1;
+    height: 6px;
+    background: #555;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #ff9800;
+    border-radius: 5px;
+}
+
+.time {
+    font-size: 14px;
+    min-width: 80px;
+    text-align: right;
+}

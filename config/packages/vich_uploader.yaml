@@ -1,0 +1,24 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        song_cover:
+            uri_prefix: /uploads/covers
+            upload_destination: '%kernel.project_dir%/public/uploads/covers'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+
+        song_audio:
+            uri_prefix: /uploads/songs
+            upload_destination: '%kernel.project_dir%/public/uploads/songs'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+
+        artist_photo:
+            uri_prefix: /uploads/artists
+            upload_destination: '%kernel.project_dir%/public/uploads/artists'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+
+    #mappings:
+    #    products:
+    #        uri_prefix: /images/products
+    #        upload_destination: '%kernel.project_dir%/public/images/products'
+    #        namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

@@ -1,45 +1,397 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{{ song.title }}
-{% endblock %}
+{% block title %}{{ song.title }}{% endblock %}
 
 {% block body %}
-	<div class="container py-5">
+    <style>
+        .deezer-shell {
+            background: #f4f4f8;
+            min-height: calc(100vh - 72px);
+            padding: 28px 0 40px;
+        }
 
-		<a href="{{ path('app_songs') }}" class="btn btn-secondary mb-4">
-			← Retour aux chansons
-		</a>
+        .deezer-sidebar {
+            background: #ffffff;
+            border-right: 1px solid #d8dbe5;
+            min-height: calc(100vh - 72px);
+            padding: 24px 18px;
+            color: #1a1d2a;
+        }
 
-		<div class="card shadow-lg">
-			<div class="card-body">
+        .deezer-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 28px;
+            color: #111827;
+        }
 
-				<h1 class="mb-3">{{ song.title }}</h1>
+        .deezer-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
-				<p class="text-muted">
-					Catégorie :
-					<a href="{{ path('app_songs_category', { category: song.category }) }}">
-						{{ song.category|capitalize }}
-					</a>
-				</p>
+        .deezer-nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4b5563;
+            text-decoration: none;
+            padding: 10px 12px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
 
-				<p class="text-muted">
-					Album :
-					<a href="{{ path('app_songs_album', { album: song.album }) }}">
-						{{ song.album|capitalize }}
-					</a>
-				</p>
+        .deezer-nav a:hover,
+        .deezer-nav a.active {
+            background: rgba(30, 38, 189, 0.08);
+            color: #1E26BD;
+        }
 
-				<hr>
+        .deezer-player-card {
+            background: #f7f7fb;
+            border: 1px solid rgba(17, 24, 39, 0.08);
+            border-radius: 24px;
+            box-shadow: 0 18px 40px rgba(15, 16, 32, 0.10);
+            padding: 14px 14px 0;
+            max-width: 680px;
+            margin: 0 auto;
+            color: #1b1f2a;
+        }
 
-				<div class="my-4">
-					<audio controls class="w-100">
-						<source src="{{ song.audioUrl }}" type="audio/mpeg">
-						Votre navigateur ne supporte pas la lecture audio.
-					</audio>
-				</div>
-			</div>
-		</div>
+        .deezer-cover {
+            border-radius: 18px;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+            box-shadow: 0 18px 35px rgba(21, 20, 41, 0.18);
+            background: #111827;
+            border: 4px solid #1E26BD;
+        }
 
-	</div>
+        .deezer-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .deezer-title {
+            font-size: clamp(2rem, 3vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: #1f2433;
+            margin-top: 18px;
+            margin-bottom: 4px;
+        }
+
+        .deezer-meta {
+            color: #5a6480;
+            font-size: 1.02rem;
+        }
+
+        .deezer-meta a {
+            color: #5a6480;
+            text-decoration: none;
+        }
+
+        .deezer-player-zone {
+            margin-top: 18px;
+            background: #ffffff;
+            border: 1px solid #dfe2eb;
+            border-radius: 18px 18px 14px 14px;
+            padding: 14px 16px 12px;
+            box-shadow: inset 0 0 0 1px rgba(17,24,39,0.02);
+            color: #1f2433;
+        }
+
+        .deezer-control-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 52px;
+        }
+
+        .deezer-icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            border: 0;
+            background: #eef1ff;
+            color: #1E26BD;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            box-shadow: inset 0 0 0 1px rgba(30, 38, 189, 0.08);
+        }
+
+        .deezer-icon-btn:hover {
+            background: #e4e8ff;
+        }
+
+        .deezer-play-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 0;
+            background: #1E26BD;
+            color: #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            font-weight: 700;
+            box-shadow: 0 8px 18px rgba(30, 38, 189, 0.25);
+            cursor: pointer;
+        }
+
+        .deezer-time {
+            font-size: 0.82rem;
+            color: #4b5565;
+            font-weight: 600;
+            min-width: 46px;
+            text-align: center;
+        }
+
+        .deezer-progress {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .deezer-progress input[type="range"] {
+            width: 100%;
+            accent-color: #1E26BD;
+            cursor: pointer;
+            height: 4px;
+        }
+
+        .deezer-audio {
+            display: none;
+        }
+
+        .deezer-utility-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 16px;
+            gap: 12px;
+            padding-bottom: 2px;
+            color: #4b5565;
+        }
+
+        .deezer-utility-row .mini-btn {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: #eef1ff;
+            border: 1px solid #dfe3f5;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #1E26BD;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .deezer-utility-row .mini-btn.active {
+            background: #e3e8ff;
+        }
+
+        @media (max-width: 991.98px) {
+            .deezer-sidebar {
+                min-height: auto;
+                border-right: 0;
+                border-bottom: 1px solid rgba(255,255,255,0.06);
+            }
+        }
+    </style>
+
+    <div class="deezer-shell">
+        <div class="container-fluid px-0">
+            <div class="row g-0">
+                <aside class="col-lg-2 deezer-sidebar">
+                    <div class="deezer-brand">
+                        <span>🎧</span>
+                        <span>Konvix Music</span>
+                    </div>
+
+                    <nav class="deezer-nav">
+                        <a href="{{ path('app_home') }}" class="active">🏠 Accueil</a>
+                        <a href="{{ path('app_song_index') }}">🎵 Chansons</a>
+                        <a href="{{ path('app_category_index') }}">📚 Catégories</a>
+                        <a href="{{ path('app_song_album', { album: 'konvix-country-vol1' }) }}">💿 Albums</a>
+                        <a href="{{ path('app_song_search') }}">🔎 Recherche</a>
+                    </nav>
+                </aside>
+
+                <main class="col-lg-10 py-4">
+                    <div class="container" style="max-width: 760px;">
+                        <a href="{{ path('app_song_index') }}" class="btn btn-outline-dark btn-sm rounded-pill mb-4">
+                            ← Retour aux chansons
+                        </a>
+
+                        <div class="deezer-player-card">
+                            <div class="deezer-cover">
+                                {% if song.image %}
+                                    <img src="{{ asset('uploads/covers/' ~ song.image) }}" alt="Cover – {{ song.title }}">
+                                {% else %}
+                                    <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white fs-1">
+                                        🎵
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <h1 class="deezer-title">{{ song.title }}</h1>
+                            <div class="deezer-meta">
+                                {% if song.category %}
+                                    <a href="{{ path('app_song_category', { category: song.category.slug }) }}">{{ song.category.name }}</a>
+                                {% endif %}
+                                {% if song.album %}
+                                    · <a href="{{ path('app_song_album', { album: song.album.slug }) }}">{{ song.album.title }}</a>
+                                {% endif %}
+                            </div>
+
+                            {% if app.user %}
+                                <div class="deezer-player-zone">
+                                    <audio id="mainPlayer" class="deezer-audio" preload="metadata">
+                                        <source src="{{ path('app_stream_song', { slug: song.slug }) }}"
+                                                type="{{ song.filename ends with '.wav' ? 'audio/wav' : 'audio/mpeg' }}">
+                                        Votre navigateur ne supporte pas la lecture audio.
+                                    </audio>
+
+                                    <div class="deezer-control-row">
+                                        <button type="button" class="deezer-icon-btn" id="rewindBtn" aria-label="Reculer de 10 secondes">⏪</button>
+                                        <button type="button" class="deezer-play-btn" id="playPauseBtn" aria-label="Lecture">▶</button>
+                                        <button type="button" class="deezer-icon-btn" id="forwardBtn" aria-label="Avancer de 10 secondes">⏩</button>
+
+                                        <div class="deezer-time" id="currentTime">0:00</div>
+
+                                        <div class="deezer-progress">
+                                            <input type="range" id="progressBar" min="0" max="100" value="0" aria-label="Progression audio">
+                                        </div>
+
+                                        <div class="deezer-time" id="totalTime">3:49</div>
+                                    </div>
+
+                                    <div class="deezer-utility-row">
+                                        <button type="button" class="mini-btn" id="shuffleBtn" aria-label="Aléatoire">⤮</button>
+                                        <button type="button" class="mini-btn active" id="loopBtn" aria-label="Lecture en boucle">↻</button>
+                                        <button type="button" class="mini-btn" id="muteBtn" aria-label="Muet">🔊</button>
+                                    </div>
+                                </div>
+
+                                <script type="module">
+                                    const audio = document.getElementById('mainPlayer');
+                    const playPauseBtn = document.getElementById('playPauseBtn');
+                    const rewindBtn = document.getElementById('rewindBtn');
+                    const forwardBtn = document.getElementById('forwardBtn');
+                    const loopBtn = document.getElementById('loopBtn');
+                    const muteBtn = document.getElementById('muteBtn');
+                    const progressBar = document.getElementById('progressBar');
+                    const currentTimeEl = document.getElementById('currentTime');
+                    const totalTimeEl = document.getElementById('totalTime');
+
+                    const formatTime = (seconds) => {
+                        if (!Number.isFinite(seconds)) {
+                            return '0:00';
+                        }
+                        const mins = Math.floor(seconds / 60);
+                        const secs = Math.floor(seconds % 60);
+                        return `${mins}:${String(secs).padStart(2, '0')}`;
+                    };
+
+                    const updateControls = () => {
+                        playPauseBtn.textContent = audio.paused ? '▶' : '❚❚';
+                        const current = Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
+                        const duration = Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : 0;
+                        const progress = duration > 0 ? (current / duration) * 100 : 0;
+                        progressBar.value = String(progress);
+                        currentTimeEl.textContent = formatTime(current);
+                        totalTimeEl.textContent = formatTime(duration);
+                    };
+
+                    playPauseBtn.addEventListener('click', () => {
+                        if (audio.paused) {
+                            audio.play();
+                        } else {
+                            audio.pause();
+                        }
+                    });
+
+                    rewindBtn.addEventListener('click', () => {
+                        audio.currentTime = Math.max(0, audio.currentTime - 10);
+                    });
+
+                    forwardBtn.addEventListener('click', () => {
+                        audio.currentTime = Math.min(audio.duration || audio.currentTime, audio.currentTime + 10);
+                    });
+
+                    loopBtn.addEventListener('click', () => {
+                        audio.loop = !audio.loop;
+                        loopBtn.classList.toggle('active', audio.loop);
+                    });
+
+                    muteBtn.addEventListener('click', () => {
+                        audio.muted = !audio.muted;
+                        muteBtn.textContent = audio.muted ? '🔇' : '🔊';
+                    });
+
+                    progressBar.addEventListener('input', (event) => {
+                        const duration = audio.duration || 0;
+                        if (duration > 0) {
+                            audio.currentTime = (Number(event.target.value) / 100) * duration;
+                        }
+                    });
+
+                    audio.addEventListener('play', updateControls);
+                    audio.addEventListener('pause', updateControls);
+                    audio.addEventListener('timeupdate', updateControls);
+                    audio.addEventListener('loadedmetadata', updateControls);
+                    audio.addEventListener('ended', () => {
+                        if (!audio.loop) {
+                            playPauseBtn.textContent = '▶';
+                        }
+                    });
+
+                    if ('mediaSession' in navigator) {
+                        navigator.mediaSession.metadata = new MediaMetadata({
+                            title:  {{ song.title|json_encode|raw }},
+                            artist: {{ (song.artist ? song.artist.stageName : 'Konvix Music')|json_encode|raw }},
+                            album:  {{ (song.album ? song.album.title : '')|json_encode|raw }},
+                            artwork: [
+                                {% if song.image %}
+                                    { src: '{{ asset('uploads/covers/' ~ song.image) }}', sizes: '512x512', type: 'image/jpeg' }
+                                {% else %}
+                                    { src: '{{ asset('images/country-music.avif') }}', sizes: '512x512', type: 'image/avif' }
+                                {% endif %}
+                            ]
+                        });
+                    }
+                </script>
+                            {% else %}
+                                <div class="alert alert-info d-flex align-items-center gap-3 mb-0 rounded-3 mt-4">
+                                    <span class="fs-3">🎵</span>
+                                    <div>
+                                        <strong>Connectez-vous pour écouter.</strong><br>
+                                        <small>
+                                            <a href="{{ path('app_login') }}">Se connecter</a> ou
+                                            <a href="{{ path('app_register') }}">créer un compte gratuit</a>.
+                                        </small>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
 {% endblock %}

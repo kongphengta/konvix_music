@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chanson introuvable
+{% endblock %}
+
+{% block body %}
+	<div class="container py-5 text-center">
+
+		<h1 class="display-5 mb-4">😕 Chanson introuvable</h1>
+
+		<p class="lead">
+			Aucune chanson ne correspond au slug :
+			<strong>{{ slug }}</strong>
+		</p>
+
+		<p class="text-muted mb-4">
+			Elle a peut-être été supprimée ou renommée.
+		</p>
+
+	</div>
+{% endblock %}

@@ -1,38 +1,61 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recherche{% endblock %}
+{% block title %}Recherche
+{% endblock %}
 
 {% block body %}
-<div class="container py-5">
+	<div class="container py-5">
 
-    <h1 class="mb-4">Résultats pour : "{{ query }}"</h1>
+		<h1 class="mb-4">🔍 Recherche de chansons</h1>
 
-    <form method="get" action="{{ path('app_songs_search') }}" class="mb-4">
-        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Rechercher une chanson...">
-    </form>
+		<form method="get" action="{{ path('app_song_search') }}" class="mb-4">
+			<input type="text" name="q" value="{{ query }}" class="form-control form-control-lg" placeholder="Rechercher une chanson (titre, album, catégorie)...">
+		</form>
 
-    {% if songs is empty %}
-        <p>Aucun résultat trouvé.</p>
-    {% else %}
-        <div class="row">
-            {% for song in songs %}
-                <div class="col-md-4 mb-3">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5>{{ song.title }}</h5>
+		{% if query == '' %}
+			<p class="text-muted">Tape un mot‑clé pour commencer la recherche.</p>
+		{% else %}
 
-                            <p class="text-muted">{{ song.category|capitalize }}</p>
+			<h4 class="mb-3">Résultats pour :
+				<strong>{{ query }}</strong>
+			</h4>
 
-                            <a href="{{ path('app_song_show', { slug: song.slug }) }}"
-                               class="btn btn-primary btn-sm">
-                                Écouter
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+			{% if songs is empty %}
+				<p>Aucun résultat trouvé.</p>
+			{% else %}
+				<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
-</div>
+					{% for song in songs %}
+						<div class="col">
+							<div class="card shadow-sm h-100">
+
+								<img src="/images/{{ song.image }}" class="card-img-top" alt="{{ song.title }}" style="height: 200px; object-fit: cover;" onerror="this.src='/images/default-cover.jpg'">
+
+								<div class="card-body">
+
+									<h5 class="card-title">
+										<a href="{{ path('app_song_show', { slug: song.slug }) }}" class="text-decoration-none">
+											{{ song.title }}
+										</a>
+									</h5>
+
+									<p class="mb-2">
+										<span class="badge bg-primary">{{ song.category }}</span>
+										<span class="badge bg-secondary">{{ song.album }}</span>
+									</p>
+
+									<audio controls class="w-100 mt-2">
+										<source src="/uploads/songs/{{ song.filename }}" type="audio/mpeg">
+									</audio>
+
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+
+				</div>
+			{% endif %}
+		{% endif %}
+
+	</div>
 {% endblock %}

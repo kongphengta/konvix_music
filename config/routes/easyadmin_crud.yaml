@@ -1,0 +1,14 @@
+admin_album:
+    resource: App\Controller\Admin\AlbumCrudController
+    type: attribute
+    prefix: /admin/album
+
+admin_song:
+    resource: App\Controller\Admin\SongCrudController
+    type: attribute
+    prefix: /admin/song
+
+admin_category:
+    resource: App\Controller\Admin\CategoryCrudController
+    type: attribute
+    prefix: /admin/category

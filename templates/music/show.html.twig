@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ song.title }}
+{% endblock %}
+
+{% block body %}
+	<div class="container py-5">
+
+		<a href="{{ path('app_song_list') }}" class="btn btn-secondary mb-4">
+			← Retour à la liste
+		</a>
+
+		<div class="card shadow-lg">
+			<div class="row g-0">
+
+				<div class="col-md-4">
+					<img src="/images/{{ song.image }}" class="img-fluid rounded-start" alt="{{ song.title }}" style="height: 100%; object-fit: cover;" onerror="this.src='/images/default-cover.jpg'">
+				</div>
+
+				<div class="col-md-8">
+					<div class="card-body">
+
+						<h1 class="card-title mb-3">{{ song.title }}</h1>
+
+						<p class="mb-2">
+							<span class="badge bg-primary">{{ song.category }}</span>
+							<span class="badge bg-secondary">{{ song.album }}</span>
+						</p>
+
+						<hr>
+
+						<audio controls class="w-100 my-3">
+							<source src="/uploads/songs/{{ song.filename }}" type="audio/mpeg">
+							Votre navigateur ne supporte pas la lecture audio.
+						</audio>
+
+						{% if song.description %}
+							<p class="mt-4">{{ song.description }}</p>
+						{% endif %}
+
+						<p class="text-muted mt-3">
+							Ajouté le :
+							{{ song.createdAt|date('d/m/Y') }}
+						</p>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+{% endblock %}

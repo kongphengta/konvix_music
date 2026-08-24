@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion – Konvix Music{% endblock %}
+
+{% block body %}
+<div class="container py-5" style="max-width: 480px;">
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-body p-4">
+            <h2 class="fw-bold text-center mb-1">Connexion</h2>
+            <p class="text-center text-muted mb-4">Accédez à votre espace Konvix Music</p>
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            <form method="post" action="{{ path('app_login') }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-semibold">Email</label>
+                    <input type="email" id="email" name="email"
+                           class="form-control"
+                           value="{{ last_username }}"
+                           autocomplete="email" required autofocus>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label fw-semibold">Mot de passe</label>
+                    <input type="password" id="password" name="password"
+                           class="form-control"
+                           autocomplete="current-password" required>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me">
+                    <label class="form-check-label text-muted" for="remember_me">Se souvenir de moi</label>
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100 py-2 fw-bold">Se connecter</button>
+            </form>
+
+            <hr class="my-4">
+            <p class="text-center text-muted mb-0">
+                Pas encore de compte ?
+                <a href="{{ path('app_register') }}" class="fw-semibold text-dark">Créer un compte gratuit</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

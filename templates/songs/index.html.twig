@@ -4,77 +4,44 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container py-5">
+	<div class="container mt-4">
+
 		<h1 class="mb-4">🎵 Liste des chansons</h1>
-	</div>
-	<div class="container mb-4">
-		<a href="{{ path('app_songs_search') }}" class="btn btn-outline-secondary">
-			🔍 Rechercher une chanson
+
+		<a href="{{ path('app_song_new') }}" class="btn btn-success mb-4">
+			➕ Ajouter une chanson
 		</a>
 
-		{% if songs is empty %}
-			<p>Aucune chanson disponible.</p>
-		{% else %}
-			<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-
+		{% if songs is not empty %}
+			<div class="row">
 				{% for song in songs %}
-					<div class="col">
-						<div class="card shadow-sm h-100">
+					<div class="col-md-4 mb-4">
+						<div class="card shadow-sm">
 
-							<img src="/images/default-cover.avif" class="card-img-top" alt="Cover par défaut">
+							{% if song.image %}
+								<img src="{{ asset('uploads/covers/' ~ song.image) }}" class="card-img-top" alt="{{ song.title }}">
+							{% endif %}
 
 							<div class="card-body">
 								<h5 class="card-title">{{ song.title }}</h5>
 
-								<p class="card-text">
-									<strong>Catégorie :</strong>
-									{{ song.category }}<br>
-									<strong>Album :</strong>
-									{{ song.album }}
+								<p class="text-muted mb-2">
+									Catégorie :
+									{{ song.category }}
 								</p>
 
-								<audio controls class="w-100 mt-2">
-									<source src="{{ song.audioUrl }}" type="audio/mpeg">
-								</audio>
-
-								<a href="{{ path('app_song_show', { slug: song.slug }) }}" class="btn btn-sm btn-outline-primary mt-3">
-									Voir la page
+								<a href="{{ path('app_song_show', { slug: song.slug }) }}" class="btn btn-primary btn-sm">
+									▶️ Écouter
 								</a>
 							</div>
 
 						</div>
 					</div>
 				{% endfor %}
-
-
 			</div>
+		{% else %}
+			<p class="text-muted">Aucune chanson pour le moment.</p>
 		{% endif %}
+
 	</div>
-
-	{% if totalPages > 1 %}
-		<nav aria-label="Pagination">
-			<ul
-				class="pagination justify-content-center mt-4">
-
-				{# Bouton précédent #}
-				<li class="page-item {% if page == 1 %}disabled{% endif %}">
-					<a class="page-link" href="{{ path('app_songs', { page: page - 1 }) }}">Précédent</a>
-				</li>
-
-				{# Numéros de pages #}
-				{% for i in 1..totalPages %}
-					<li class="page-item {% if i == page %}active{% endif %}">
-						<a class="page-link" href="{{ path('app_songs', { page: i }) }}">{{ i }}</a>
-					</li>
-				{% endfor %}
-
-				{# Bouton suivant #}
-				<li class="page-item {% if page == totalPages %}disabled{% endif %}">
-					<a class="page-link" href="{{ path('app_songs', { page: page + 1 }) }}">Suivant</a>
-				</li>
-
-			</ul>
-		</nav>
-	{% endif %}
-
 {% endblock %}

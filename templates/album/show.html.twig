@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ album.title }}
+{% endblock %}
+
+{% block body %}
+
+	<div class="album-header">
+		<img src="/uploads/albums/{{ album.cover }}" class="album-cover">
+
+		<div class="album-info">
+			<h1>{{ album.title }}</h1>
+			<p>{{ songs|length }}
+				chansons</p>
+		</div>
+	</div>
+
+	<h2 class="songs-title">Chansons</h2>
+
+	<div class="songs-list">
+		{% for song in songs %}
+			<div class="song-row">
+				<div class="song-left">
+					<img src="/uploads/songs/{{ song.image }}" class="song-cover">
+					<span class="song-title">{{ song.title }}</span>
+				</div>
+
+				<a href="{{ path('app_song_show', { slug: song.slug }) }}" class="play-btn">
+					Écouter →
+				</a>
+			</div>
+		{% else %}
+			<p>Aucune chanson dans cet album.</p>
+		{% endfor %}
+	</div>
+
+	<style>
+		/* HEADER ALBUM */
+		.album-header {
+			display: flex;
+			align-items: center;
+			gap: 25px;
+			margin-bottom: 40px;
+		}
+
+		.album-cover {
+			width: 180px;
+			height: 180px;
+			border-radius: 12px;
+			object-fit: cover;
+		}
+
+		.album-info h1 {
+			font-size: 42px;
+			font-weight: 700;
+			color: #fff;
+		}
+
+		.album-info p {
+			color: #aaa;
+			margin-top: 8px;
+		}
+
+		/* TITRE SECTION */
+		.songs-title {
+			font-size: 28px;
+			font-weight: 600;
+			margin-bottom: 20px;
+			color: #fff;
+		}
+
+		/* LISTE DES CHANSONS */
+		.songs-list {
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+		}
+
+		/* LIGNE CHANSON */
+		.song-row {
+			background: #181818;
+			padding: 12px 18px;
+			border-radius: 10px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			transition: background 0.2s, transform 0.2s;
+		}
+
+		.song-row:hover {
+			background: #282828;
+			transform: scale(1.01);
+		}
+
+		/* GAUCHE */
+		.song-left {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+		}
+
+		.song-cover {
+			width: 55px;
+			height: 55px;
+			border-radius: 6px;
+			object-fit: cover;
+		}
+
+		.song-title {
+			font-size: 18px;
+			color: #fff;
+		}
+
+		/* BOUTON */
+		.play-btn {
+			padding: 6px 14px;
+			background: #1DB954;
+			color: #fff;
+			border-radius: 20px;
+			text-decoration: none;
+			font-size: 14px;
+			transition: background 0.2s;
+		}
+
+		.play-btn:hover {
+			background: #1ed760;
+		}
+	</style>
+
+{% endblock %}
