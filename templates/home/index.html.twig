@@ -80,6 +80,8 @@
 
 		<div class="row mt-4">
 			{% for song in latestSongs %}
+				{% set songSlug = song.slug ?? null %}
+				{% set songCategoryName = song.category ? song.category.name : 'Divers' %}
 				<div class="col-md-4">
 					<div class="card shadow-sm mb-4">
 						{% if song.image %}
@@ -89,13 +91,15 @@
 						<div class="card-body">
 							<h5 class="card-title">{{ song.title }}</h5>
 
-							{% if song.category %}
-								<p class="text-muted">{{ song.category.name }}</p>
-							{% endif %}
+							<p class="text-muted">{{ songCategoryName }}</p>
 
-							<a href="{{ path('app_song_show', { slug: song.slug }) }}" class="btn btn-primary">
-								Écouter
-							</a>
+							{% if songSlug %}
+								<a href="{{ path('app_song_show', { slug: songSlug }) }}" class="btn btn-primary">
+									Écouter
+								</a>
+							{% else %}
+								<span class="btn btn-secondary disabled">Écouter</span>
+							{% endif %}
 						</div>
 					</div>
 				</div>
