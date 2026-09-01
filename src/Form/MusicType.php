@@ -22,7 +22,7 @@ class MusicType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new File([
-                        'maxSize' => '20M',
+                        'maxSize' => '50M',
                         'mimeTypes' => ['audio/mpeg', 'audio/mp3'],
                         'mimeTypesMessage' => 'Veuillez uploader un fichier MP3 valide.',
                     ])

@@ -37,7 +37,7 @@ class SongCrudController extends AbstractCrudController
                 ->setRequired(false)
                 ->setFileConstraints([
                     new FileConstraint(
-                        maxSize: '20M',
+                        maxSize: '50M',
                         mimeTypes: [
                             'image/jpeg',
                             'image/png',
@@ -53,7 +53,7 @@ class SongCrudController extends AbstractCrudController
                 ->setRequired(false)
                 ->setFileConstraints([
                     new FileConstraint(
-                        maxSize: '20M',
+                        maxSize: '50M',
                         mimeTypes: [
                             'audio/mpeg',
                             'audio/mp3',
