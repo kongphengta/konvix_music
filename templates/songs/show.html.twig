@@ -57,8 +57,11 @@
 												<span class="meta-label">Publié par</span>
 											</div>
 											<div class="meta-row">
-												<span class="meta-value">{{ song.artist and song.artist.user ? song.artist.user.fullName : 'Konvix Music' }}</span>
-											</div>
+													{% if song.artist and song.artist.user %}
+														<span class="meta-value">{{ song.artist.user.fullName }}</span>
+													{% else %}
+														<span class="meta-value">Konvix Music</span>
+													{% endif %}
 
 											{% if song.artist and song.artist.bio %}
 												<div class="meta-row">
