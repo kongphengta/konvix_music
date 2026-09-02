@@ -22,6 +22,10 @@ class AlbumController extends AbstractController
     {
         $album = $repo->findOneBy(['slug' => $slug]);
 
+        if (!$album) {
+            throw $this->createNotFoundException('Album introuvable.');
+        }
+
         return $this->render('album/show.html.twig', [
             'album' => $album,
             'songs' => $album->getSongs(),

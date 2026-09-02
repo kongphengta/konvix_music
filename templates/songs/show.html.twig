@@ -5,14 +5,14 @@
 {% block body %}
     <style>
         .deezer-shell {
-            background: #f4f4f8;
+            background: #f3f5f7;
             min-height: calc(100vh - 72px);
             padding: 28px 0 40px;
         }
 
         .deezer-sidebar {
-            background: #ffffff;
-            border-right: 1px solid #d8dbe5;
+            background: #f7f8fa;
+            border-right: 1px solid rgba(148, 163, 184, 0.22);
             min-height: calc(100vh - 72px);
             padding: 24px 18px;
             color: #1a1d2a;
@@ -53,12 +53,12 @@
         }
 
         .deezer-player-card {
-            background: #f7f7fb;
+            background: #f9f9fc;
             border: 1px solid rgba(17, 24, 39, 0.08);
-            border-radius: 24px;
+            border-radius: 28px;
             box-shadow: 0 18px 40px rgba(15, 16, 32, 0.10);
-            padding: 14px 14px 0;
-            max-width: 680px;
+            padding: 18px 18px 0;
+            max-width: 620px;
             margin: 0 auto;
             color: #1b1f2a;
         }
@@ -66,10 +66,76 @@
         .deezer-cover {
             border-radius: 18px;
             overflow: hidden;
+            width: min(100%, 460px);
+            margin: 0 auto;
             aspect-ratio: 1 / 1;
             box-shadow: 0 18px 35px rgba(21, 20, 41, 0.18);
             background: #111827;
             border: 4px solid #1E26BD;
+        }
+
+        .deezer-main-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .deezer-meta-block {
+            flex: 1;
+            min-width: 0;
+            padding-top: 10px;
+        }
+
+        .deezer-artist-name {
+            font-size: clamp(1.8rem, 2.4vw, 2.8rem);
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            color: #1b1f2a;
+            margin: 0 0 10px;
+            line-height: 1;
+        }
+
+        .deezer-small-label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 6px;
+        }
+
+        .artist-info-card {
+            margin-top: 22px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 16px 14px;
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.05);
+            color: #1f2433;
+        }
+
+        .artist-info-card .info-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 6px;
+        }
+
+        .artist-info-card .info-value {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .artist-info-card .info-bio {
+            margin: 0;
+            color: #475569;
+            line-height: 1.6;
+            font-size: 0.92rem;
         }
 
         .deezer-cover img {
@@ -80,12 +146,12 @@
         }
 
         .deezer-title {
-            font-size: clamp(2rem, 3vw, 3rem);
+            font-size: clamp(2.3rem, 3.4vw, 3.6rem);
             font-weight: 800;
-            letter-spacing: -0.04em;
+            letter-spacing: -0.06em;
             color: #1f2433;
             margin-top: 18px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .deezer-meta {
@@ -101,10 +167,10 @@
         .deezer-player-zone {
             margin-top: 18px;
             background: #ffffff;
-            border: 1px solid #dfe2eb;
+            border: 1px solid #e5e7eb;
             border-radius: 18px 18px 14px 14px;
-            padding: 14px 16px 12px;
-            box-shadow: inset 0 0 0 1px rgba(17,24,39,0.02);
+            padding: 16px 18px 14px;
+            box-shadow: inset 0 0 0 1px rgba(17,24,39,0.02), 0 10px 24px rgba(17,24,39,0.04);
             color: #1f2433;
         }
 
@@ -188,21 +254,25 @@
         }
 
         .deezer-utility-row .mini-btn {
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
             background: #eef1ff;
             border: 1px solid #dfe3f5;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             color: #1E26BD;
-            font-size: 0.8rem;
+            font-size: 1.1rem;
             cursor: pointer;
+            box-shadow: 0 6px 14px rgba(30, 38, 189, 0.06);
         }
 
         .deezer-utility-row .mini-btn.active {
-            background: #e3e8ff;
+            background: #1E26BD;
+            border-color: #1E26BD;
+            color: #ffffff;
+            box-shadow: inset 0 0 0 1px rgba(30,38,189,0.12), 0 8px 18px rgba(30, 38, 189, 0.2);
         }
 
         @media (max-width: 991.98px) {
@@ -230,23 +300,50 @@
                         <a href="{{ path('app_song_album', { album: 'konvix-country-vol1' }) }}">💿 Albums</a>
                         <a href="{{ path('app_song_search') }}">🔎 Recherche</a>
                     </nav>
+
+                    <div class="artist-info-card">
+                        <div class="info-label">Propriétaire de publication</div>
+                        <div class="info-value">
+                            {{ song.artist and song.artist.user ? song.artist.user.fullName : 'Konvix Music' }}
+                        </div>
+
+                        {% if song.artist and song.artist.bio %}
+                            <div class="info-label">Bio</div>
+                            <p class="info-bio">{{ song.artist.bio|nl2br }}</p>
+                        {% endif %}
+                    </div>
                 </aside>
 
                 <main class="col-lg-10 py-4">
-                    <div class="container" style="max-width: 760px;">
+                    <div class="container" style="max-width: 680px;">
                         <a href="{{ path('app_song_index') }}" class="btn btn-outline-dark btn-sm rounded-pill mb-4">
                             ← Retour aux chansons
                         </a>
 
                         <div class="deezer-player-card">
-                            <div class="deezer-cover">
-                                {% if song.image %}
-                                    <img src="{{ asset('uploads/covers/' ~ song.image) }}" alt="Cover – {{ song.title }}">
-                                {% else %}
-                                    <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white fs-1">
-                                        🎵
+                            <div class="deezer-main-row">
+                                <div class="deezer-cover">
+                                    {% if song.image %}
+                                        <img src="{{ asset('uploads/covers/' ~ song.image) }}" alt="Cover – {{ song.title }}">
+                                    {% else %}
+                                        <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white fs-1">
+                                            🎵
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="deezer-meta-block">
+                                    <span class="deezer-small-label">Artiste</span>
+                                    <h2 class="deezer-artist-name">{{ song.artist ? song.artist.stageName : 'Konvix Music' }}</h2>
+                                    <div class="deezer-meta">
+                                        {% if song.category %}
+                                            <a href="{{ path('app_song_category', { category: song.category.slug }) }}">{{ song.category.name }}</a>
+                                        {% endif %}
+                                        {% if song.album %}
+                                            · <a href="{{ path('app_song_album', { album: song.album.slug }) }}">{{ song.album.title }}</a>
+                                        {% endif %}
                                     </div>
-                                {% endif %}
+                                </div>
                             </div>
 
                             <h1 class="deezer-title">{{ song.title }}</h1>
