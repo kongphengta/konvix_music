@@ -1,6 +1,8 @@
 import './stimulus_bootstrap.js';
 import './styles/app.css';
-// Bootstrap CSS via importmap (JS chargé via CDN dans base.html.twig)
+import './styles/song-show.css';
+import './js/song-show.js';
+import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // ...
