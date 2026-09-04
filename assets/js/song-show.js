@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+const initSongPlayer = () => {
     const audio = document.getElementById('mainPlayer');
 
     if (!audio) {
@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const progressBar = document.getElementById('progressBar');
     const currentTimeEl = document.getElementById('currentTime');
     const totalTimeEl = document.getElementById('totalTime');
+
+    if (!playPauseBtn || !rewindBtn || !forwardBtn || !loopBtn || !muteBtn || !progressBar || !currentTimeEl || !totalTimeEl) {
+        return;
+    }
 
     const formatTime = (seconds) => {
         if (!Number.isFinite(seconds)) {
@@ -34,50 +38,54 @@ document.addEventListener('DOMContentLoaded', () => {
         totalTimeEl.textContent = formatTime(duration);
     };
 
-    playPauseBtn.addEventListener('click', () => {
+    playPauseBtn.onclick = () => {
         if (audio.paused) {
-            audio.play();
-        } else {
-            audio.pause();
+            audio.play().catch(() => {
+                playPauseBtn.textContent = '▶';
+            });
+            return;
         }
-    });
 
-    rewindBtn.addEventListener('click', () => {
-        audio.currentTime = Math.max(0, audio.currentTime - 10);
-    });
+        audio.pause();
+    };
 
-    forwardBtn.addEventListener('click', () => {
-        audio.currentTime = Math.min(audio.duration || audio.currentTime, audio.currentTime + 10);
-    });
+    rewindBtn.onclick = () => {
+        audio.currentTime = Math.max(0, (audio.currentTime || 0) - 10);
+    };
 
-    loopBtn.addEventListener('click', () => {
+    forwardBtn.onclick = () => {
+        const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+        audio.currentTime = Math.min(duration || audio.currentTime || 0, (audio.currentTime || 0) + 10);
+    };
+
+    loopBtn.onclick = () => {
         audio.loop = !audio.loop;
         loopBtn.classList.toggle('active', audio.loop);
-    });
+    };
 
-    muteBtn.addEventListener('click', () => {
+    muteBtn.onclick = () => {
         audio.muted = !audio.muted;
         muteBtn.textContent = audio.muted ? '🔇' : '🔊';
-    });
+    };
 
-    progressBar.addEventListener('input', (event) => {
+    progressBar.oninput = (event) => {
         const duration = audio.duration || 0;
         if (duration > 0) {
             audio.currentTime = (Number(event.target.value) / 100) * duration;
         }
-    });
+    };
 
-    audio.addEventListener('play', updateControls);
-    audio.addEventListener('pause', updateControls);
-    audio.addEventListener('timeupdate', updateControls);
-    audio.addEventListener('loadedmetadata', updateControls);
-    audio.addEventListener('ended', () => {
+    audio.onplay = updateControls;
+    audio.onpause = updateControls;
+    audio.ontimeupdate = updateControls;
+    audio.onloadedmetadata = updateControls;
+    audio.onended = () => {
         if (!audio.loop) {
             playPauseBtn.textContent = '▶';
         }
-    });
+    };
 
-    if ('mediaSession' in navigator) {
+    if ('mediaSession' in navigator && 'MediaMetadata' in window) {
         const coverUrl = audio.dataset.cover || '';
         navigator.mediaSession.metadata = new MediaMetadata({
             title: audio.dataset.title || 'Konvix Music',
@@ -86,4 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
             artwork: coverUrl ? [{ src: coverUrl, sizes: '512x512', type: 'image/jpeg' }] : []
         });
     }
-});
+
+    updateControls();
+};
+
+document.addEventListener('DOMContentLoaded', initSongPlayer);
+window.addEventListener('load', initSongPlayer);
+document.addEventListener('turbo:load', initSongPlayer);
+document.addEventListener('turbo:render', initSongPlayer);
