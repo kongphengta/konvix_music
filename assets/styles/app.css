@@ -432,6 +432,13 @@ body {
 .auth-form-shell {
     max-width: 560px;
 }
+.artist-song-thumb {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 0.75rem;
+    display: block;
+}
 
 .artist-register-shell {
     max-width: 720px;

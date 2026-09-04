@@ -6,7 +6,7 @@ use App\Entity\ArtistProfile;
 use App\Repository\SongRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
 #[Vich\Uploadable]
