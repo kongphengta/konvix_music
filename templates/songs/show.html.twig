@@ -25,20 +25,78 @@
 				</aside>
 
 				<main class="col-lg-10 py-4">
-					<div class="container" style="max-width: 680px;">
+					<div class="container song-show-page">
 						<a href="{{ path('app_song_index') }}" class="btn btn-outline-dark btn-sm rounded-pill mb-4">
 							← Retour aux chansons
 						</a>
 
 						<div class="deezer-player-card">
 							<div class="deezer-main-row">
-								<div class="deezer-cover-wrap">
-									<div class="deezer-cover">
-										{% if song.image %}
-											<img src="{{ asset('uploads/covers/' ~ song.image) }}" alt="Cover – {{ song.title }}">
+								<div class="deezer-cover-column">
+									<div class="deezer-cover-wrap">
+										<div class="deezer-cover">
+											{% if song.image %}
+												<img src="{{ asset('uploads/covers/' ~ song.image) }}" alt="Cover – {{ song.title }}">
+											{% else %}
+												<div class="w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white fs-1">
+													🎵
+												</div>
+											{% endif %}
+										</div>
+									</div>
+
+									<div class="song-show-compact-panel">
+										<div class="song-show-title-block">
+											<h5 class="deezer-title">{{ song.title }}</h5>
+											<div class="deezer-meta">
+												{% if song.category %}
+													<a href="{{ path('app_song_category', { category: song.category.slug }) }}">{{ song.category.name }}</a>
+												{% endif %}
+												{% if song.album %}
+													·
+													<a href="{{ path('app_song_album', { album: song.album.slug }) }}">{{ song.album.title }}</a>
+												{% endif %}
+											</div>
+										</div>
+
+										{% if app.user %}
+											<div class="deezer-player-zone bg-body-tertiary border rounded-4 shadow-sm">
+												<audio id="mainPlayer" class="deezer-audio" preload="metadata" data-title="{{ song.title|e('html_attr') }}" data-artist="{{ (song.artist ? song.artist.stageName : 'Konvix Music')|e('html_attr') }}" data-album="{{ (song.album ? song.album.title : '')|e('html_attr') }}" data-cover="{{ (song.image ? asset('uploads/covers/' ~ song.image) : asset('images/country-music.avif'))|e('html_attr') }}">
+													<source src="{{ path('app_stream_song', { slug: song.slug }) }}" type="{{ song.filename ends with '.wav' ? 'audio/wav' : 'audio/mpeg' }}">
+													Votre navigateur ne supporte pas la lecture audio.
+												</audio>
+
+												<div class="deezer-control-row">
+													<button type="button" class="deezer-icon-btn" id="rewindBtn" aria-label="Reculer de 10 secondes">⏪</button>
+													<button type="button" class="deezer-play-btn" id="playPauseBtn" aria-label="Lecture">▶</button>
+													<button type="button" class="deezer-icon-btn" id="forwardBtn" aria-label="Avancer de 10 secondes">⏩</button>
+
+													<div class="deezer-time" id="currentTime">0:00</div>
+
+													<div class="deezer-progress">
+														<input type="range" id="progressBar" min="0" max="100" value="0" aria-label="Progression audio">
+													</div>
+
+													<div class="deezer-time" id="totalTime">3:49</div>
+												</div>
+
+												<div class="deezer-utility-row">
+													<button type="button" class="mini-btn" id="shuffleBtn" aria-label="Aléatoire">⤮</button>
+													<button type="button" class="mini-btn active" id="loopBtn" aria-label="Lecture en boucle">↻</button>
+													<button type="button" class="mini-btn" id="muteBtn" aria-label="Muet">🔊</button>
+												</div>
+											</div>
 										{% else %}
-											<div class="w-100 h-100 d-flex align-items-center justify-content-center bg-dark text-white fs-1">
-												🎵
+											<div class="alert alert-info d-flex align-items-center gap-3 mb-0 rounded-3 mt-4">
+												<span class="fs-3">🎵</span>
+												<div>
+													<strong>Connectez-vous pour écouter.</strong><br>
+													<small>
+														<a href="{{ path('app_login') }}">Se connecter</a>
+														ou
+														<a href="{{ path('app_register') }}">créer un compte gratuit</a>.
+													</small>
+												</div>
 											</div>
 										{% endif %}
 									</div>
@@ -46,87 +104,35 @@
 
 								<div class="deezer-meta-block">
 									<div class="artist-meta-stack">
-											<div class="meta-row">
-												<span class="meta-label">Artiste</span>
-											</div>
-											<div class="meta-row">
-												<span class="meta-value artist-name">{{ song.artist ? song.artist.stageName : 'Konvix Music' }}</span>
-											</div>
+										<div class="meta-row">
+											<span class="meta-label">Artiste</span>
+										</div>
+										<div class="meta-row">
+											<span class="meta-value artist-name">{{ song.artist ? song.artist.stageName : 'Konvix Music' }}</span>
+										</div>
 
+										<div class="meta-row">
+											<span class="meta-label">Publié par</span>
+										</div>
+										<div class="meta-row">
+											{% if song.artist and song.artist.user %}
+												<span class="meta-value">{{ song.artist.user.fullName }}</span>
+											{% else %}
+												<span class="meta-value">Konvix Music</span>
+											{% endif %}
+										</div>
+
+										{% if song.artist and song.artist.bio %}
 											<div class="meta-row">
-												<span class="meta-label">Publié par</span>
+												<span class="meta-label">Bio</span>
 											</div>
 											<div class="meta-row">
-													{% if song.artist and song.artist.user %}
-														<span class="meta-value">{{ song.artist.user.fullName }}</span>
-													{% else %}
-														<span class="meta-value">Konvix Music</span>
-													{% endif %}
-
-											{% if song.artist and song.artist.bio %}
-												<div class="meta-row">
-													<span class="meta-label">Bio</span>
-												</div>
-												<div class="meta-row">
-													<span class="meta-bio">{{ song.artist.bio|nl2br }}</span>
-												</div>
+												<span class="meta-bio">{{ song.artist.bio|nl2br }}</span>
+											</div>
 										{% endif %}
 									</div>
 								</div>
 							</div>
-
-							<h5 class="deezer-title">{{ song.title }}</h5>
-							<div class="deezer-meta">
-								{% if song.category %}
-									<a href="{{ path('app_song_category', { category: song.category.slug }) }}">{{ song.category.name }}</a>
-								{% endif %}
-								{% if song.album %}
-									·
-									<a href="{{ path('app_song_album', { album: song.album.slug }) }}">{{ song.album.title }}</a>
-								{% endif %}
-							</div>
-
-							{% if app.user %}
-								<div class="deezer-player-zone">
-									<audio id="mainPlayer" class="deezer-audio" preload="metadata" data-title="{{ song.title|e('html_attr') }}" data-artist="{{ (song.artist ? song.artist.stageName : 'Konvix Music')|e('html_attr') }}" data-album="{{ (song.album ? song.album.title : '')|e('html_attr') }}" data-cover="{{ (song.image ? asset('uploads/covers/' ~ song.image) : asset('images/country-music.avif'))|e('html_attr') }}">
-										<source src="{{ path('app_stream_song', { slug: song.slug }) }}" type="{{ song.filename ends with '.wav' ? 'audio/wav' : 'audio/mpeg' }}">
-										Votre navigateur ne supporte pas la lecture audio.
-									</audio>
-
-									<div class="deezer-control-row">
-										<button type="button" class="deezer-icon-btn" id="rewindBtn" aria-label="Reculer de 10 secondes">⏪</button>
-										<button type="button" class="deezer-play-btn" id="playPauseBtn" aria-label="Lecture">▶</button>
-										<button type="button" class="deezer-icon-btn" id="forwardBtn" aria-label="Avancer de 10 secondes">⏩</button>
-
-										<div class="deezer-time" id="currentTime">0:00</div>
-
-										<div class="deezer-progress">
-											<input type="range" id="progressBar" min="0" max="100" value="0" aria-label="Progression audio">
-										</div>
-
-										<div class="deezer-time" id="totalTime">3:49</div>
-									</div>
-
-									<div class="deezer-utility-row">
-										<button type="button" class="mini-btn" id="shuffleBtn" aria-label="Aléatoire">⤮</button>
-										<button type="button" class="mini-btn active" id="loopBtn" aria-label="Lecture en boucle">↻</button>
-										<button type="button" class="mini-btn" id="muteBtn" aria-label="Muet">🔊</button>
-									</div>
-								</div>
-							{% else %}
-								<div class="alert alert-info d-flex align-items-center gap-3 mb-0 rounded-3 mt-4">
-									<span class="fs-3">🎵</span>
-									<div>
-										<strong>Connectez-vous pour écouter.</strong><br>
-										<small>
-											<a href="{{ path('app_login') }}">Se connecter</a>
-											ou
-											<a href="{{ path('app_register') }}">créer un compte gratuit</a>.
-										</small>
-									</div>
-								</div>
-							{% endif %}
-						</div>
 					</div>
 				</main>
 			</div>

@@ -12,11 +12,9 @@
                 {% if artist.photo %}
                     <img src="{{ asset('uploads/artists/' ~ artist.photo) }}"
                          alt="{{ artist.stageName }}"
-                         class="rounded-circle mx-auto mb-3 object-fit-cover"
-                         style="width:130px;height:130px;">
+                         class="rounded-circle mx-auto mb-3 object-fit-cover artist-profile-avatar">
                 {% else %}
-                    <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fs-1 fw-bold mx-auto mb-3"
-                         style="width:130px;height:130px;">🎤</div>
+                    <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fs-1 fw-bold mx-auto mb-3 artist-profile-avatar">🎤</div>
                 {% endif %}
 
                 <h3 class="fw-bold">{{ artist.stageName }}</h3>

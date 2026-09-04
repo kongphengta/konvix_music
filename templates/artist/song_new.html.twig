@@ -3,7 +3,7 @@
 {% block title %}{{ song is defined ? 'Modifier' : 'Publier' }} un morceau – {{ artist ? artist.stageName }}{% endblock %}
 
 {% block body %}
-<div class="container py-5" style="max-width: 680px;">
+<div class="container py-5 song-form-container">
 
     <a href="{{ path('app_artist_dashboard') }}" class="btn btn-outline-secondary btn-sm mb-4">
         ← Retour au tableau de bord
@@ -66,8 +66,7 @@
                         <div class="mb-2">
                             <img src="{{ asset('uploads/covers/' ~ song.image) }}"
                                  alt="Cover actuelle"
-                                 class="rounded-3"
-                                 style="width:120px;height:120px;object-fit:cover;">
+                                 class="rounded-3 song-form-cover">
                             <div class="text-muted small mt-1">Cover actuelle</div>
                         </div>
                     {% endif %}

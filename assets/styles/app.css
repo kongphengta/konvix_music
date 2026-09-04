@@ -1,5 +1,5 @@
 body {
-    background-color: skyblue;
+    background-color: rgb(222, 230, 233);
 }
 
 .home-latest-grid .card {
@@ -184,4 +184,267 @@ body {
     font-size: 14px;
     min-width: 80px;
     text-align: right;
+}
+
+.example-wrapper {
+    margin: 1em auto;
+    max-width: 800px;
+    width: 95%;
+    font: 18px/1.5 sans-serif;
+}
+
+.example-wrapper code {
+    background: #F5F5F5;
+    padding: 2px 6px;
+}
+
+.albums-header {
+    margin-bottom: 30px;
+}
+
+.albums-header h1 {
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.spotify-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.spotify-card {
+    background: #181818;
+    padding: 18px;
+    border-radius: 12px;
+    transition: transform 0.2s, background 0.2s;
+    cursor: pointer;
+}
+
+.spotify-card:hover {
+    background: #282828;
+    transform: scale(1.03);
+}
+
+.cover-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.album-title,
+.song-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.open-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #1DB954;
+    color: #fff;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.open-btn:hover {
+    background: #1ed760;
+    color: #fff;
+}
+
+.album-header {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.album-cover {
+    width: 180px;
+    height: 180px;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+.album-info h1 {
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.album-info p {
+    color: #aaa;
+    margin-top: 8px;
+}
+
+.songs-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.songs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.song-row {
+    background: #181818;
+    padding: 12px 18px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.song-row:hover {
+    background: #282828;
+    transform: scale(1.01);
+}
+
+.song-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.song-cover {
+    width: 55px;
+    height: 55px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.play-btn {
+    padding: 6px 14px;
+    background: #1DB954;
+    color: #fff;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.play-btn:hover {
+    background: #1ed760;
+    color: #fff;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.category-card {
+    padding: 20px;
+    background: #222;
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.category-card:hover {
+    background: #444;
+    color: white;
+}
+
+.category-header {
+    margin-bottom: 30px;
+}
+
+.category-header h1 {
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.audio-player {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.artist-avatar,
+.artist-profile-avatar,
+.profile-avatar,
+.song-form-cover,
+.search-cover,
+.music-cover {
+    object-fit: cover;
+}
+
+.artist-avatar,
+.artist-profile-avatar {
+    width: 90px;
+    height: 90px;
+    min-width: 90px;
+}
+
+.artist-profile-avatar {
+    width: 130px;
+    height: 130px;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
+}
+
+.song-form-container {
+    max-width: 680px;
+}
+
+.song-form-cover {
+    width: 120px;
+    height: 120px;
+}
+
+.search-cover {
+    height: 200px;
+    object-fit: cover;
+}
+
+.music-cover {
+    height: 100%;
+    object-fit: cover;
+}
+
+.auth-form-shell {
+    max-width: 560px;
+}
+
+.artist-register-shell {
+    max-width: 720px;
+}
+
+.login-shell {
+    max-width: 480px;
+}
+
+.page-title {
+    margin-bottom: 1rem;
+}
+
+.song-show-page {
+    max-width: 680px;
 }
