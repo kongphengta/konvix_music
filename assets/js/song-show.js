@@ -12,15 +12,17 @@ const initSongPlayer = () => {
     audio.dataset.initialized = '1';
 
     const playPauseBtn = document.getElementById('playPauseBtn');
+    const startBtn = document.getElementById('startBtn');
     const rewindBtn = document.getElementById('rewindBtn');
     const forwardBtn = document.getElementById('forwardBtn');
+    const endBtn = document.getElementById('endBtn');
     const loopBtn = document.getElementById('loopBtn');
     const muteBtn = document.getElementById('muteBtn');
     const progressBar = document.getElementById('progressBar');
     const currentTimeEl = document.getElementById('currentTime');
     const totalTimeEl = document.getElementById('totalTime');
 
-    if (!playPauseBtn || !rewindBtn || !forwardBtn || !loopBtn || !muteBtn || !progressBar || !currentTimeEl || !totalTimeEl) {
+    if (!playPauseBtn || !startBtn || !rewindBtn || !forwardBtn || !endBtn || !loopBtn || !muteBtn || !progressBar || !currentTimeEl || !totalTimeEl) {
         return;
     }
 
@@ -57,6 +59,10 @@ const initSongPlayer = () => {
         audio.pause();
     });
 
+    startBtn.addEventListener('click', () => {
+        audio.currentTime = 0;
+    });
+
     rewindBtn.addEventListener('click', () => {
         audio.currentTime = Math.max(0, (audio.currentTime || 0) - 10);
     });
@@ -64,6 +70,13 @@ const initSongPlayer = () => {
     forwardBtn.addEventListener('click', () => {
         const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
         audio.currentTime = Math.min(duration || audio.currentTime || 0, (audio.currentTime || 0) + 10);
+    });
+
+    endBtn.addEventListener('click', () => {
+        const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+        if (duration > 0) {
+            audio.currentTime = duration;
+        }
     });
 
     loopBtn.addEventListener('click', () => {
