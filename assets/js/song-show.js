@@ -5,6 +5,12 @@ const initSongPlayer = () => {
         return;
     }
 
+    if (audio.dataset.initialized === '1') {
+        return;
+    }
+
+    audio.dataset.initialized = '1';
+
     const playPauseBtn = document.getElementById('playPauseBtn');
     const rewindBtn = document.getElementById('rewindBtn');
     const forwardBtn = document.getElementById('forwardBtn');
@@ -36,9 +42,11 @@ const initSongPlayer = () => {
         progressBar.value = String(progress);
         currentTimeEl.textContent = formatTime(current);
         totalTimeEl.textContent = formatTime(duration);
+        loopBtn.classList.toggle('active', audio.loop);
+        muteBtn.textContent = audio.muted ? '🔇' : '🔊';
     };
 
-    playPauseBtn.onclick = () => {
+    playPauseBtn.addEventListener('click', () => {
         if (audio.paused) {
             audio.play().catch(() => {
                 playPauseBtn.textContent = '▶';
@@ -47,43 +55,43 @@ const initSongPlayer = () => {
         }
 
         audio.pause();
-    };
+    });
 
-    rewindBtn.onclick = () => {
+    rewindBtn.addEventListener('click', () => {
         audio.currentTime = Math.max(0, (audio.currentTime || 0) - 10);
-    };
+    });
 
-    forwardBtn.onclick = () => {
+    forwardBtn.addEventListener('click', () => {
         const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
         audio.currentTime = Math.min(duration || audio.currentTime || 0, (audio.currentTime || 0) + 10);
-    };
+    });
 
-    loopBtn.onclick = () => {
+    loopBtn.addEventListener('click', () => {
         audio.loop = !audio.loop;
         loopBtn.classList.toggle('active', audio.loop);
-    };
+    });
 
-    muteBtn.onclick = () => {
+    muteBtn.addEventListener('click', () => {
         audio.muted = !audio.muted;
         muteBtn.textContent = audio.muted ? '🔇' : '🔊';
-    };
+    });
 
-    progressBar.oninput = (event) => {
+    progressBar.addEventListener('input', (event) => {
         const duration = audio.duration || 0;
         if (duration > 0) {
             audio.currentTime = (Number(event.target.value) / 100) * duration;
         }
-    };
+    });
 
-    audio.onplay = updateControls;
-    audio.onpause = updateControls;
-    audio.ontimeupdate = updateControls;
-    audio.onloadedmetadata = updateControls;
-    audio.onended = () => {
+    audio.addEventListener('play', updateControls);
+    audio.addEventListener('pause', updateControls);
+    audio.addEventListener('timeupdate', updateControls);
+    audio.addEventListener('loadedmetadata', updateControls);
+    audio.addEventListener('ended', () => {
         if (!audio.loop) {
             playPauseBtn.textContent = '▶';
         }
-    };
+    });
 
     if ('mediaSession' in navigator && 'MediaMetadata' in window) {
         const coverUrl = audio.dataset.cover || '';
