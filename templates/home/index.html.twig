@@ -106,6 +106,25 @@
 			{% endfor %}
 		</div>
 
+		{% if totalPages > 1 %}
+			<nav aria-label="Pagination des morceaux" class="mt-4">
+				<ul class="pagination justify-content-center">
+					<li class="page-item {{ currentPage <= 1 ? 'disabled' : '' }}">
+						<a class="page-link" href="{{ path('app_home', { page: currentPage - 1 }) }}" aria-label="Page précédente">Précédent</a>
+					</li>
+
+					{% for i in 1..totalPages %}
+						<li class="page-item {{ i == currentPage ? 'active' : '' }}">
+							<a class="page-link" href="{{ path('app_home', { page: i }) }}">{{ i }}</a>
+						</li>
+					{% endfor %}
+
+					<li class="page-item {{ currentPage >= totalPages ? 'disabled' : '' }}">
+						<a class="page-link" href="{{ path('app_home', { page: currentPage + 1 }) }}" aria-label="Page suivante">Suivant</a>
+					</li>
+				</ul>
+			</nav>
+		{% endif %}
 
 	</div>
 
