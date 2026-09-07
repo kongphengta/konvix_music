@@ -1,17 +1,41 @@
+html {
+    font-size: 16px;
+}
+
 body {
     background-color: rgb(222, 230, 233);
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 .home-latest-grid .card {
     border-radius: 0.9rem;
     overflow: hidden;
     background: #fff;
+    height: 100%;
 }
 
 .home-latest-grid .home-cover {
     height: 190px;
     object-fit: cover;
     display: block;
+}
+
+.home-hero {
+    padding: clamp(3rem, 7vw, 6rem) 0;
+}
+
+.home-hero h1 {
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 1.1;
+}
+
+.home-hero .lead {
+    font-size: clamp(1rem, 2vw, 1.45rem);
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
@@ -23,6 +47,19 @@ body {
 @media (max-width: 767px) {
     .home-latest-grid .home-cover {
         height: 160px;
+    }
+
+    .home-hero {
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+
+    .home-latest-grid .card-body {
+        padding: 0.8rem;
+    }
+
+    .home-latest-grid .card-title {
+        font-size: 0.96rem;
     }
 }
 

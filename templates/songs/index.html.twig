@@ -30,6 +30,11 @@
 									{{ song.category }}
 								</p>
 
+								<div class="small text-muted mb-3">
+									<span class="me-3">⏱ {{ song.publishedAgo }}</span>
+									<span>🎧 {{ song.listenCount }} écoutes</span>
+								</div>
+
 								<a href="{{ path('app_song_show', { slug: song.slug }) }}" class="btn btn-primary btn-sm">
 									▶️ Écouter
 								</a>

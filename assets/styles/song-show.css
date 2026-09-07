@@ -48,7 +48,8 @@
 
 .song-show-page {
     max-width: 1100px;
-    margin-left: 40px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .song-show-layout {
@@ -63,6 +64,8 @@
     display: grid;
     grid-template-columns: minmax(240px, 420px) minmax(180px, 1fr);
     align-items: start;
+    align-content: start;
+    justify-items: center;
     gap: 24px;
     width: 100%;
 }
@@ -78,25 +81,32 @@
     margin: 0 auto;
     color: #1b1f2a;
     flex: 0 0 auto;
+    position: relative;
 }
 
 .deezer-cover-column {
     display: flex;
     flex-direction: column;
     width: min(100%, 360px);
+    align-items: center;
+    align-self: flex-start;
 }
 
 .deezer-cover-wrap {
     width: 100%;
     max-width: 520px;
+    margin: 0 auto;
 }
 
 .deezer-meta-block {
     flex: 1;
     min-width: 220px;
-    padding-top: 4px;
+    padding-top: 0;
     display: flex;
     align-items: flex-start;
+    justify-content: flex-start;
+    align-self: flex-start;
+    height: 100%;
 }
 
 .song-show-side-panel {
@@ -142,9 +152,12 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+    align-content: flex-start;
     gap: 4px;
     width: 100%;
     margin-top: 0;
+    padding-top: 0;
+    height: 100%;
 }
 
 .meta-row {
@@ -155,13 +168,14 @@
 .meta-label {
     display: block;
     font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    font-weight: 400;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: #64748b;
     margin: 0;
     line-height: 1;
     text-align: left;
+    font-family: 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .meta-value,
@@ -171,9 +185,10 @@
     margin: 0;
     color: #111827;
     text-align: left;
-    font-weight: 800;
+    font-weight: 400;
     letter-spacing: -0.04em;
     line-height: 1.12;
+    font-family: 'Arial Narrow', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .artist-name {
@@ -368,8 +383,42 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
 
+    .song-show-page {
+        padding: 0 12px;
+    }
+
+    .deezer-player-card {
+        width: min(100%, 760px);
+    }
+
     .deezer-main-row {
         grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    .deezer-cover-column,
+    .deezer-meta-block {
+        width: 100%;
+        max-width: 420px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .deezer-cover-wrap {
+        width: min(100%, 260px);
+        margin: 0 auto;
+    }
+
+    .artist-meta-stack {
+        align-items: center;
+        text-align: center;
+    }
+
+    .meta-label,
+    .meta-value,
+    .meta-bio,
+    .artist-name {
+        text-align: center;
     }
 
     .deezer-player-zone {

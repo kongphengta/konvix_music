@@ -6,13 +6,13 @@
 {% block body %}
 
 
-	<section class="py-5 bg-dark text-light text-center">
+	<section class="home-hero bg-dark text-light text-center">
 		<div class="container">
-			<h1 class="display-4 fw-bold">Konvix Music</h1>
-			<p class="lead mt-3">
+			<h1 class="fw-bold">Konvix Music</h1>
+			<p class="lead mt-3 mb-0">
 				Le son moderne, l’énergie du dance country, et l’âme de Paksane.
 			</p>
-			<a href="{{ path('app_song_index') }}" class="btn btn-primary btn-lg mt-3">
+			<a href="{{ path('app_song_index') }}" class="btn btn-primary btn-lg mt-4">
 				Écouter les chansons
 			</a>
 		</div>
@@ -67,12 +67,12 @@
 		class="container py-5">
 
 		<!-- HERO -->
-		<div class="text-center mb-5">
-			<h1 class="display-4 fw-bold">Bienvenue sur Konvix Music</h1>
-			<p class="lead mt-3">
+		<div class="text-center mb-5 home-hero-section">
+			<h2 class="fw-bold mb-3">Bienvenue sur Konvix Music</h2>
+			<p class="lead mt-3 mb-0">
 				Découvrez mes chansons, mes projets musicaux et mes créations originales.
 			</p>
-			<a href="#" class="btn btn-primary btn-lg mt-3">Explorer mes titres</a>
+			<a href="{{ path('app_song_index') }}" class="btn btn-primary btn-lg mt-4">Explorer mes titres</a>
 		</div>
 
 		<!-- SECTION TITRES -->
@@ -92,6 +92,10 @@
 							<h6 class="card-title mb-1">{{ song.title }}</h6>
 
 							<p class="text-muted small mb-2">{{ songCategoryName }}</p>
+							<p class="text-muted small mb-3">
+								⏱ {{ song.publishedAgo }}
+								· 🎧 {{ song.listenCount }}
+							</p>
 
 							{% if songSlug %}
 								<a href="{{ path('app_song_show', { slug: songSlug }) }}" class="btn btn-primary btn-sm w-100">

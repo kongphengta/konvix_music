@@ -51,11 +51,18 @@ class Song
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $publishedAt = null;
+
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    private int $listenCount = 0;
+
+    #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->publishedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -145,6 +152,78 @@ class Song
     public function setArtist(?ArtistProfile $artist): static { $this->artist = $artist; return $this; }
 
     public function getCreatedAt(): ?\DateTimeImmutable { return $this->createdAt; }
+
+    public function getPublishedAt(): ?\DateTimeImmutable
+    {
+        return $this->publishedAt ?? $this->createdAt;
+    }
+
+    public function getPublishedAgo(): string
+    {
+        $publishedAt = $this->getPublishedAt();
+
+        if (!$publishedAt) {
+            return '—';
+        }
+
+        $now = new \DateTimeImmutable();
+        $seconds = max(0, $now->getTimestamp() - $publishedAt->getTimestamp());
+
+        $hours = intdiv($seconds, 3600);
+        if ($hours < 24) {
+            return $this->formatRelativeValue($hours, 'h');
+        }
+
+        $days = intdiv($seconds, 86400);
+        if ($days < 30) {
+            return $this->formatRelativeValue($days, 'j');
+        }
+
+        $months = intdiv($days, 30);
+        if ($months < 12) {
+            return $this->formatRelativeValue($months, 'mois');
+        }
+
+        $years = intdiv($months, 12);
+        return $this->formatRelativeValue($years, 'an');
+    }
+
+    private function formatRelativeValue(int $value, string $unit): string
+    {
+        $value = max(1, $value);
+
+        if ($unit === 'h') {
+            return 'il y a ' . $value . ' h';
+        }
+
+        if ($unit === 'j') {
+            return 'il y a ' . $value . ' j';
+        }
+
+        if ($unit === 'mois') {
+            return 'il y a ' . $value . ' mois';
+        }
+
+        return 'il y a ' . $value . ' ' . ($value > 1 ? 'ans' : 'an');
+    }
+
+    public function setPublishedAt(?\DateTimeImmutable $publishedAt): static
+    {
+        $this->publishedAt = $publishedAt;
+        return $this;
+    }
+
+    public function getListenCount(): int
+    {
+        return $this->listenCount;
+    }
+
+    public function setListenCount(int $listenCount): static
+    {
+        $this->listenCount = max(0, $listenCount);
+        return $this;
+    }
+
     public function getUpdatedAt(): ?\DateTimeImmutable { return $this->updatedAt; }
 
     public function __toString(): string { return $this->title ?? ''; }

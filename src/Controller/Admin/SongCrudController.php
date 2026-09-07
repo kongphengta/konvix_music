@@ -9,6 +9,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FileField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use Symfony\Component\Validator\Constraints\File as FileConstraint;
 
 
@@ -30,6 +32,9 @@ class SongCrudController extends AbstractCrudController
 
             AssociationField::new('category', 'Catégorie'),
             AssociationField::new('album', 'Album'),
+            DateField::new('publishedAt', 'Date de publication'),
+            IntegerField::new('listenCount', 'Nombre d’écoutes')
+                ->setFormTypeOption('attr', ['min' => 0]),
 
             ImageField::new('image', 'Image')
                 ->setBasePath('/uploads/covers')

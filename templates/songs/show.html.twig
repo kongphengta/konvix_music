@@ -65,6 +65,10 @@
 											{% endif %}
 										</div>
 
+										<div class="meta-row">
+											<span class="meta-value">{{ song.listenCount }} écoutes • {{ song.publishedAgo }}</span>
+										</div>
+
 										{% if song.artist and song.artist.bio %}
 											<div class="meta-row">
 												<span class="meta-label">Bio</span>
@@ -99,11 +103,11 @@
 										</audio>
 
 										<div class="deezer-control-row">
-												<button type="button" class="deezer-icon-btn" id="startBtn" aria-label="Revenir au début">⏮</button>
-												<button type="button" class="deezer-icon-btn" id="rewindBtn" aria-label="Reculer de 10 secondes">⏪</button>
-												<button type="button" class="deezer-play-btn" id="playPauseBtn" aria-label="Lecture">▶</button>
-												<button type="button" class="deezer-icon-btn" id="forwardBtn" aria-label="Avancer de 10 secondes">⏩</button>
-												<button type="button" class="deezer-icon-btn" id="endBtn" aria-label="Aller à la fin">⏭</button>
+											<button type="button" class="deezer-icon-btn" id="startBtn" aria-label="Revenir au début">⏮</button>
+											<button type="button" class="deezer-icon-btn" id="rewindBtn" aria-label="Reculer de 10 secondes">⏪</button>
+											<button type="button" class="deezer-play-btn" id="playPauseBtn" aria-label="Lecture">▶</button>
+											<button type="button" class="deezer-icon-btn" id="forwardBtn" aria-label="Avancer de 10 secondes">⏩</button>
+											<button type="button" class="deezer-icon-btn" id="endBtn" aria-label="Aller à la fin">⏭</button>
 											<div class="deezer-time" id="currentTime">0:00</div>
 
 											<div class="deezer-progress">

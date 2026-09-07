@@ -13,6 +13,10 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <h5>{{ song.title }}</h5>
+                        <p class="text-muted small mb-3">
+                            ⏱ {{ song.publishedAgo }}
+                            · 🎧 {{ song.listenCount }} écoutes
+                        </p>
 
                         <a href="{{ path('app_song_show', { slug: song.slug }) }}"
                            class="btn btn-primary btn-sm">

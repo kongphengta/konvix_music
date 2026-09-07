@@ -35,9 +35,13 @@
                            autocomplete="current-password" required>
                 </div>
 
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me">
-                    <label class="form-check-label text-muted" for="remember_me">Se souvenir de moi</label>
+                <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+                    <div class="form-check mb-0">
+                        <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me">
+                        <label class="form-check-label text-muted" for="remember_me">Se souvenir de moi</label>
+                    </div>
+
+                    <a href="{{ path('app_forgot_password') }}" class="small text-dark fw-semibold text-decoration-none">Mot de passe oublié ?</a>
                 </div>
 
                 <button type="submit" class="btn btn-dark w-100 py-2 fw-bold">Se connecter</button>
