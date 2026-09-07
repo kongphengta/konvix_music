@@ -4,10 +4,9 @@ namespace App\Controller;
 
 use App\Repository\SongRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\Request;
-use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 
 
 class SongsController extends AbstractController
@@ -73,7 +72,6 @@ class SongsController extends AbstractController
     }
 
     #[Route('/songs/search', name: 'app_song_search')]
-
     public function search(Request $request, SongRepository $songRepository): Response
     {
         $query = trim($request->query->get('q', ''));
@@ -88,7 +86,6 @@ class SongsController extends AbstractController
                 ->orWhere('s.description LIKE :q')
                 ->setParameter('q', '%' . $query . '%')
                 ->orderBy('s.createdAt', 'DESC')
-
                 ->getQuery()
                 ->getResult();
         }
@@ -98,4 +95,5 @@ class SongsController extends AbstractController
             'songs' => $songs,
         ]);
     }
+
 }

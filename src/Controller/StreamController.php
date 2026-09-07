@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Repository\SongRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,16 +14,13 @@ class StreamController extends AbstractController
 {
     #[Route('/stream/{slug}', name: 'app_stream_song')]
     #[IsGranted('ROLE_USER')]
-    public function play(string $slug, SongRepository $songRepository, EntityManagerInterface $entityManager): Response
+    public function play(string $slug, SongRepository $songRepository): Response
     {
         $song = $songRepository->findOneBy(['slug' => $slug]);
 
         if (!$song || !$song->getFilename()) {
             throw $this->createNotFoundException('Fichier audio introuvable.');
         }
-
-        $song->setListenCount($song->getListenCount() + 1);
-        $entityManager->flush();
 
         $filePath = $this->getParameter('kernel.project_dir')
             . '/public/uploads/songs/'

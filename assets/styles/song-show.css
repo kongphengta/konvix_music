@@ -1,15 +1,16 @@
 .deezer-shell {
-    background: #f5f5f3;
-    min-height: calc(100vh - 72px);
-    padding: 28px 0 40px;
+    background: #f4f4f2;
+    min-height: 100vh;
+    padding: 0;
 }
 
 .deezer-sidebar {
-    background: #f7f8fa;
-    border-right: 1px solid rgba(148, 163, 184, 0.22);
-    min-height: calc(100vh - 72px);
-    padding: 24px 18px;
+    background: #f5f5f5;
+    border-right: 2px solid #1E26BD;
+    min-height: 100vh;
+    padding: 18px 18px 12px;
     color: #1a1d2a;
+    width: 230px;
 }
 
 .deezer-brand {
@@ -46,67 +47,62 @@
     color: #1E26BD;
 }
 
+main.col-lg-10 {
+    display: block;
+    padding: 26px 28px 24px;
+    border-left: 1px solid #1E26BD;
+}
+
 .song-show-page {
-    max-width: 1100px;
-    margin: 0 auto;
     width: 100%;
+    max-width: 860px;
+    margin: 0;
+    padding: 0;
+    display: block;
+    margin-left: 0;
+    text-align: left;
 }
 
 .song-show-layout {
     display: flex;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 28px;
     margin-top: 12px;
 }
 
-.deezer-main-row {
-    display: grid;
-    grid-template-columns: minmax(240px, 420px) minmax(180px, 1fr);
-    align-items: start;
-    align-content: start;
-    justify-items: center;
-    gap: 24px;
-    width: 100%;
-}
-
 .deezer-player-card {
-    background: rgba(255, 255, 255, 0.82);
-    border: 1px solid rgba(17, 24, 39, 0.08);
-    border-radius: 28px;
-    box-shadow: 0 16px 32px rgba(15, 16, 32, 0.08);
-    padding: 16px 16px 12px;
-    width: min(52vw, 760px);
-    max-width: 760px;
-    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(17, 24, 39, 0.12);
+    border-radius: 20px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset;
+    padding: 18px 18px 16px;
+    width: min(100%, 860px);
+    max-width: 860px;
+    margin: 0 auto 0 0;
     color: #1b1f2a;
-    flex: 0 0 auto;
     position: relative;
 }
 
 .deezer-cover-column {
     display: flex;
-    flex-direction: column;
-    width: min(100%, 360px);
     align-items: center;
-    align-self: flex-start;
+    justify-content: center;
+    padding-right: 18px;
 }
 
 .deezer-cover-wrap {
     width: 100%;
-    max-width: 520px;
-    margin: 0 auto;
+    max-width: 330px;
+    margin: 0;
 }
 
 .deezer-meta-block {
-    flex: 1;
-    min-width: 220px;
-    padding-top: 0;
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    align-self: flex-start;
-    height: 100%;
+    padding-top: 20px;
+    padding-left: 18px;
 }
 
 .song-show-side-panel {
@@ -125,12 +121,12 @@
 
 .deezer-main-info {
     width: 100%;
-    margin-top: 18px;
+    margin-top: 14px;
     display: block;
 }
 
 .song-show-title-block {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .deezer-cover {
@@ -138,9 +134,9 @@
     overflow: hidden;
     width: 100%;
     aspect-ratio: 1 / 1;
-    box-shadow: 0 12px 26px rgba(21, 20, 41, 0.12);
+    box-shadow: 0 18px 28px rgba(21, 20, 41, 0.14);
     background: #111827;
-    border: 3px solid #1E26BD;
+    border: 0;
 }
 
 .deezer-cover-wrap {
@@ -153,7 +149,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     align-content: flex-start;
-    gap: 4px;
+    gap: 8px;
     width: 100%;
     margin-top: 0;
     padding-top: 0;
@@ -168,7 +164,7 @@
 .meta-label {
     display: block;
     font-size: 0.72rem;
-    font-weight: 400;
+    font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: #64748b;
@@ -192,11 +188,13 @@
 }
 
 .artist-name {
-    font-size: clamp(1.1rem, 1.7vw, 1.8rem);
+    font-size: clamp(1.5rem, 2vw, 2.2rem);
+    font-weight: 700;
 }
 
 .meta-value {
-    font-size: clamp(1.1rem, 1.7vw, 1.5rem);
+    font-size: 1.05rem;
+    color: #586274;
 }
 
 .meta-bio {
@@ -214,15 +212,31 @@
     display: block;
 }
 
+.deezer-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #b62680;
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    box-shadow: 0 8px 18px rgba(182, 38, 128, 0.18);
+}
+
 .deezer-title {
-    font-size: clamp(2.1rem, 2.2vw, 2.8rem);
-    font-weight: 800;
-    letter-spacing: -0.05em;
-    line-height: 1;
-    color: #1f2433;
-    margin-top: 12px;
-    margin-bottom: 6px;
-    white-space: nowrap;
+    font-size: clamp(2rem, 3vw, 3.8rem);
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    line-height: 0.96;
+    color: #111827;
+    margin-top: 0;
+    margin-bottom: 8px;
+    white-space: normal;
     width: 100%;
 }
 
@@ -237,24 +251,31 @@
 }
 
 .deezer-player-zone {
-    margin-top: 12px;
-    background: #f8f9fb;
-    border: 1px solid rgba(17, 24, 39, 0.08);
-    border-radius: 18px 18px 14px 14px;
+    margin-top: 18px;
+    background: rgba(255, 255, 255, 0.46);
+    border: 1px solid rgba(17, 24, 39, 0.12);
+    border-radius: 16px;
     padding: 12px 14px 10px;
     box-shadow: inset 0 0 0 1px rgba(17, 24, 39, 0.02);
     color: #1f2433;
-    width: 100%;
-    max-width: 100%;
+    width: min(100%, 1000px);
+    max-width: 1000px;
     min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 .deezer-control-row {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 8px;
-    min-height: 52px;
+    min-height: 50px;
     width: 100%;
+    padding-top: 2px;
+    flex-wrap: nowrap;
 }
 
 #startBtn,
@@ -262,8 +283,8 @@
 #forwardBtn,
 #endBtn,
 .deezer-icon-btn {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     border-radius: 10px;
     border: 1px solid #dfe8ff !important;
     background: #edf3ff !important;
@@ -271,7 +292,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: background 0.2s ease, transform 0.2s ease;
     box-shadow: inset 0 0 0 1px rgba(122, 147, 255, 0.12);
@@ -288,16 +309,16 @@
 
 #playPauseBtn,
 .deezer-play-btn {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     border: 0;
-    background: #7a93ff !important;
+    background: #1E26BD !important;
     color: #fff !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 700;
     box-shadow: 0 10px 18px rgba(122, 147, 255, 0.28);
     cursor: pointer;
@@ -315,14 +336,18 @@
     flex: 1;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
+    min-height: 42px;
 }
 
 .deezer-progress input[type="range"] {
     width: 100%;
-    accent-color: #6e8cff;
+    accent-color: #1E26BD;
     cursor: pointer;
     height: 4px;
+    margin: 0;
+    vertical-align: middle;
 }
 
 .deezer-audio {
@@ -333,10 +358,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 16px;
-    gap: 12px;
+    margin-top: 14px;
+    gap: 2px;
     padding-bottom: 2px;
     color: #4b5565;
+    width: 100%;
+    text-align: center;
+    transform: translateX(0);
 }
 
 #shuffleBtn,
@@ -351,21 +379,12 @@
     align-items: center;
     justify-content: center;
     color: #7a93ff;
-
-
-
-
-
-
-
-
-
-    
-
-
-
     cursor: pointer;
     box-shadow: 0 6px 14px rgba(122, 147, 255, 0.08);
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    flex: 0 0 auto;
 }
 
 #loopBtn,
