@@ -10,7 +10,7 @@
 		<div class="container">
 			<h1 class="fw-bold">Konvix Music</h1>
 			<p class="lead mt-3 mb-0">
-				Le son moderne, l’énergie du dance country, et l’âme de Paksane.
+				Le son moderne, l’énergie du dance country, et l’âme du monde.
 			</p>
 			<a href="{{ path('app_song_index') }}" class="btn btn-primary btn-lg mt-4">
 				Écouter les chansons
@@ -93,8 +93,10 @@
 
 							<p class="text-muted small mb-2">{{ songCategoryName }}</p>
 							<p class="text-muted small mb-3">
-								⏱ {{ song.publishedAgo }}
-								· 🎧 {{ song.listenCount }}
+								⏱
+								{{ song.publishedAgo }}
+								· 🎧
+								{{ song.listenCount }}
 							</p>
 
 							{% if songSlug %}

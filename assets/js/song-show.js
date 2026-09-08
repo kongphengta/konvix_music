@@ -16,13 +16,14 @@ const initSongPlayer = () => {
     const rewindBtn = document.getElementById('rewindBtn');
     const forwardBtn = document.getElementById('forwardBtn');
     const endBtn = document.getElementById('endBtn');
+    const shuffleBtn = document.getElementById('shuffleBtn');
     const loopBtn = document.getElementById('loopBtn');
     const muteBtn = document.getElementById('muteBtn');
     const progressBar = document.getElementById('progressBar');
     const currentTimeEl = document.getElementById('currentTime');
     const totalTimeEl = document.getElementById('totalTime');
 
-    if (!playPauseBtn || !startBtn || !rewindBtn || !forwardBtn || !endBtn || !loopBtn || !muteBtn || !progressBar || !currentTimeEl || !totalTimeEl) {
+    if (!playPauseBtn || !startBtn || !rewindBtn || !forwardBtn || !endBtn || !shuffleBtn || !loopBtn || !muteBtn || !progressBar || !currentTimeEl || !totalTimeEl) {
         return;
     }
 
@@ -45,6 +46,7 @@ const initSongPlayer = () => {
         currentTimeEl.textContent = formatTime(current);
         totalTimeEl.textContent = formatTime(duration);
         loopBtn.classList.toggle('active', audio.loop);
+        loopBtn.setAttribute('aria-pressed', String(audio.loop));
         muteBtn.textContent = audio.muted ? '🔇' : '🔊';
     };
 
@@ -79,14 +81,22 @@ const initSongPlayer = () => {
         }
     });
 
+    shuffleBtn.addEventListener('click', () => {
+        shuffleBtn.classList.toggle('active');
+        shuffleBtn.setAttribute('aria-pressed', String(shuffleBtn.classList.contains('active')));
+    });
+
     loopBtn.addEventListener('click', () => {
         audio.loop = !audio.loop;
         loopBtn.classList.toggle('active', audio.loop);
+        loopBtn.setAttribute('aria-pressed', String(audio.loop));
     });
 
     muteBtn.addEventListener('click', () => {
         audio.muted = !audio.muted;
         muteBtn.textContent = audio.muted ? '🔇' : '🔊';
+        muteBtn.classList.toggle('active', audio.muted);
+        muteBtn.setAttribute('aria-pressed', String(audio.muted));
     });
 
     progressBar.addEventListener('input', (event) => {
