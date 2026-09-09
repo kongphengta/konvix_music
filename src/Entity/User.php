@@ -202,26 +202,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(): string
     {
-        return $this->getFullName() !== 'Artiste'
-            ? $this->getFullName()
-            : (string) ($this->email ?? 'Utilisateur');
+        $fullName = $this->getFullName();
+
+        if ($fullName !== '' && $fullName !== 'Artiste') {
+            return $fullName;
+        }
+
+        $email = trim((string) ($this->email ?? ''));
+
+        return $email !== '' ? $email : 'Utilisateur';
     }
 
     public function getFullName(): string
     {
         $firstName = trim((string) ($this->firstName ?? ''));
         $lastName = trim((string) ($this->lastName ?? ''));
+        $email = trim((string) ($this->email ?? ''));
 
         if ($firstName === '' && $lastName === '') {
-            return 'Artiste';
+            return $email !== '' ? $email : 'Artiste';
         }
 
         if ($firstName === '') {
-            return $lastName;
+            return $lastName !== '' ? $lastName : ($email !== '' ? $email : 'Artiste');
         }
 
         if ($lastName === '') {
-            return $firstName;
+            return $firstName !== '' ? $firstName : ($email !== '' ? $email : 'Artiste');
         }
 
         return $firstName . ' ' . $lastName;
