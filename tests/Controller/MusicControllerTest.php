@@ -74,6 +74,26 @@ class MusicControllerTest extends WebTestCase
         $this->assertSame('Artiste', $user->getFullName());
     }
 
+    public function testUserCanBeConvertedToStringForEasyAdminAssociationFields(): void
+    {
+        $user = new \App\Entity\User();
+        $user->setEmail('artist@example.com');
+
+        $this->assertSame('artist@example.com', (string) $user);
+    }
+
+    public function testUserWithNullRolesDoesNotCrashWhenCheckingArtistStatus(): void
+    {
+        $user = new \App\Entity\User();
+
+        $rolesProperty = new \ReflectionProperty(\App\Entity\User::class, 'roles');
+        $rolesProperty->setAccessible(true);
+        $rolesProperty->setValue($user, null);
+
+        $this->assertContains('ROLE_USER', $user->getRoles());
+        $this->assertFalse($user->isArtist());
+    }
+
     public function testAdminDashboardMenuItemsSpecifyCrudAction(): void
     {
         $controller = new DashboardController();

@@ -22,9 +22,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    /** @var list<string> */
-    #[ORM\Column]
-    private array $roles = [];
+    /** @var list<string>|null */
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $roles = null;
 
     #[ORM\Column]
     private ?string $password = null;
@@ -56,6 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
+        $this->roles = ['ROLE_USER'];
         $this->createdAt = new \DateTimeImmutable();
     }
 
@@ -83,15 +84,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /** @return list<string> */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles = is_array($this->roles) ? $this->roles : [];
+        $roles = array_values(array_filter(
+            $roles,
+            static fn ($role): bool => is_string($role) && $role !== ''
+        ));
+
+        if ($roles === []) {
+            $roles = ['ROLE_USER'];
+        }
+
         $roles[] = 'ROLE_USER';
-        return array_unique($roles);
+
+        return array_values(array_unique($roles));
     }
 
-    /** @param list<string> $roles */
-    public function setRoles(array $roles): static
+    /** @param list<string>|null $roles */
+    public function setRoles(?array $roles): static
     {
-        $this->roles = $roles;
+        if ($roles === null) {
+            $this->roles = ['ROLE_USER'];
+            return $this;
+        }
+
+        $filtered = array_values(array_filter(
+            $roles,
+            static fn ($role): bool => is_string($role) && $role !== ''
+        ));
+
+        $this->roles = $filtered === [] ? ['ROLE_USER'] : array_values(array_unique($filtered));
         return $this;
     }
 
@@ -177,6 +198,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFullName() !== 'Artiste'
+            ? $this->getFullName()
+            : (string) ($this->email ?? 'Utilisateur');
     }
 
     public function getFullName(): string
