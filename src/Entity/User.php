@@ -181,7 +181,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getFullName(): string
     {
-        return $this->firstName . ' ' . $this->lastName;
+        $firstName = trim((string) ($this->firstName ?? ''));
+        $lastName = trim((string) ($this->lastName ?? ''));
+
+        if ($firstName === '' && $lastName === '') {
+            return 'Artiste';
+        }
+
+        if ($firstName === '') {
+            return $lastName;
+        }
+
+        if ($lastName === '') {
+            return $firstName;
+        }
+
+        return $firstName . ' ' . $lastName;
     }
 
     public function getArtistProfile(): ?ArtistProfile { return $this->artistProfile; }

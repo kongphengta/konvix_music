@@ -11,11 +11,11 @@
             <div class="card shadow border-0 rounded-4 mb-4">
                 <div class="card-body p-4 d-flex align-items-center gap-4">
                     <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fs-2 fw-bold profile-avatar">
-                        {{ user.firstName|first|upper }}{{ user.lastName|first|upper }}
+                        {{ user.firstName ? user.firstName|first|upper : 'U' }}{{ user.lastName ? user.lastName|first|upper : 'S' }}
                     </div>
                     <div>
-                        <h3 class="fw-bold mb-1">{{ user.fullName }}</h3>
-                        <p class="text-muted mb-1">{{ user.email }}</p>
+                        <h3 class="fw-bold mb-1">{{ user.fullName ?? (user.email ?? 'Utilisateur') }}</h3>
+                        <p class="text-muted mb-1">{{ user.email ?: 'Email non renseigné' }}</p>
                         <span class="badge {% if user.subscriptionPlan == 'premium' %}bg-warning text-dark{% else %}bg-success{% endif %} fs-6">
                             {{ user.subscriptionPlan == 'premium' ? '⭐ Premium' : '✓ Gratuit' }}
                         </span>
@@ -62,19 +62,19 @@
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between px-0">
                             <span class="text-muted">Prénom</span>
-                            <span class="fw-semibold">{{ user.firstName }}</span>
+                            <span class="fw-semibold">{{ user.firstName ?: 'Non renseigné' }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
                             <span class="text-muted">Nom</span>
-                            <span class="fw-semibold">{{ user.lastName }}</span>
+                            <span class="fw-semibold">{{ user.lastName ?: 'Non renseigné' }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
                             <span class="text-muted">Email</span>
-                            <span class="fw-semibold">{{ user.email }}</span>
+                            <span class="fw-semibold">{{ user.email ?: 'Non renseigné' }}</span>
                         </li>
                         <li class="list-group-item d-flex justify-content-between px-0">
                             <span class="text-muted">Membre depuis</span>
-                            <span class="fw-semibold">{{ user.createdAt|date('d/m/Y') }}</span>
+                            <span class="fw-semibold">{{ user.createdAt ? user.createdAt|date('d/m/Y') : '—' }}</span>
                         </li>
                     </ul>
                 </div>

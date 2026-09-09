@@ -15,13 +15,26 @@ class ArtistController extends AbstractController
     #[IsGranted('ROLE_ARTIST')]
     public function dashboard(): Response
     {
-        /** @var User $user */
-        $user          = $this->getUser();
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à votre espace artiste.');
+        }
+
         $artistProfile = $user->getArtistProfile();
+
+        if (!$artistProfile) {
+            $this->addFlash('warning', 'Votre profil artiste est incomplet. Complétez-le pour accéder au tableau de bord.');
+
+            return $this->render('artist/dashboard.html.twig', [
+                'artist' => null,
+                'songs'  => [],
+            ]);
+        }
 
         return $this->render('artist/dashboard.html.twig', [
             'artist' => $artistProfile,
-            'songs'  => $artistProfile ? $artistProfile->getSongs() : [],
+            'songs'  => $artistProfile->getSongs(),
         ]);
     }
 

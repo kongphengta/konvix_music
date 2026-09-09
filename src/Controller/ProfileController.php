@@ -13,8 +13,14 @@ class ProfileController extends AbstractController
     #[Route('/profile', name: 'app_profile')]
     public function index(): Response
     {
+        $user = $this->getUser();
+
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à votre profil.');
+        }
+
         return $this->render('profile/index.html.twig', [
-            'user' => $this->getUser(),
+            'user' => $user,
         ]);
     }
 }

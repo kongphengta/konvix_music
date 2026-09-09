@@ -7,6 +7,7 @@ use App\Entity\ArtistProfile;
 use App\Entity\Category;
 use App\Entity\Song;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -31,10 +32,10 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::section('Gestion du site');
 
-        yield MenuItem::linkTo(ArtistCrudController::class, 'Artistes', 'fa fa-microphone');
-        yield MenuItem::linkTo(AlbumCrudController::class, 'Albums', 'fa fa-compact-disc');
-        yield MenuItem::linkTo(SongCrudController::class, 'Chansons', 'fa fa-music');
-        yield MenuItem::linkTo(CategoryCrudController::class, 'Catégories', 'fa fa-list');
+        yield MenuItem::linkTo(ArtistCrudController::class, 'Artistes', 'fa fa-microphone')->setAction(Action::INDEX);
+        yield MenuItem::linkTo(AlbumCrudController::class, 'Albums', 'fa fa-compact-disc')->setAction(Action::INDEX);
+        yield MenuItem::linkTo(SongCrudController::class, 'Chansons', 'fa fa-music')->setAction(Action::INDEX);
+        yield MenuItem::linkTo(CategoryCrudController::class, 'Catégories', 'fa fa-list')->setAction(Action::INDEX);
 
         yield MenuItem::section('Navigation');
         yield MenuItem::linkToDashboard('Retour au Dashboard', 'fa fa-home');
