@@ -9,6 +9,22 @@ import './styles/app.css';
 
 const logoutTrigger = document.querySelector('.logout-trigger');
 const logoutModal = document.getElementById('logout-modal');
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+if (navToggle && navLinks) {
+    navToggle.addEventListener('click', () => {
+        const isOpen = navLinks.classList.toggle('is-open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    navLinks.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('is-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+        });
+    });
+}
 
 if (logoutTrigger && logoutModal) {
     const closeButtons = logoutModal.querySelectorAll('[data-close-logout-modal="true"]');

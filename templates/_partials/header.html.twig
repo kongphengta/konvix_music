@@ -5,7 +5,13 @@
             <span>Konvix Music</span>
         </a>
 
-        <nav class="nav-links" aria-label="Navigation principale">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Ouvrir le menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="nav-links" id="primary-nav" aria-label="Navigation principale">
             <a href="{{ path('app_home') }}">Accueil</a>
             <a href="{{ path('app_discover') }}">Découvrir</a>
             <a href="{{ path('app_playlists') }}">Playlists</a>
