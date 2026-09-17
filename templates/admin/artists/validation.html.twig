@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Validation des artistes{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main>
+        <section class="page-hero small-hero">
+            <div class="container page-hero-inner">
+                <div>
+                    <span class="eyebrow">Admin</span>
+                    <h1>Validation des artistes</h1>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                {% for label, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="flash-message flash-{{ label }}">{{ message }}</div>
+                    {% endfor %}
+                {% endfor %}
+
+                <div class="admin-list">
+                    {% for artist in artists %}
+                        <article class="admin-item">
+                            <div class="admin-item-visual admin-{{ artist.color }}" aria-hidden="true"></div>
+                            <div class="admin-item-body">
+                                <div class="admin-item-meta">
+                                    <span>{{ artist.genre }}</span>
+                                    <span>{{ artist.city }}</span>
+                                </div>
+                                <h2>{{ artist.name }}</h2>
+                                <p>{{ artist.bio ?: 'Aucune bio disponible.' }}</p>
+                                <div class="admin-item-actions">
+                                    <form method="post" action="{{ path('app_admin_artist_publish', {'id': artist.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('publish' ~ artist.id) }}">
+                                        <button class="btn btn-primary" type="submit">Publier</button>
+                                    </form>
+                                    <form method="post" action="{{ path('app_admin_artist_reject', {'id': artist.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('reject' ~ artist.id) }}">
+                                        <button class="btn btn-secondary" type="submit">Refuser</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </article>
+                    {% else %}
+                        <p>Aucun artiste en attente de validation.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

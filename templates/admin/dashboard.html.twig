@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main>
+        <section class="page-hero small-hero">
+            <div class="container page-hero-inner">
+                <div>
+                    <span class="eyebrow">Administration</span>
+                    <h1>Tableau de bord</h1>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="cards admin-stats">
+                    <article class="card">
+                        <div class="card-icon">🎵</div>
+                        <h3>Artistes</h3>
+                        <p>{{ artist_count }} profils enregistrés</p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon">👥</div>
+                        <h3>Utilisateurs</h3>
+                        <p>{{ user_count }} comptes actifs</p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon">⏳</div>
+                        <h3>Validation</h3>
+                        <p>{{ pending_artists }} artistes en attente</p>
+                    </article>
+                </div>
+
+                <div class="admin-quick-actions" style="margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 1rem;">
+                    <a href="{{ path('admin_artist_admin_new') }}" class="btn btn-primary">Créer un artiste</a>
+                    <a href="{{ path('admin_user_admin_new') }}" class="btn btn-secondary">Créer un utilisateur</a>
+                    <a href="{{ path('app_admin_artist_validation') }}" class="btn btn-secondary">Valider les artistes</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

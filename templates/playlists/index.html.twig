@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Playlists | Konvix Music{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main>
+        <section class="page-hero">
+            <div class="container page-hero-inner">
+                <div>
+                    <span class="eyebrow">Curated moods</span>
+                    <h1>Playlists</h1>
+                    <p class="lead">
+                        Des atmosphères pensées pour la nuit, la créativité et les moments où la musique devient le décor principal.
+                    </p>
+                </div>
+                <a class="btn btn-primary" href="{{ path('app_home') }}">Retour à l’accueil</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container playlists-grid">
+                {% for playlist in playlists %}
+                    <article class="playlist-card playlist-{{ playlist.color }}">
+                        <div class="playlist-cover" aria-hidden="true"></div>
+                        <div class="playlist-body">
+                            <div class="playlist-meta">
+                                <span>{{ playlist.mood }}</span>
+                                <span>{{ playlist.tracks }} titres</span>
+                            </div>
+                            <h2>{{ playlist.title }}</h2>
+                            <p>{{ playlist.duration }}</p>
+                            <button type="button">Lancer la playlist</button>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

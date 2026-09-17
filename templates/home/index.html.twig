@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Konvix Music{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main>
+        {% include '_partials/hero.html.twig' %}
+
+        <section class="section" id="playlists">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Pourquoi on aime</h2>
+                    <a href="#newsletter">Explorer la radio</a>
+                </div>
+
+                <div class="cards">
+                    {% for highlight in highlights %}
+                        <article class="card">
+                            <div class="card-icon" aria-hidden="true">{{ highlight.icon }}</div>
+                            <h3>{{ highlight.title }}</h3>
+                            <p>{{ highlight.text }}</p>
+                        </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

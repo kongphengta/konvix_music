@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un compte{% endblock %}
+
+{% block body %}
+    <main class="auth-shell">
+        <section class="auth-card auth-choice">
+            <div class="auth-brand">
+                <span>♪</span>
+                <h1>Konvix Music</h1>
+            </div>
+
+            <h2>Choisissez votre profil</h2>
+            <p class="auth-subtitle">Créez votre compte en quelques secondes et rejoignez la communauté.</p>
+
+            <div class="choice-grid">
+                <a class="choice-card" href="{{ path('app_register_role', { accountType: 'artist' }) }}">
+                    <span class="choice-icon">🎵</span>
+                    <h3>Je suis artiste</h3>
+                    <p>Publiez votre profil et faites découvrir votre univers.</p>
+                </a>
+
+                <a class="choice-card" href="{{ path('app_register_role', { accountType: 'auditeur' }) }}">
+                    <span class="choice-icon">🎧</span>
+                    <h3>Je suis auditeur</h3>
+                    <p>Suivez les artistes, playlists et découvertes du moment.</p>
+                </a>
+            </div>
+
+            <div class="auth-link-row">
+                <p>Vous avez déjà un compte ? <a href="{{ path('app_login') }}">Se connecter</a></p>
+                <p><a href="{{ path('app_register_role', { accountType: 'artist' }) }}">Formulaire artiste</a> · <a href="{{ path('app_register_role', { accountType: 'auditeur' }) }}">Formulaire auditeur</a></p>
+            </div>
+        </section>
+    </main>
+{% endblock %}

@@ -1,0 +1,47 @@
+<section class="hero">
+    <div class="container hero-grid">
+        <div>
+            <span class="eyebrow">Fresh drop</span>
+            <h1>Konvix Music</h1>
+            <h2>La vibe du moment</h2>
+            <p class="lead">
+                Une sélection immersive de morceaux, de playlists et d’explorations sonores pour des soirées
+                plus lumineuses, plus profondes et plus inspirantes.
+            </p>
+
+            <div class="hero-actions">
+                <a class="btn btn-primary" href="{{ path('app_discover') }}">Démarrer l’écoute</a>
+                <a class="btn btn-secondary" href="{{ path('app_playlists') }}">Voir les playlists</a>
+            </div>
+
+            <div class="stat-row" aria-label="Statistiques de la plateforme">
+                <div class="stat">
+                    <strong>18K+</strong>
+                    <span>followers</span>
+                </div>
+                <div class="stat">
+                    <strong>320</strong>
+                    <span>tracks</span>
+                </div>
+                <div class="stat">
+                    <strong>24/7</strong>
+                    <span>live flow</span>
+                </div>
+            </div>
+        </div>
+
+        <aside class="player-card" aria-label="Lecteur musical">
+            <div class="album-art" aria-hidden="true"></div>
+
+            <div class="track-list" id="discover">
+                {% for track in featured %}
+                    <div class="track">
+                        <div class="track-number">{{ loop.index }}</div>
+                        <div class="track-title">{{ track.title }}</div>
+                        <div class="track-length">{{ track.length }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </aside>
+    </div>
+</section>

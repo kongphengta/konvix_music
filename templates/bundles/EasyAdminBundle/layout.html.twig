@@ -1,0 +1,197 @@
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+    <style>
+        :root {
+            --konvix-bg: #070b16;
+            --konvix-panel: rgba(15, 23, 42, 0.88);
+            --konvix-panel-soft: rgba(17, 24, 39, 0.72);
+            --konvix-border: rgba(148, 163, 184, 0.18);
+            --konvix-primary: #8b5cf6;
+            --konvix-secondary: #22d3ee;
+            --konvix-accent: #c084fc;
+            --konvix-text: #e2e8f0;
+            --konvix-muted: #94a3b8;
+            --konvix-success: #34d399;
+            --konvix-shadow: rgba(15, 23, 42, 0.56);
+        }
+
+        body.ea {
+            background:
+                radial-gradient(circle at top, rgba(139, 92, 246, 0.18), transparent 28%),
+                linear-gradient(135deg, #070b16 0%, #111827 35%, #0b1020 100%);
+            color: var(--konvix-text);
+            font-family: Inter, "Segoe UI", sans-serif;
+        }
+
+        .ea .wrapper {
+            min-height: 100vh;
+            background: transparent;
+        }
+
+        .ea .sidebar-wrapper,
+        .ea .ea-sidebar {
+            background: rgba(11, 16, 32, 0.9);
+            border-right: 1px solid var(--konvix-border);
+            box-shadow: 18px 0 35px rgba(15, 23, 42, 0.18);
+        }
+
+        .ea .ea-sidebar-header,
+        .ea .ea-sidebar-content,
+        .ea .ea-sidebar-footer {
+            background: transparent;
+            color: var(--konvix-text);
+        }
+
+        .ea .sidebar-wrapper .logo {
+            color: var(--konvix-text);
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .ea .sidebar-wrapper .logo .logo-custom {
+            background: linear-gradient(135deg, var(--konvix-primary), var(--konvix-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .ea .ea-sidebar-item-link {
+            color: var(--konvix-text);
+            border-radius: 0.8rem;
+            margin: 0.2rem 0.6rem;
+            padding: 0.7rem 0.9rem;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .ea .ea-sidebar-item-link:hover,
+        .ea .ea-sidebar-item-link:focus-visible,
+        .ea .ea-sidebar-item-link.active {
+            background: rgba(139, 92, 246, 0.14);
+            border-color: rgba(34, 211, 238, 0.22);
+            transform: translateX(2px);
+        }
+
+        .ea .main-content {
+            background: transparent;
+        }
+
+        .ea .content-wrapper {
+            background: rgba(15, 23, 42, 0.18);
+            border-radius: 1.25rem 0 0 0;
+        }
+
+        .ea .content {
+            background: transparent;
+            color: var(--konvix-text);
+        }
+
+        .ea .content-header {
+            background: rgba(15, 23, 42, 0.26);
+            border: 1px solid var(--konvix-border);
+            border-radius: 1.1rem;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 16px 32px rgba(15, 23, 42, 0.18);
+            padding: 1rem 1.25rem;
+        }
+
+        .ea .title {
+            color: var(--konvix-text);
+            font-size: clamp(1.8rem, 2vw, 2.5rem);
+            letter-spacing: -0.04em;
+        }
+
+        .ea .card,
+        .ea .data-table,
+        .ea .table,
+        .ea .content-body > .card,
+        .ea .content-body .table-responsive {
+            background: rgba(15, 23, 42, 0.6) !important;
+            border: 1px solid var(--konvix-border) !important;
+            border-radius: 1rem !important;
+            color: var(--konvix-text) !important;
+            box-shadow: 0 16px 35px rgba(15, 23, 42, 0.18);
+        }
+
+        .ea .table th,
+        .ea .table td,
+        .ea .data-table th,
+        .ea .data-table td {
+            color: var(--konvix-text) !important;
+            border-color: rgba(148, 163, 184, 0.14) !important;
+            background: transparent !important;
+        }
+
+        .ea .form-control,
+        .ea .form-select,
+        .ea textarea,
+        .ea input {
+            background: rgba(15, 23, 42, 0.7) !important;
+            border: 1px solid var(--konvix-border) !important;
+            color: var(--konvix-text) !important;
+            border-radius: 0.85rem !important;
+        }
+
+        .ea .btn,
+        .ea .btn-primary,
+        .ea .btn-secondary,
+        .ea .btn-success,
+        .ea .btn-danger {
+            border-radius: 999px !important;
+            font-weight: 700 !important;
+            padding: 0.75rem 1.2rem !important;
+        }
+
+        .ea .btn-primary {
+            background: linear-gradient(135deg, var(--konvix-primary), var(--konvix-accent)) !important;
+            border: none !important;
+            box-shadow: 0 14px 28px rgba(139, 92, 246, 0.3);
+        }
+
+        .ea .btn-secondary {
+            background: rgba(15, 23, 42, 0.4) !important;
+            border: 1px solid var(--konvix-border) !important;
+            color: var(--konvix-text) !important;
+        }
+
+        .ea .user-menu-wrapper .user-details {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--konvix-border);
+            border-radius: 999px;
+            color: var(--konvix-text);
+        }
+
+        .ea .content-top {
+            background: transparent;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+        }
+
+        .ea .content-search .form-control {
+            background: rgba(15, 23, 42, 0.68) !important;
+        }
+
+        .ea .badge {
+            border-radius: 999px;
+            padding: 0.45rem 0.7rem;
+        }
+
+        .ea .dropdown-menu,
+        .ea .dropdown-item {
+            background: rgba(15, 23, 42, 0.96);
+            color: var(--konvix-text);
+            border: 1px solid var(--konvix-border);
+        }
+
+        @media (max-width: 768px) {
+            .ea .sidebar-wrapper {
+                border-right: none;
+            }
+
+            .ea .content-wrapper {
+                border-radius: 0;
+            }
+        }
+    </style>
+{% endblock %}

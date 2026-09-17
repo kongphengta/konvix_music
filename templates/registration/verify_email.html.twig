@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vérification email{% endblock %}
+
+{% block body %}
+    <main class="auth-shell">
+        <section class="auth-card">
+            <div class="auth-brand">
+                <span>♪</span>
+                <h1>Konvix Music</h1>
+            </div>
+
+            <h2>Vérifier votre email</h2>
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash-message flash-{{ label }}">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+
+            <p>Nous avons envoyé un code à 6 chiffres à <strong>{{ email }}</strong>.</p>
+
+            <form method="post" action="{{ path('app_verify_email', { email: email }) }}">
+                <label for="code">Code de vérification</label>
+                <input type="text" id="code" name="code" inputmode="numeric" maxlength="6" pattern="\d{6}" required autofocus>
+                <input type="hidden" name="email" value="{{ email }}">
+
+                <button class="btn btn-primary" type="submit">Valider mon compte</button>
+            </form>
+        </section>
+    </main>
+{% endblock %}

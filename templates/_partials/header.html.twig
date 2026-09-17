@@ -1,0 +1,44 @@
+<header class="site-header">
+    <div class="container navbar">
+        <a href="{{ path('app_home') }}" class="brand" aria-label="Konvix Music">
+            <span class="brand-mark">♪</span>
+            <span>Konvix Music</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Navigation principale">
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <a href="{{ path('app_discover') }}">Découvrir</a>
+            <a href="{{ path('app_playlists') }}">Playlists</a>
+            <a href="{{ path('app_artists') }}">Artistes</a>
+            <a href="{{ path('app_home') }}#newsletter">Newsletter</a>
+        </nav>
+
+        <div class="nav-actions">
+            {% if app.user %}
+                <span class="welcome-user">Bonjour, {{ app.user.firstName ?: app.user.email }}</span>
+                <button type="button" class="btn btn-primary logout-trigger">Déconnexion</button>
+            {% else %}
+                <a class="btn btn-secondary" href="{{ path('app_register_role', { accountType: 'artist' }) }}">S'inscrire artiste</a>
+                <a class="btn btn-secondary" href="{{ path('app_register_role', { accountType: 'auditeur' }) }}">S'inscrire auditeur</a>
+                <a class="btn btn-primary" href="{{ path('app_login') }}">Connexion</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+{% if app.user %}
+    <div class="logout-modal" id="logout-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="logout-modal-title">
+        <div class="logout-modal__backdrop" data-close-logout-modal="true"></div>
+        <div class="logout-modal__dialog">
+            <h3 id="logout-modal-title">Déconnexion</h3>
+            <p>Voulez-vous vraiment vous déconnecter ?</p>
+            <div class="logout-modal__actions">
+                <button type="button" class="btn btn-secondary" data-close-logout-modal="true">Annuler</button>
+                <form method="post" action="{{ path('app_logout') }}">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+                    <button type="submit" class="btn btn-primary">Oui, déconnecter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Albums | Konvix Music{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main>
+        <section class="page-hero">
+            <div class="container page-hero-inner">
+                <div>
+                    <span class="eyebrow">Latest releases</span>
+                    <h1>Albums</h1>
+                    <p class="lead">
+                        Les projets les plus puissants et les plus immersifs de la scène actuelle.
+                    </p>
+                </div>
+                <a class="btn btn-primary" href="{{ path('app_home') }}">Retour à l’accueil</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container albums-grid">
+                {% for album in albums %}
+                    <article class="album-card album-{{ album.color }}">
+                        <div class="album-cover" aria-hidden="true"></div>
+                        <div class="album-body">
+                            <div class="album-topline">
+                                <span>{{ album.year }}</span>
+                                <span>{{ album.tracks }} tracks</span>
+                            </div>
+                            <h2>{{ album.title }}</h2>
+                            <p>{{ album.artist }}</p>
+                            <button type="button">Écouter l’album</button>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

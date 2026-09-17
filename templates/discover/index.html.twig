@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Découvrir | Konvix Music{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main>
+        <section class="page-hero">
+            <div class="container page-hero-inner">
+                <div>
+                    <span class="eyebrow">Fresh discovery</span>
+                    <h1>Découvrir</h1>
+                    <p class="lead">
+                        Explore des sonorités qui résonnent avec ton humeur, ta nuit et les artistes qui créent l’énergie du moment.
+                    </p>
+                </div>
+                <a class="btn btn-primary" href="{{ path('app_home') }}">Retour à l’accueil</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Genres du moment</h2>
+                </div>
+
+                <div class="discover-categories">
+                    {% for category in categories %}
+                        <article class="discover-card discover-{{ category.color }}">
+                            <div class="discover-badge">{{ category.count }}</div>
+                            <h3>{{ category.title }}</h3>
+                        </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Mixes sélectionnés</h2>
+                </div>
+
+                <div class="mix-grid">
+                    {% for item in highlights %}
+                        <article class="mix-card mix-{{ item.color }}">
+                            <div class="mix-cover" aria-hidden="true"></div>
+                            <div class="mix-body">
+                                <span>{{ item.artist }}</span>
+                                <h3>{{ item.title }}</h3>
+                                <small>{{ item.duration }}</small>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Édition curatée</h2>
+                </div>
+
+                <div class="editorial-grid">
+                    {% for item in editorials %}
+                        <article class="editorial-card">
+                            <h3>{{ item.title }}</h3>
+                            <p>{{ item.text }}</p>
+                            <a href="{{ path('app_artists') }}">Découvrir les artistes</a>
+                        </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

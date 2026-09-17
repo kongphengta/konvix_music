@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Artistes | Konvix Music{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main>
+        <section class="page-hero">
+            <div class="container page-hero-inner">
+                <div>
+                    <span class="eyebrow">Curated talent</span>
+                    <h1>Artistes à suivre</h1>
+                    <p class="lead">
+                        Des voix, des textures et des rythmes qui donnent une âme à chaque soirée.
+                    </p>
+                </div>
+                <a class="btn btn-primary" href="{{ path('app_home') }}">Retour à l’accueil</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container artists-grid">
+                {% for artist in artists %}
+                    <a href="{{ path('app_artist_detail', {'slug': artist.slug}) }}" class="artist-card-link">
+                        <article class="artist-card artist-{{ artist.color }}">
+                            <div class="artist-visual" aria-hidden="true"></div>
+                            <div class="artist-body">
+                                <div class="artist-meta">
+                                    <span>{{ artist.genre }}</span>
+                                    <span>{{ artist.city }}</span>
+                                </div>
+                                <h2>{{ artist.name }}</h2>
+                                <p>
+                                    {{ artist.bio ?: 'Une présence sonore élégante, immersive et fidèle aux rythmes qui traversent nos nuits.' }}
+                                </p>
+                                <div class="artist-footer">
+                                    <strong>{{ artist.followers }}</strong>
+                                    <button type="button">Suivre</button>
+                                </div>
+                            </div>
+                        </article>
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}
