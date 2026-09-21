@@ -22,7 +22,19 @@
         <div class="nav-actions">
             {% if app.user %}
                 <span class="welcome-user">Bonjour, {{ app.user.firstName ?: app.user.email }}</span>
-                <button type="button" class="btn btn-primary logout-trigger">Déconnexion</button>
+                {% set effectiveRoles = app.user.getRoles() %}
+                {% if 'ROLE_ADMIN' in effectiveRoles or app.user.accountType == 'admin' %}
+                    <a class="btn btn-secondary" href="{{ path('admin') }}">Mon espace</a>
+                {% elseif 'ROLE_ARTISTE' in effectiveRoles or app.user.accountType == 'artist' %}
+                    <a class="btn btn-secondary" href="{{ path('app_artist_dashboard') }}">Mon espace</a>
+                {% else %}
+                    <a class="btn btn-secondary" href="{{ path('app_become_artist') }}">Devenir artiste</a>
+                {% endif %}
+
+                <form method="post" action="{{ path('app_logout') }}" class="logout-form">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
+                    <button type="submit" class="btn btn-primary">Déconnexion</button>
+                </form>
             {% else %}
                 <a class="btn btn-secondary" href="{{ path('app_register_role', { accountType: 'artist' }) }}">S'inscrire artiste</a>
                 <a class="btn btn-secondary" href="{{ path('app_register_role', { accountType: 'auditeur' }) }}">S'inscrire auditeur</a>
@@ -31,20 +43,3 @@
         </div>
     </div>
 </header>
-
-{% if app.user %}
-    <div class="logout-modal" id="logout-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="logout-modal-title">
-        <div class="logout-modal__backdrop" data-close-logout-modal="true"></div>
-        <div class="logout-modal__dialog">
-            <h3 id="logout-modal-title">Déconnexion</h3>
-            <p>Voulez-vous vraiment vous déconnecter ?</p>
-            <div class="logout-modal__actions">
-                <button type="button" class="btn btn-secondary" data-close-logout-modal="true">Annuler</button>
-                <form method="post" action="{{ path('app_logout') }}">
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('logout') }}">
-                    <button type="submit" class="btn btn-primary">Oui, déconnecter</button>
-                </form>
-            </div>
-        </div>
-    </div>
-{% endif %}

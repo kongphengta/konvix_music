@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArtistRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -48,6 +50,17 @@ class Artist
 
     #[ORM\Column(type: 'boolean')]
     private bool $isPublished = false;
+
+    /**
+     * @var Collection<int, Track>
+     */
+    #[ORM\OneToMany(targetEntity: Track::class, mappedBy: 'artist')]
+    private Collection $tracks;
+
+    public function __construct()
+    {
+        $this->tracks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -158,6 +171,36 @@ class Artist
     public function setIsPublished(bool $isPublished): self
     {
         $this->isPublished = $isPublished;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Track>
+     */
+    public function getTracks(): Collection
+    {
+        return $this->tracks;
+    }
+
+    public function addTrack(Track $track): static
+    {
+        if (!$this->tracks->contains($track)) {
+            $this->tracks->add($track);
+            $track->setArtist($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrack(Track $track): static
+    {
+        if ($this->tracks->removeElement($track)) {
+            // set the owning side to null (unless already changed)
+            if ($track->getArtist() === $this) {
+                $track->setArtist(null);
+            }
+        }
 
         return $this;
     }

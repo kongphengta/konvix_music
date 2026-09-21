@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un morceau{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main class="artist-profile-page py-5">
+        <div class="container">
+            <div class="card artist-profile-card border-0 shadow-lg">
+                <div class="card-body p-4 p-md-5">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+                        <div>
+                            <span class="eyebrow">Artiste</span>
+                            <h1 class="artist-profile-title mt-3 mb-0">Ajouter un morceau</h1>
+                        </div>
+
+                        <a class="btn btn-outline-light btn-lg px-4" href="{{ path('app_artist_dashboard') }}">Retour</a>
+                    </div>
+
+                    <p class="track-form-intro">Renseignez les détails du morceau avant de le publier sur votre profil.</p>
+
+                    {{ form_start(form, {'attr': {'class': 'artist-profile-form row g-4'}}) }}
+                        <div class="col-md-6">
+                            {{ form_row(form.title, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': 'Ex. Midnight Ride'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form_row(form.slug, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'readonly': true},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form_row(form.duration, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': '03:42'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-light fw-semibold" for="audio-upload">Fichier audio</label>
+                            <div class="file-upload-field">
+                                <input id="audio-upload" type="file" accept="audio/*" class="form-control form-control-lg bg-dark text-white border-secondary" aria-label="Choisir un fichier audio">
+                                <span class="file-upload-text">Parcourir</span>
+                            </div>
+                            {{ form_row(form.audioUrl, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary d-none', 'placeholder': 'Nom du fichier audio'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label text-light fw-semibold" for="cover-upload">Pochette du morceau</label>
+                            <div class="file-upload-field file-upload-field--cover">
+                                <input id="cover-upload" type="file" accept="image/*" class="form-control form-control-lg bg-dark text-white border-secondary" aria-label="Choisir une pochette">
+                                <span class="file-upload-text">Parcourir</span>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            {{ form_row(form.isPublished, {
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-12 mt-2">
+                            <button class="btn btn-primary btn-lg w-100" type="submit">Enregistrer le morceau</button>
+                        </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const titleInput = document.querySelector('#track_title');
+            const slugInput = document.querySelector('#track_slug');
+
+            if (titleInput && slugInput) {
+                const slugify = (value) => value
+                    .toLowerCase()
+                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '')
+                    .slice(0, 80);
+
+                titleInput.addEventListener('input', () => {
+                    const slug = slugify(titleInput.value);
+                    slugInput.value = slug;
+                });
+            }
+        });
+    </script>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

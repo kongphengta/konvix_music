@@ -37,7 +37,7 @@
                                 <div class="admin-item-actions">
                                     <form method="post" action="{{ path('app_admin_artist_publish', {'id': artist.id}) }}">
                                         <input type="hidden" name="_token" value="{{ csrf_token('publish' ~ artist.id) }}">
-                                        <button class="btn btn-primary" type="submit">Publier</button>
+                                        <button class="btn btn-primary" type="submit">Valider & publier</button>
                                     </form>
                                     <form method="post" action="{{ path('app_admin_artist_reject', {'id': artist.id}) }}">
                                         <input type="hidden" name="_token" value="{{ csrf_token('reject' ~ artist.id) }}">

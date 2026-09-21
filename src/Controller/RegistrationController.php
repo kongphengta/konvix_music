@@ -47,7 +47,7 @@ final class RegistrationController extends AbstractController
             }
 
             $verificationCode = (string) random_int(100000, 999999);
-            $user->setRoles(['ROLE_USER']);
+            $user->setRoles($accountType === 'artist' ? ['ROLE_USER', 'ROLE_ARTISTE'] : ['ROLE_USER']);
             $user->setIsVerified(false);
             $user->setEmailVerificationCode($verificationCode);
 
@@ -69,7 +69,7 @@ final class RegistrationController extends AbstractController
 
             $this->addFlash('success', sprintf('Un code de vérification a été envoyé à %s. Merci de le vérifier pour valider votre compte.', $email));
 
-            return $this->redirectToRoute('app_verify_email', ['email' => $user->getEmail()]);
+            return $this->redirect($this->generateUrl('app_verify_email', ['email' => $user->getEmail()]));
         }
 
         return $this->render('registration/register.html.twig', [
@@ -82,6 +82,39 @@ final class RegistrationController extends AbstractController
                 default => 'utilisateur',
             },
         ]);
+    }
+
+    #[Route('/verify-email/resend', name: 'app_verify_email_resend', methods: ['POST'])]
+    public function resendVerificationCode(Request $request, ManagerRegistry $doctrine, MailerInterface $mailer): Response
+    {
+        $email = trim((string) $request->request->get('email', ''));
+        $user = $doctrine->getRepository(User::class)->findOneBy(['email' => $email]);
+
+        if (!$user) {
+            $this->addFlash('error', 'Aucun compte trouvé pour cette adresse email.');
+
+            return $this->redirectToRoute('app_register');
+        }
+
+        $verificationCode = (string) random_int(100000, 999999);
+        $user->setEmailVerificationCode($verificationCode);
+        $doctrine->getManager()->flush();
+
+        $message = (new Email())
+            ->from(new Address('noreply@konvix.music', 'Konvix Music'))
+            ->to(new Address($user->getEmail()))
+            ->subject('Votre nouveau code de vérification Konvix Music')
+            ->text(sprintf(
+                "Bonjour %s,\n\nVotre nouveau code de vérification Konvix Music est : %s\n\nEntrez ce code pour valider votre compte.",
+                $user->getFirstName() ?: 'utilisateur',
+                $verificationCode,
+            ));
+
+        $mailer->send($message);
+
+        $this->addFlash('success', 'Un nouveau code de vérification a été envoyé.');
+
+        return $this->redirect($this->generateUrl('app_verify_email', ['email' => $user->getEmail()]));
     }
 
     #[Route('/verify-email', name: 'app_verify_email')]

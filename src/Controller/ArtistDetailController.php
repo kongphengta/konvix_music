@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ArtistRepository;
+use App\Repository\TrackRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -10,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ArtistDetailController extends AbstractController
 {
     #[Route('/artists/{slug}', name: 'app_artist_detail')]
-    public function index(string $slug, ArtistRepository $artistRepository): Response
+    public function index(string $slug, ArtistRepository $artistRepository, TrackRepository $trackRepository): Response
     {
         $artist = $artistRepository->findOneBy(['slug' => $slug, 'isPublished' => true]);
 
@@ -18,15 +19,16 @@ final class ArtistDetailController extends AbstractController
             throw $this->createNotFoundException('Artiste introuvable.');
         }
 
-        $featuredTracks = [
-            'Midnight Echo',
-            'Night Bloom',
-            'Electric Veil',
-        ];
+        $tracks = $trackRepository->findBy([
+            'artist' => $artist,
+            'isPublished' => true,
+        ], [
+            'createdAt' => 'DESC',
+        ]);
 
         return $this->render('artists/detail.html.twig', [
             'artist' => $artist,
-            'featured' => $featuredTracks,
+            'tracks' => $tracks,
         ]);
     }
 }

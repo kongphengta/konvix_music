@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un morceau{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main>
+        <section class="page-hero small-hero">
+            <div class="container page-hero-inner">
+                <div>
+                    <span class="eyebrow">Artiste</span>
+                    <h1>Modifier un morceau</h1>
+                </div>
+                <a class="btn btn-secondary" href="{{ path('app_artist_dashboard') }}">Retour</a>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container form-shell">
+                {{ form_start(form) }}
+                    <div class="form-grid">
+                        <div>{{ form_row(form.title) }}</div>
+                        <div>{{ form_row(form.slug) }}</div>
+                        <div>{{ form_row(form.duration) }}</div>
+                        <div>{{ form_row(form.audioUrl) }}</div>
+                        <div class="span-2">{{ form_row(form.isPublished) }}</div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-primary" type="submit">Enregistrer le morceau</button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </section>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

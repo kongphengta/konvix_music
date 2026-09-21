@@ -3,6 +3,8 @@
 {% block title %}Vérification email{% endblock %}
 
 {% block body %}
+    {% include '_partials/header.html.twig' %}
+
     <main class="auth-shell">
         <section class="auth-card">
             <div class="auth-brand">
@@ -26,6 +28,11 @@
                 <input type="hidden" name="email" value="{{ email }}">
 
                 <button class="btn btn-primary" type="submit">Valider mon compte</button>
+            </form>
+
+            <form method="post" action="{{ path('app_verify_email_resend') }}" class="mt-3">
+                <input type="hidden" name="email" value="{{ email }}">
+                <button class="btn btn-link p-0 text-decoration-none" type="submit">Renvoyer le code</button>
             </form>
         </section>
     </main>

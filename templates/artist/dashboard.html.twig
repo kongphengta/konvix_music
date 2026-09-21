@@ -39,6 +39,29 @@
                                     <span class="status-pill {% if artist.isPublished %}published{% else %}pending{% endif %}">
                                         {% if artist.isPublished %}Publié{% else %}En attente{% endif %}
                                     </span>
+                                    <a class="btn btn-secondary" href="{{ path('app_artist_track_new', {'id': artist.id}) }}">Ajouter un morceau</a>
+                                </div>
+
+                                <div class="track-list-block">
+                                    {% set artistTracks = tracksByArtist[artist.id] ?? [] %}
+                                    {% if artistTracks is not empty %}
+                                        <ul class="track-list">
+                                            {% for track in artistTracks %}
+                                                <li>
+                                                    <span>{{ track.title }}</span>
+                                                    <span>{{ track.duration }}</span>
+                                                    <span class="status-pill {% if track.isPublished %}published{% else %}pending{% endif %}">
+                                                        {% if track.isPublished %}Publié{% else %}Brouillon{% endif %}
+                                                    </span>
+                                                    <a href="{{ path('app_artist_track_edit', {'id': track.id}) }}">Éditer</a>
+                                                    <a href="{{ path('app_artist_track_toggle_publish', {'id': track.id}) }}">{% if track.isPublished %}Dépublier{% else %}Publier{% endif %}</a>
+                                                    <a href="{{ path('app_artist_track_delete', {'id': track.id}) }}" onclick="return confirm('Supprimer ce morceau ?');">Supprimer</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <p>Aucun morceau pour ce profil.</p>
+                                    {% endif %}
                                 </div>
                             </div>
                         </article>

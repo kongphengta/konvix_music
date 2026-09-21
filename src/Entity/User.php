@@ -181,15 +181,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $roles = $this->roles;
         $roles[] = 'ROLE_USER';
 
+        if ('admin' === $this->accountType) {
+            $roles = ['ROLE_USER', 'ROLE_ADMIN'];
+
+            return array_values(array_unique($roles));
+        }
+
+        foreach (['ROLE_ADMIN', 'ROLE_ARTISTE', 'ROLE_AUDITEUR'] as $role) {
+            $roles = array_values(array_filter($roles, static fn (string $value): bool => $value !== $role));
+        }
+
         switch ($this->accountType) {
             case 'artist':
                 $roles[] = 'ROLE_ARTISTE';
                 break;
             case 'auditeur':
                 $roles[] = 'ROLE_AUDITEUR';
-                break;
-            case 'admin':
-                $roles[] = 'ROLE_ADMIN';
                 break;
         }
 
