@@ -42,6 +42,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 6, nullable: true)]
     private ?string $emailVerificationCode = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $passwordResetToken = null;
+
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?\DateTimeImmutable $passwordResetExpiresAt = null;
+
     /**
      * @var list<string> The user roles
      */
@@ -108,6 +114,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return trim(implode(' ', array_filter([$this->firstName, $this->lastName])));
     }
 
+    public function __toString(): string
+    {
+        return $this->getFullName() ?: (string) $this->email;
+    }
+
     public function setFullName(string $fullName): static
     {
         $parts = preg_split('/\s+/', trim($fullName), 2) ?: [''];
@@ -153,6 +164,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getPasswordResetToken(): ?string
+    {
+        return $this->passwordResetToken;
+    }
+
+    public function setPasswordResetToken(?string $passwordResetToken): static
+    {
+        $this->passwordResetToken = $passwordResetToken;
+
+        return $this;
+    }
+
+    public function getPasswordResetExpiresAt(): ?\DateTimeImmutable
+    {
+        return $this->passwordResetExpiresAt;
+    }
+
+    public function setPasswordResetExpiresAt(?\DateTimeImmutable $passwordResetExpiresAt): static
+    {
+        $this->passwordResetExpiresAt = $passwordResetExpiresAt;
+
+        return $this;
+    }
+
     public function getAccountLabel(): string
     {
         return match ($this->accountType) {
@@ -178,20 +213,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles = array_values(array_unique(array_filter($this->roles, static fn (string $value): bool => '' !== trim($value))));
         $roles[] = 'ROLE_USER';
 
-        if ('admin' === $this->accountType) {
-            $roles = ['ROLE_USER', 'ROLE_ADMIN'];
+        $accountType = strtolower((string) ($this->accountType ?? ''));
+        $hasAdminRole = in_array('ROLE_ADMIN', $roles, true);
 
-            return array_values(array_unique($roles));
+        if ('admin' === $accountType || $hasAdminRole) {
+            return ['ROLE_USER', 'ROLE_ADMIN'];
         }
 
         foreach (['ROLE_ADMIN', 'ROLE_ARTISTE', 'ROLE_AUDITEUR'] as $role) {
             $roles = array_values(array_filter($roles, static fn (string $value): bool => $value !== $role));
         }
 
-        switch ($this->accountType) {
+        switch ($accountType) {
             case 'artist':
                 $roles[] = 'ROLE_ARTISTE';
                 break;

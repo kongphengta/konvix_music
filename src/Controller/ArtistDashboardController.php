@@ -8,6 +8,7 @@ use App\Form\ArtistType;
 use App\Form\TrackType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -126,12 +127,39 @@ final class ArtistDashboardController extends AbstractController
             $track->setCreatedAt(new \DateTimeImmutable());
             $track->setUpdatedAt(new \DateTimeImmutable());
 
+            $audioFile = $form->get('audioFile')->getData();
+            if ($audioFile instanceof UploadedFile) {
+                $track->setAudioUrl($this->uploadTrackAsset($audioFile, 'tracks'));
+            } else {
+                $track->setAudioUrl($form->get('audioUrl')->getData() ?: null);
+            }
+
+            $coverImage = $form->get('coverImage')->getData();
+            if ($coverImage instanceof UploadedFile) {
+                $track->setCoverImage($this->uploadTrackAsset($coverImage, 'covers'));
+            }
+
+            $publishMode = $form->get('publishMode')->getData();
+            $publishedAt = $form->get('publishedAt')->getData();
+            if ('scheduled' === $publishMode && $publishedAt instanceof \DateTimeInterface) {
+                $scheduledDate = \DateTimeImmutable::createFromInterface($publishedAt);
+                $track->setPublishedAt($scheduledDate);
+                $track->setIsPublished($scheduledDate <= new \DateTimeImmutable());
+            } else {
+                $track->setPublishedAt(new \DateTimeImmutable());
+                $track->setIsPublished(true);
+            }
+
             $doctrine->getManager()->persist($track);
             $doctrine->getManager()->flush();
 
             $this->addFlash('success', 'Le morceau a bien été enregistré.');
 
             return $this->redirectToRoute('app_artist_dashboard');
+        }
+
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash('error', 'Le formulaire contient des erreurs. Vérifiez les champs marqués et réessayez.');
         }
 
         return $this->render('artist/track_new.html.twig', [
@@ -161,6 +189,30 @@ final class ArtistDashboardController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $track->setUpdatedAt(new \DateTimeImmutable());
+
+            $audioFile = $form->get('audioFile')->getData();
+            if ($audioFile instanceof UploadedFile) {
+                $track->setAudioUrl($this->uploadTrackAsset($audioFile, 'tracks'));
+            } else {
+                $track->setAudioUrl($form->get('audioUrl')->getData() ?: null);
+            }
+
+            $coverImage = $form->get('coverImage')->getData();
+            if ($coverImage instanceof UploadedFile) {
+                $track->setCoverImage($this->uploadTrackAsset($coverImage, 'covers'));
+            }
+
+            $publishMode = $form->get('publishMode')->getData();
+            $publishedAt = $form->get('publishedAt')->getData();
+            if ('scheduled' === $publishMode && $publishedAt instanceof \DateTimeInterface) {
+                $scheduledDate = \DateTimeImmutable::createFromInterface($publishedAt);
+                $track->setPublishedAt($scheduledDate);
+                $track->setIsPublished($scheduledDate <= new \DateTimeImmutable());
+            } else {
+                $track->setPublishedAt(new \DateTimeImmutable());
+                $track->setIsPublished(true);
+            }
+
             $doctrine->getManager()->flush();
 
             $this->addFlash('success', 'Le morceau a bien été mis à jour.');
@@ -168,10 +220,30 @@ final class ArtistDashboardController extends AbstractController
             return $this->redirectToRoute('app_artist_dashboard');
         }
 
+        if ($form->isSubmitted() && !$form->isValid()) {
+            $this->addFlash('error', 'Le formulaire contient des erreurs. Vérifiez les champs marqués et réessayez.');
+        }
+
         return $this->render('artist/track_edit.html.twig', [
             'form' => $form,
             'track' => $track,
         ]);
+    }
+
+    private function uploadTrackAsset(UploadedFile $file, string $directory): string
+    {
+        $safeName = preg_replace('/[^a-zA-Z0-9_-]+/', '-', strtolower(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))) ?? 'upload';
+        $safeName = trim($safeName, '-');
+        $fileName = $safeName . '-' . bin2hex(random_bytes(6)) . '.' . $file->guessExtension();
+        $targetDirectory = __DIR__ . '/../../public/uploads/' . $directory;
+
+        if (!is_dir($targetDirectory)) {
+            mkdir($targetDirectory, 0777, true);
+        }
+
+        $file->move($targetDirectory, $fileName);
+
+        return '/uploads/' . $directory . '/' . $fileName;
     }
 
     #[Route('/artist/track/{id}/toggle-publish', name: 'app_artist_track_toggle_publish')]

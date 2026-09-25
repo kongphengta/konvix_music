@@ -5,42 +5,59 @@
 {% block body %}
     {% include '_partials/header.html.twig' %}
 
-    <main>
-        <section class="page-hero">
-            <div class="container page-hero-inner artist-detail-hero">
-                <div>
-                    <span class="eyebrow">Featured artist</span>
-                    <h1>{{ artist.name }}</h1>
-                    <p class="lead">
-                        {{ artist.bio }}
-                    </p>
-                    <div class="artist-detail-meta">
-                        <span>{{ artist.genre }}</span>
-                        <span>{{ artist.city }}</span>
-                        <span>{{ artist.followers }} followers</span>
+    <main class="artist-public-page">
+        <section class="artist-public-hero">
+            <div class="container">
+                <div class="artist-public-hero__shell">
+                    <div class="artist-public-hero__content">
+                        <span class="eyebrow">Featured artist</span>
+                        <h1>{{ artist.name }}</h1>
+                        <p>{{ artist.bio ?: 'Une voix à découvrir, avec un univers sonore en pleine évolution.' }}</p>
+                        <div class="artist-detail-meta">
+                            <span>{{ artist.genre }}</span>
+                            <span>{{ artist.city }}</span>
+                            <span>{{ artist.followers }} followers</span>
+                        </div>
                     </div>
-                </div>
-                <div class="artist-detail-aside artist-{{ artist.color }}">
-                    <div class="artist-visual-large" aria-hidden="true"></div>
+
+                    <div class="artist-public-hero__art">
+                        <div class="artist-public-cover artist-{{ artist.color }}" aria-hidden="true"></div>
+                        <div class="artist-public-floating-panel">
+                            <span class="artist-public-floating-panel__label">Catalogue</span>
+                            <strong>{{ tracks|length }} titres</strong>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="section">
             <div class="container">
-                <div class="section-header">
-                    <h2>Tracks sélectionnés</h2>
+                <div class="section-header section-header--public">
+                    <div>
+                        <span class="eyebrow">Playlist</span>
+                        <h2>Tracks sélectionnés</h2>
+                    </div>
+                    <div class="artist-public-actions artist-public-actions--inline">
+                        <button type="button" class="btn btn-primary">Lecture</button>
+                        <a href="{{ path('app_albums') }}" class="btn btn-secondary">Explorer</a>
+                    </div>
                 </div>
 
-                <div class="detail-track-list">
-                    {% for track in featured %}
-                        <div class="detail-track-item">
-                            <span class="track-badge">{{ loop.index }}</span>
-                            <span class="track-name">{{ track }}</span>
-                            <button type="button">Lire</button>
-                        </div>
-                    {% endfor %}
-                </div>
+                {% if tracks is not empty %}
+                    <div class="artist-track-list artist-track-list--public">
+                        {% for track in tracks %}
+                            <div class="artist-track-row artist-track-row--public">
+                                <div class="artist-track-row__index">{{ loop.index }}</div>
+                                <div class="artist-track-row__title">{{ track.title }}</div>
+                                <div class="artist-track-row__meta">{{ track.duration }}</div>
+                                <button type="button" class="btn btn-primary btn-sm">Lecture</button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="artist-empty-state">Aucun morceau publié pour le moment. Revenez bientôt pour découvrir de nouveaux titres.</div>
+                {% endif %}
             </div>
         </section>
 
@@ -50,7 +67,7 @@
                     <h2>À découvrir aussi</h2>
                 </div>
 
-                <div class="detail-links">
+                <div class="artist-public-actions">
                     <a href="{{ path('app_playlists') }}" class="btn btn-secondary">Voir les playlists</a>
                     <a href="{{ path('app_albums') }}" class="btn btn-primary">Explorer les albums</a>
                 </div>

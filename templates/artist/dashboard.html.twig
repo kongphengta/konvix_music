@@ -5,14 +5,50 @@
 {% block body %}
     {% include '_partials/header.html.twig' %}
 
-    <main>
-        <section class="page-hero small-hero">
-            <div class="container page-hero-inner">
-                <div>
-                    <span class="eyebrow">Artiste</span>
-                    <h1>Mon espace artiste</h1>
+    {% set publishedArtistCount = 0 %}
+    {% set draftArtistCount = 0 %}
+    {% set totalTrackCount = 0 %}
+    {% for artist in artists %}
+        {% set totalTrackCount = totalTrackCount + (tracksByArtist[artist.id]|default([])|length) %}
+        {% if artist.isPublished %}
+            {% set publishedArtistCount = publishedArtistCount + 1 %}
+        {% else %}
+            {% set draftArtistCount = draftArtistCount + 1 %}
+        {% endif %}
+    {% endfor %}
+
+    <main class="artist-dashboard-page">
+        <section class="artist-dashboard-hero">
+            <div class="container">
+                <div class="artist-dashboard-hero__shell">
+                    <div class="artist-dashboard-copy">
+                        <span class="eyebrow">Artiste</span>
+                        <h1>Mon espace artiste</h1>
+                        <p>Contrôlez votre présence, publiez vos morceaux et gardez votre catalogue en ligne avec une vue claire et premium.</p>
+                    </div>
+
+                    <div class="artist-dashboard-summary">
+                        <div class="artist-dashboard-summary__top">
+                            <span class="artist-dashboard-summary__label">Profil</span>
+                            <a class="btn btn-primary" href="{{ path('app_artist_profile_new') }}">Créer un profil</a>
+                        </div>
+                        <div class="artist-dashboard-summary__value">{{ artists|length }}</div>
+                        <div class="artist-dashboard-summary__meta">
+                            <div>
+                                <strong>{{ totalTrackCount }}</strong>
+                                <span>Morceaux</span>
+                            </div>
+                            <div>
+                                <strong>{{ publishedArtistCount }}</strong>
+                                <span>Publiés</span>
+                            </div>
+                            <div>
+                                <strong>{{ draftArtistCount }}</strong>
+                                <span>En attente</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <a class="btn btn-primary" href="{{ path('app_artist_profile_new') }}">Créer un profil</a>
             </div>
         </section>
 
@@ -26,47 +62,75 @@
 
                 <div class="artist-dashboard-list">
                     {% for artist in artists %}
-                        <article class="admin-item">
-                            <div class="admin-item-visual admin-{{ artist.color }}" aria-hidden="true"></div>
-                            <div class="admin-item-body">
-                                <div class="admin-item-meta">
-                                    <span>{{ artist.genre }}</span>
-                                    <span>{{ artist.city }}</span>
-                                </div>
-                                <h2>{{ artist.name }}</h2>
-                                <p>{{ artist.bio ?: 'Profil en cours de rédaction.' }}</p>
-                                <div class="admin-item-actions">
+                        {% set artistTracks = tracksByArtist[artist.id] ?? [] %}
+
+                        <article class="artist-dashboard-card">
+                            <div class="artist-dashboard-cover admin-{{ artist.color }}" aria-hidden="true">
+                                <span class="artist-dashboard-cover__badge">{{ artist.genre }}</span>
+                            </div>
+
+                            <div class="artist-dashboard-card__body">
+                                <div class="artist-dashboard-card__header">
+                                    <div>
+                                        <div class="artist-dashboard-card__meta">
+                                            <span>{{ artist.city }}</span>
+                                            <span>{{ artist.followers }}</span>
+                                        </div>
+                                        <h2>{{ artist.name }}</h2>
+                                    </div>
+
                                     <span class="status-pill {% if artist.isPublished %}published{% else %}pending{% endif %}">
                                         {% if artist.isPublished %}Publié{% else %}En attente{% endif %}
                                     </span>
-                                    <a class="btn btn-secondary" href="{{ path('app_artist_track_new', {'id': artist.id}) }}">Ajouter un morceau</a>
                                 </div>
 
-                                <div class="track-list-block">
-                                    {% set artistTracks = tracksByArtist[artist.id] ?? [] %}
+                                <p>{{ artist.bio ?: 'Profil en cours de rédaction. Ajoutez une bio pour personnaliser votre présence publique.' }}</p>
+
+                                <div class="artist-dashboard-metrics">
+                                    <div class="artist-dashboard-metric">
+                                        <strong>{{ artistTracks|length }}</strong>
+                                        <span>Morceaux</span>
+                                    </div>
+                                    <div class="artist-dashboard-metric">
+                                        <strong>{{ artistTracks|filter(track => track.isPublished)|length }}</strong>
+                                        <span>Publiés</span>
+                                    </div>
+                                    <div class="artist-dashboard-metric">
+                                        <strong>{{ artistTracks|filter(track => not track.isPublished)|length }}</strong>
+                                        <span>Brouillons</span>
+                                    </div>
+                                </div>
+
+                                <div class="artist-dashboard-card__actions">
+                                    <a class="btn btn-secondary" href="{{ path('app_artist_track_new', {'id': artist.id}) }}">Ajouter un morceau</a>
+                                    <a class="btn btn-secondary" href="{{ path('app_artist_detail', {'slug': artist.slug}) }}">Voir la page</a>
+                                </div>
+
+                                <div class="artist-track-list">
                                     {% if artistTracks is not empty %}
-                                        <ul class="track-list">
-                                            {% for track in artistTracks %}
-                                                <li>
-                                                    <span>{{ track.title }}</span>
-                                                    <span>{{ track.duration }}</span>
-                                                    <span class="status-pill {% if track.isPublished %}published{% else %}pending{% endif %}">
-                                                        {% if track.isPublished %}Publié{% else %}Brouillon{% endif %}
-                                                    </span>
+                                        {% for track in artistTracks %}
+                                            <div class="artist-track-row">
+                                                <div class="artist-track-row__index">{{ loop.index }}</div>
+                                                <div class="artist-track-row__title">{{ track.title }}</div>
+                                                <div class="artist-track-row__meta">{{ track.duration }}</div>
+                                                <span class="status-pill {% if track.isPublished %}published{% else %}pending{% endif %}">
+                                                    {% if track.isPublished %}Publié{% else %}Brouillon{% endif %}
+                                                </span>
+                                                <div class="artist-track-row__actions">
                                                     <a href="{{ path('app_artist_track_edit', {'id': track.id}) }}">Éditer</a>
                                                     <a href="{{ path('app_artist_track_toggle_publish', {'id': track.id}) }}">{% if track.isPublished %}Dépublier{% else %}Publier{% endif %}</a>
                                                     <a href="{{ path('app_artist_track_delete', {'id': track.id}) }}" onclick="return confirm('Supprimer ce morceau ?');">Supprimer</a>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
                                     {% else %}
-                                        <p>Aucun morceau pour ce profil.</p>
+                                        <div class="artist-empty-state">Aucun morceau pour ce profil. Ajoute ton premier morceau pour le mettre en ligne.</div>
                                     {% endif %}
                                 </div>
                             </div>
                         </article>
                     {% else %}
-                        <p>Aucun profil artiste pour le moment.</p>
+                        <div class="artist-empty-state">Aucun profil artiste pour le moment. Crée un profil pour commencer à publier.</div>
                     {% endfor %}
                 </div>
             </div>

@@ -5,34 +5,115 @@
 {% block body %}
     {% include '_partials/header.html.twig' %}
 
-    <main>
-        <section class="page-hero small-hero">
-            <div class="container page-hero-inner">
-                <div>
-                    <span class="eyebrow">Artiste</span>
-                    <h1>Modifier un morceau</h1>
+    <main class="artist-profile-page py-5">
+        <div class="container">
+            <div class="card artist-profile-card border-0 shadow-lg">
+                <div class="card-body p-4 p-md-5">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+                        <div>
+                            <span class="eyebrow">Artiste</span>
+                            <h1 class="artist-profile-title mt-3 mb-0">Modifier un morceau</h1>
+                        </div>
+
+                        <a class="btn btn-outline-light btn-lg px-4" href="{{ path('app_artist_dashboard') }}">Retour</a>
+                    </div>
+
+                    <p class="track-form-intro">Mettez à jour le titre, la durée et le statut de publication de votre morceau.</p>
+
+                    {% for label, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="flash-message flash-{{ label }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endfor %}
+
+                    {{ form_start(form, {'attr': {'class': 'artist-profile-form track-publication-form row g-4', 'enctype': 'multipart/form-data', 'data-track-publication-form': 'true'}}) }}
+                        {{ form_errors(form) }}
+                        <div class="col-md-6">
+                            {{ form_row(form.title, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': 'Ex. Midnight Ride'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form_row(form.slug, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': 'généré automatiquement'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form_row(form.duration, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': '03:42'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form_row(form.musicStyle, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': 'Ex. Soul, R&B, House'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form_row(form.language, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': 'Ex. Français, Anglais'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form_row(form.audioUrl, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': 'https://...'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form_row(form.audioFile, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'accept': 'audio/*'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form_row(form.coverImage, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'accept': 'image/*'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-12">
+                            {{ form_row(form.publishMode, {
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0 publish-choice-group'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6" id="scheduled-date-wrapper">
+                            {{ form_row(form.publishedAt, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-12 mt-2">
+                            <button class="btn btn-primary btn-lg w-100" type="submit">Enregistrer le morceau</button>
+                        </div>
+                    {{ form_end(form) }}
                 </div>
-                <a class="btn btn-secondary" href="{{ path('app_artist_dashboard') }}">Retour</a>
             </div>
-        </section>
-
-        <section class="section">
-            <div class="container form-shell">
-                {{ form_start(form) }}
-                    <div class="form-grid">
-                        <div>{{ form_row(form.title) }}</div>
-                        <div>{{ form_row(form.slug) }}</div>
-                        <div>{{ form_row(form.duration) }}</div>
-                        <div>{{ form_row(form.audioUrl) }}</div>
-                        <div class="span-2">{{ form_row(form.isPublished) }}</div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button class="btn btn-primary" type="submit">Enregistrer le morceau</button>
-                    </div>
-                {{ form_end(form) }}
-            </div>
-        </section>
+        </div>
     </main>
 
     {% include '_partials/footer.html.twig' %}

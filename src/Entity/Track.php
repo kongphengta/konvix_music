@@ -22,11 +22,23 @@ class Track
     #[ORM\Column(length: 255)]
     private ?string $duration = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $audioUrl = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $musicStyle = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $language = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $coverImage = null;
 
     #[ORM\Column]
     private ?bool $isPublished = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $publishedAt = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -83,9 +95,45 @@ class Track
         return $this->audioUrl;
     }
 
-    public function setAudioUrl(string $audioUrl): static
+    public function setAudioUrl(?string $audioUrl): static
     {
         $this->audioUrl = $audioUrl;
+
+        return $this;
+    }
+
+    public function getMusicStyle(): ?string
+    {
+        return $this->musicStyle;
+    }
+
+    public function setMusicStyle(?string $musicStyle): static
+    {
+        $this->musicStyle = $musicStyle;
+
+        return $this;
+    }
+
+    public function getLanguage(): ?string
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?string $language): static
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    public function getCoverImage(): ?string
+    {
+        return $this->coverImage;
+    }
+
+    public function setCoverImage(?string $coverImage): static
+    {
+        $this->coverImage = $coverImage;
 
         return $this;
     }
@@ -98,6 +146,18 @@ class Track
     public function setIsPublished(bool $isPublished): static
     {
         $this->isPublished = $isPublished;
+
+        return $this;
+    }
+
+    public function getPublishedAt(): ?\DateTimeImmutable
+    {
+        return $this->publishedAt;
+    }
+
+    public function setPublishedAt(?\DateTimeImmutable $publishedAt): static
+    {
+        $this->publishedAt = $publishedAt;
 
         return $this;
     }

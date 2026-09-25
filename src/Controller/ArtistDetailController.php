@@ -13,9 +13,16 @@ final class ArtistDetailController extends AbstractController
     #[Route('/artists/{slug}', name: 'app_artist_detail')]
     public function index(string $slug, ArtistRepository $artistRepository, TrackRepository $trackRepository): Response
     {
-        $artist = $artistRepository->findOneBy(['slug' => $slug, 'isPublished' => true]);
+        $artist = $artistRepository->findOneBy(['slug' => $slug]);
 
         if (!$artist) {
+            throw $this->createNotFoundException('Artiste introuvable.');
+        }
+
+        $currentUser = $this->getUser();
+        $isOwner = $currentUser !== null && $artist->getUser() === $currentUser;
+
+        if (!$artist->isPublished() && !$isOwner) {
             throw $this->createNotFoundException('Artiste introuvable.');
         }
 

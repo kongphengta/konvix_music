@@ -16,6 +16,10 @@ final class UserChecker implements UserCheckerInterface
             return;
         }
 
+        if (in_array('ROLE_ADMIN', $user->getRoles(), true)) {
+            return;
+        }
+
         if (!$user->isVerified()) {
             throw new CustomUserMessageAuthenticationException('Votre compte n\'est pas encore vérifié. Vérifiez votre email et entrez le code à 6 chiffres.');
         }

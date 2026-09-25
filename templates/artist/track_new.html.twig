@@ -20,7 +20,14 @@
 
                     <p class="track-form-intro">Renseignez les détails du morceau avant de le publier sur votre profil.</p>
 
-                    {{ form_start(form, {'attr': {'class': 'artist-profile-form row g-4'}}) }}
+                    {% for label, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="flash-message flash-{{ label }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endfor %}
+
+                    {{ form_start(form, {'attr': {'class': 'artist-profile-form track-publication-form row g-4', 'enctype': 'multipart/form-data', 'data-track-publication-form': 'true'}}) }}
+                        {{ form_errors(form) }}
                         <div class="col-md-6">
                             {{ form_row(form.title, {
                                 'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': 'Ex. Midnight Ride'},
@@ -31,7 +38,7 @@
 
                         <div class="col-md-6">
                             {{ form_row(form.slug, {
-                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'readonly': true},
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': 'généré automatiquement'},
                                 'label_attr': {'class': 'form-label text-light fw-semibold'},
                                 'row_attr': {'class': 'mb-0'}
                             }) }}
@@ -46,28 +53,55 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label text-light fw-semibold" for="audio-upload">Fichier audio</label>
-                            <div class="file-upload-field">
-                                <input id="audio-upload" type="file" accept="audio/*" class="form-control form-control-lg bg-dark text-white border-secondary" aria-label="Choisir un fichier audio">
-                                <span class="file-upload-text">Parcourir</span>
-                            </div>
+                            {{ form_row(form.musicStyle, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': 'Ex. Soul, R&B, House'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form_row(form.language, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': 'Ex. Français, Anglais'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
                             {{ form_row(form.audioUrl, {
-                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary d-none', 'placeholder': 'Nom du fichier audio'},
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'placeholder': 'https://...'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form_row(form.audioFile, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'accept': 'audio/*'},
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0'}
+                            }) }}
+                        </div>
+
+                        <div class="col-md-6">
+                            {{ form_row(form.coverImage, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary', 'accept': 'image/*'},
                                 'label_attr': {'class': 'form-label text-light fw-semibold'},
                                 'row_attr': {'class': 'mb-0'}
                             }) }}
                         </div>
 
                         <div class="col-12">
-                            <label class="form-label text-light fw-semibold" for="cover-upload">Pochette du morceau</label>
-                            <div class="file-upload-field file-upload-field--cover">
-                                <input id="cover-upload" type="file" accept="image/*" class="form-control form-control-lg bg-dark text-white border-secondary" aria-label="Choisir une pochette">
-                                <span class="file-upload-text">Parcourir</span>
-                            </div>
+                            {{ form_row(form.publishMode, {
+                                'label_attr': {'class': 'form-label text-light fw-semibold'},
+                                'row_attr': {'class': 'mb-0 publish-choice-group'}
+                            }) }}
                         </div>
 
-                        <div class="col-12">
-                            {{ form_row(form.isPublished, {
+                        <div class="col-md-6" id="scheduled-date-wrapper">
+                            {{ form_row(form.publishedAt, {
+                                'attr': {'class': 'form-control form-control-lg bg-dark text-white border-secondary'},
                                 'label_attr': {'class': 'form-label text-light fw-semibold'},
                                 'row_attr': {'class': 'mb-0'}
                             }) }}
@@ -81,27 +115,6 @@
             </div>
         </div>
     </main>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const titleInput = document.querySelector('#track_title');
-            const slugInput = document.querySelector('#track_slug');
-
-            if (titleInput && slugInput) {
-                const slugify = (value) => value
-                    .toLowerCase()
-                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-                    .replace(/[^a-z0-9]+/g, '-')
-                    .replace(/^-+|-+$/g, '')
-                    .slice(0, 80);
-
-                titleInput.addEventListener('input', () => {
-                    const slug = slugify(titleInput.value);
-                    slugInput.value = slug;
-                });
-            }
-        });
-    </script>
 
     {% include '_partials/footer.html.twig' %}
 {% endblock %}

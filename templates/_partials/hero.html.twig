@@ -31,7 +31,24 @@
         </div>
 
         <aside class="player-card" aria-label="Lecteur musical">
+            <div class="player-topbar">
+                <span class="player-pill">Now playing</span>
+                <span class="player-dot"></span>
+            </div>
+
             <div class="album-art" aria-hidden="true"></div>
+
+            <div class="player-info">
+                <div>
+                    <span class="player-label">Midnight Echo</span>
+                    <strong>Nova Bloom</strong>
+                </div>
+                <span class="player-duration">3:42</span>
+            </div>
+
+            <div class="player-progress" aria-hidden="true">
+                <span></span>
+            </div>
 
             <div class="track-list" id="discover">
                 {% for track in featured %}

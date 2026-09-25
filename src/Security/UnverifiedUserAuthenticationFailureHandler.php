@@ -21,6 +21,11 @@ final class UnverifiedUserAuthenticationFailureHandler implements Authentication
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
     {
         $email = trim((string) $request->request->get('_username', ''));
+        $failureMessage = $this->buildFailureMessage($exception);
+
+        if ($request->hasSession() && null !== $failureMessage) {
+            $request->getSession()->getFlashBag()->add('error', $failureMessage);
+        }
 
         if ('' !== $email && str_contains($exception->getMessage(), "Votre compte n'est pas encore vérifié")) {
             $user = $this->doctrine->getRepository(User::class)->findOneBy(['email' => $email]);
@@ -34,5 +39,20 @@ final class UnverifiedUserAuthenticationFailureHandler implements Authentication
         }
 
         return new RedirectResponse($this->router->generate('app_login'));
+    }
+
+    private function buildFailureMessage(AuthenticationException $exception): ?string
+    {
+        $message = $exception->getMessage();
+
+        if (str_contains($message, "Votre compte n'est pas encore vérifié")) {
+            return 'Votre compte n\'est pas encore vérifié. Vérifiez votre email pour terminer votre inscription.';
+        }
+
+        if (str_contains($message, 'Invalid credentials') || str_contains($message, 'Bad credentials')) {
+            return 'Identifiants invalides. Vérifiez votre email et votre mot de passe.';
+        }
+
+        return 'Connexion impossible. Vérifiez votre email et votre mot de passe.';
     }
 }
