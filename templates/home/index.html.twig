@@ -77,15 +77,14 @@
             <div class="playlist-panel" data-player-playlist>
                 {% if tracks is not empty %}
                     {% for track in tracks %}
-                        {% set artist = track.artist %}
                         {% set audioUrl = track.audioFileName ? asset('uploads/tracks/audio/' ~ track.audioFileName) : null %}
-                        <div class="track-row{% if loop.first %} is-active{% endif %}" data-track-title="{{ track.title }}" data-track-artist="{{ artist ? artist.artistProfile.artistName ?? artist.firstName ~ ' ' ~ artist.lastName : 'Artiste' }}" data-track-url="{{ audioUrl ?? '' }}" data-track-cover="{{ track.coverImageName ? asset('uploads/tracks/covers/' ~ track.coverImageName) : '' }}">
+                        <div class="track-row{% if loop.first %} is-active{% endif %}" data-track-title="{{ track.title }}" data-track-artist="{{ track.artistName }}" data-track-url="{{ audioUrl ?? '' }}" data-track-cover="{{ track.coverFileName ? asset('uploads/tracks/covers/' ~ track.coverFileName) : '' }}">
                             <div class="track-cover">{{ loop.index <= 9 ? '0' ~ loop.index : loop.index }}</div>
                             <div class="track-info">
                                 <span class="track-title">{{ track.title }}</span>
-                                <span class="track-meta">{{ artist ? artist.artistProfile.artistName ?? artist.firstName ~ ' ' ~ artist.lastName : 'Artiste' }} • {{ track.createdAt|date('d/m/Y') }}</span>
+                                <span class="track-meta">{{ track.artistName }} • {{ track.createdAt|date('d/m/Y') }}</span>
                             </div>
-                            <span class="play-badge">{{ artist ? (artist.artistProfile ? artist.artistProfile.city|default('') : '') : '' }}</span>
+                            <span class="play-badge">{{ track.artistCity }}</span>
                             <span class="track-duration">{{ audioUrl ? 'À l’écoute' : 'Prêt' }}</span>
                             <button class="btn btn-link p-0 text-white-50 track-play-btn" type="button" aria-label="Lecture {{ track.title }}">▶</button>
                         </div>
