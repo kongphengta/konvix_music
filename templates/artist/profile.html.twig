@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Konvix Music | Profil artiste{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main class="auth-shell">
+        <div class="container py-5">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label == 'error' ? 'danger' : (label == 'warning' ? 'warning' : (label == 'info' ? 'info' : 'success')) }} auth-alert mb-4" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-7">
+                    <div class="auth-card">
+                        <div class="card-body p-4 p-lg-5">
+                            <div class="mb-4">
+                                <p class="text-uppercase small text-secondary-light mb-1">Étape 3</p>
+                                <h1 class="h3 mb-1 text-white">Compléter votre profil artiste</h1>
+                                <p class="mb-0 text-white-50">Avant de publier un morceau, renseignez votre identité artistique.</p>
+                            </div>
+
+                            {% if errors is not empty %}
+                                <div class="alert alert-danger auth-alert" role="alert">
+                                    <ul class="mb-0 ps-3">
+                                        {% for error in errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                            <form method="post" novalidate>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="artistName" class="form-label text-white-50">Nom d’artiste</label>
+                                        <input type="text" class="form-control form-control-lg auth-input" id="artistName" name="artistName" value="{{ formData.artistName|default('') }}" placeholder="Luna Wave" required>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="slug" class="form-label text-white-50">Slug public</label>
+                                        <input type="text" class="form-control form-control-lg auth-input" id="slug" name="slug" value="{{ formData.slug|default('') }}" placeholder="luna-wave" required>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="bio" class="form-label text-white-50">Bio</label>
+                                        <textarea class="form-control auth-input" id="bio" name="bio" rows="5" placeholder="Décrivez votre univers musical...">{{ formData.bio|default('') }}</textarea>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="city" class="form-label text-white-50">Ville</label>
+                                        <input type="text" class="form-control form-control-lg auth-input" id="city" name="city" value="{{ formData.city|default('') }}" placeholder="Paris">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="country" class="form-label text-white-50">Pays</label>
+                                        <input type="text" class="form-control form-control-lg auth-input" id="country" name="country" value="{{ formData.country|default('') }}" placeholder="France">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">Enregistrer le profil</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

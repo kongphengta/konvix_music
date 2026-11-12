@@ -1,0 +1,13 @@
+vich_uploader:
+    db_driver: orm
+    metadata:
+        type: attribute
+    mappings:
+        tracks_audio:
+            uri_prefix: /uploads/tracks/audio
+            upload_destination: '%kernel.project_dir%/public/uploads/tracks/audio'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+        tracks_cover:
+            uri_prefix: /uploads/tracks/covers
+            upload_destination: '%kernel.project_dir%/public/uploads/tracks/covers'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

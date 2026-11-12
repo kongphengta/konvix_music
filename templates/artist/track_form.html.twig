@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Konvix Music | Ajouter un morceau{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main class="auth-shell">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-7">
+                    <div class="auth-card">
+                        <div class="card-body p-4 p-lg-5">
+                            <div class="mb-4">
+                                <p class="text-uppercase small text-secondary-light mb-1">Étape 4</p>
+                                <h1 class="h3 mb-1 text-white">Ajouter un morceau</h1>
+                                <p class="mb-0 text-white-50">Téléversez votre audio et la couverture de votre morceau.</p>
+                            </div>
+
+                            {% if errors is not empty %}
+                                <div class="alert alert-danger auth-alert" role="alert">
+                                    <ul class="mb-0 ps-3">
+                                        {% for error in errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                            <form method="post" enctype="multipart/form-data" novalidate>
+                                <div class="mb-3">
+                                    <label for="title" class="form-label text-white-50">Titre du morceau</label>
+                                    <input type="text" class="form-control form-control-lg auth-input" id="title" name="title" value="{{ formData.title|default('') }}" placeholder="Midnight Echo" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="audioFile" class="form-label text-white-50">Fichier audio</label>
+                                    <input type="file" class="form-control form-control-lg auth-input" id="audioFile" name="audioFile" accept=".mp3,.wav,.aac,.ogg,audio/mpeg,audio/wav,audio/ogg" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="coverImage" class="form-label text-white-50">Pochette (optionnelle)</label>
+                                    <input type="file" class="form-control form-control-lg auth-input" id="coverImage" name="coverImage" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">Enregistrer le morceau</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Konvix Music | Inscription auditeur{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main class="auth-shell">
+        <div class="container py-5 py-lg-6">
+            <div class="row justify-content-center align-items-center g-4">
+                <div class="col-12 col-lg-6">
+                    <div class="auth-copy">
+                        <p class="eyebrow text-uppercase mb-3">Listener access</p>
+                        <h1 class="display-4 fw-bold mb-4">Écoutez, découvrez, suivez.</h1>
+                        <p class="lead text-secondary-light mb-4">
+                            Créez votre compte auditeur pour suivre les artistes, écouter les morceaux et découvrir les nouvelles sorties.
+                        </p>
+
+                        <div class="d-flex flex-wrap gap-3">
+                            <span class="badge rounded-pill bg-info-subtle text-info-emphasis px-3 py-2">Découverte</span>
+                            <span class="badge rounded-pill bg-success-subtle text-success-emphasis px-3 py-2">Playlists</span>
+                            <span class="badge rounded-pill bg-primary-subtle text-primary-emphasis px-3 py-2">Suivis</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-5">
+                    <div class="auth-card">
+                        <div class="card-body p-4 p-lg-5">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <div>
+                                    <p class="text-uppercase small text-secondary-light mb-1">Créer un compte</p>
+                                    <h2 class="h4 mb-0 text-white">Inscription auditeur</h2>
+                                </div>
+                                <div class="brand-badge">KM</div>
+                            </div>
+
+                            {% for label, messages in app.flashes %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ label == 'error' ? 'danger' : 'success' }} auth-alert" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+
+                            {% if errors is not empty %}
+                                <div class="alert alert-danger auth-alert" role="alert">
+                                    <ul class="mb-0 ps-3">
+                                        {% for error in errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+
+                            <form method="post" novalidate>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="firstName" class="form-label text-white-50">Prénom</label>
+                                        <input type="text" class="form-control form-control-lg auth-input" id="firstName" name="firstName" value="{{ formData.firstName|default('') }}" placeholder="John" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lastName" class="form-label text-white-50">Nom</label>
+                                        <input type="text" class="form-control form-control-lg auth-input" id="lastName" name="lastName" value="{{ formData.lastName|default('') }}" placeholder="Doe" required>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="email" class="form-label text-white-50">Email</label>
+                                        <input type="email" class="form-control form-control-lg auth-input" id="email" name="email" value="{{ formData.email|default('') }}" placeholder="auditeur@example.com" required>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="password" class="form-label text-white-50">Mot de passe</label>
+                                        <input type="password" class="form-control form-control-lg auth-input" id="password" name="password" placeholder="••••••••" required>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="confirmPassword" class="form-label text-white-50">Confirmer le mot de passe</label>
+                                        <input type="password" class="form-control form-control-lg auth-input" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">Créer mon compte</button>
+                                <p class="text-center text-white-50 mt-3 mb-0 small">
+                                    Vous êtes artiste ? <a href="{{ path('app_register') }}" class="text-decoration-none link-primary">Créer un compte artiste</a>
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}
