@@ -1,12 +1,16 @@
-<footer class="bg-dark border-top border-secondary text-white-50 py-4 mt-5">
-    <div class="container-fluid px-4">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <p class="mb-0">© 2026 Konvix Music</p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <small>Artistes • Albums • Playlists</small>
-            </div>
-        </div>
-    </div>
+<footer class="site-footer mt-5">
+	<div class="site-footer__top">
+		<div class="site-footer__brand">
+			<span>© 2026 Konvix Music</span>
+			<small>Artistes • Albums • Playlists</small>
+		</div>
+
+		<nav class="site-footer__links" aria-label="Liens de navigation">
+			<a href="{{ path('app_contact') }}">Contactez-nous</a>
+			<a href="{{ path('app_mentions_legales') }}">Mentions légales</a>
+			<a href="{{ path('app_conditions_utilisation') }}">Conditions d’utilisation</a>
+			<a href="{{ path('app_politique_confidentialite') }}">Confidentialité</a>
+			<a href="{{ path('app_politique_cookies') }}">Cookies</a>
+		</nav>
+	</div>
 </footer>

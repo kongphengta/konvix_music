@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact | Konvix Music
+{% endblock %}
+
+{% block body %}
+	{% include '_partials/header.html.twig' %}
+
+	<main class="container py-5 text-white">
+		<div class="row justify-content-center">
+			<div class="col-lg-8">
+				<div class="bg-dark border border-secondary rounded-4 p-4 p-lg-5">
+					<p class="text-uppercase small text-secondary mb-3">Support</p>
+					<h1 class="display-6 fw-bold mb-4">Contactez-nous</h1>
+
+					<p>Pour toute question concernant votre compte, votre contenu, une demande commerciale ou un besoin d’assistance, vous pouvez nous écrire à l’adresse suivante :</p>
+
+					<div class="mt-4 p-4 border border-primary rounded-4 bg-black bg-opacity-10">
+						<p class="mb-2 text-secondary">E-mail</p>
+						<a href="mailto:adminkonvixmusic.com" class="fs-5 fw-semibold text-white text-decoration-none">admint@konvixmusic.com</a>
+					</div>
+
+					<div class="mt-4">
+						<p class="mb-2">Nous vous répondons dans les meilleurs délais.</p>
+						<p class="mb-0 text-secondary">Pour des demandes urgentes, précisez votre nom, votre activité et votre message dans votre email.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	{% include '_partials/footer.html.twig' %}
+{% endblock %}

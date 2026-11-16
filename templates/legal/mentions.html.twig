@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mentions légales | Konvix Music{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main class="container py-5 text-white">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="bg-dark border border-secondary rounded-4 p-4 p-lg-5">
+                    <p class="text-uppercase small text-secondary mb-3">Informations légales</p>
+                    <h1 class="display-6 fw-bold mb-4">Mentions légales</h1>
+
+                    <p>Konvix Music est une plateforme de mise en relation et de diffusion dédiée aux artistes, producteurs et auditeurs.</p>
+                    <p>Le site est édité par Konvix Music, dont les informations d’identification, la forme juridique, l’adresse postale et les moyens de contact doivent être renseignés dans le cadre de votre activité et de votre conformité légale.</p>
+
+                    <h2 class="h4 mt-4">1. Éditeur du site</h2>
+                    <p>Le site est exploité par Konvix Music.<br>
+                    E-mail : contact@konvixmusic.com<br>
+                    Responsabilité éditoriale : la société ou l’éditeur responsable doit être clairement indiqué sur le site.</p>
+
+                    <h2 class="h4 mt-4">2. Hébergement</h2>
+                    <p>Le site est hébergé sur un serveur professionnel et sécurisé. Les informations d’hébergement doivent être visibles dans les mentions légales ou dans la page dédiée.</p>
+
+                    <h2 class="h4 mt-4">3. Propriété intellectuelle</h2>
+                    <p>Tous les contenus du site (textes, visuels, audio, logo, interface, code, éléments graphiques) sont protégés par le droit d’auteur et les droits de propriété intellectuelle. Toute reproduction, représentation ou exploitation partielle ou totale est interdite sans autorisation préalable.</p>
+
+                    <h2 class="h4 mt-4">4. Responsabilité</h2>
+                    <p>Konvix Music s’efforce de fournir des informations fiables et à jour. Toutefois, la société ne peut garantir l’absence totale d’erreurs, de modifications, de suppressions ou de coupures de service. L’utilisateur reconnaît utiliser le site sous sa responsabilité exclusive.</p>
+
+                    <h2 class="h4 mt-4">5. Contact</h2>
+                    <p>Pour toute demande concernant le site ou le traitement de vos données, vous pouvez nous contacter via le formulaire de contact ou à l’adresse e-mail indiquée ci-dessus.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

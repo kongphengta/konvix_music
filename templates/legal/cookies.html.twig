@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Politique des cookies | Konvix Music{% endblock %}
+
+{% block body %}
+    {% include '_partials/header.html.twig' %}
+
+    <main class="container py-5 text-white">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="bg-dark border border-secondary rounded-4 p-4 p-lg-5">
+                    <p class="text-uppercase small text-secondary mb-3">Cookies</p>
+                    <h1 class="display-6 fw-bold mb-4">Politique des cookies</h1>
+
+                    <p>Le site Konvix Music peut utiliser des cookies afin d’améliorer l’expérience utilisateur, sécuriser les sessions, analyser la fréquentation et mémoriser les préférences de navigation.</p>
+
+                    <h2 class="h4 mt-4">1. Définition</h2>
+                    <p>Les cookies sont de petits fichiers enregistrés sur votre terminal lors de votre visite. Ils permettent au site de reconnaître votre navigateur et de personnaliser votre navigation.</p>
+
+                    <h2 class="h4 mt-4">2. Cookies utilisés</h2>
+                    <p>Le site peut notamment utiliser des cookies techniques, de session, de sécurité et de mesure d’audience. Les cookies publicitaires ou tiers, s’ils sont utilisés, seront soumis à une information claire et à un consentement adapté.</p>
+
+                    <h2 class="h4 mt-4">3. Gestion des cookies</h2>
+                    <p>Vous pouvez à tout moment paramétrer votre navigateur pour accepter, refuser ou supprimer les cookies, en tenant compte du fait que certains services peuvent alors ne plus fonctionner correctement.</p>
+
+                    <h2 class="h4 mt-4">4. Consentement</h2>
+                    <p>Le site met en place les mécanismes nécessaires pour informer les utilisateurs de l’utilisation des cookies et obtenir leur consentement conformément à la réglementation en vigueur.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include '_partials/footer.html.twig' %}
+{% endblock %}

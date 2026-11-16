@@ -53,30 +53,30 @@
                                 </div>
                             {% endif %}
 
-                            <form method="post" novalidate>
+                            <form method="post" novalidate autocomplete="off">
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="firstName" class="form-label text-white-50">Prénom</label>
-                                        <input type="text" class="form-control form-control-lg auth-input" id="firstName" name="firstName" value="{{ formData.firstName|default('') }}" placeholder="John" required>
+                                        <input type="text" class="form-control form-control-lg auth-input" id="firstName" name="firstName" value="{{ formData.firstName|default('') }}" placeholder="John" autocomplete="given-name" autocapitalize="words" required>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="lastName" class="form-label text-white-50">Nom</label>
-                                        <input type="text" class="form-control form-control-lg auth-input" id="lastName" name="lastName" value="{{ formData.lastName|default('') }}" placeholder="Doe" required>
+                                        <input type="text" class="form-control form-control-lg auth-input" id="lastName" name="lastName" value="{{ formData.lastName|default('') }}" placeholder="Doe" autocomplete="family-name" autocapitalize="words" required>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="email" class="form-label text-white-50">Email</label>
-                                        <input type="email" class="form-control form-control-lg auth-input" id="email" name="email" value="{{ formData.email|default('') }}" placeholder="auditeur@example.com" required>
+                                        <input type="email" class="form-control form-control-lg auth-input" id="email" name="email" value="{{ formData.email|default('') }}" placeholder="auditeur@example.com" autocomplete="new-email" autocapitalize="none" spellcheck="false" required>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="password" class="form-label text-white-50">Mot de passe</label>
-                                        <input type="password" class="form-control form-control-lg auth-input" id="password" name="password" placeholder="••••••••" required>
+                                        <input type="password" class="form-control form-control-lg auth-input" id="password" name="password" placeholder="••••••••" autocomplete="new-password" required>
                                     </div>
 
                                     <div class="col-12">
                                         <label for="confirmPassword" class="form-label text-white-50">Confirmer le mot de passe</label>
-                                        <input type="password" class="form-control form-control-lg auth-input" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required>
+                                        <input type="password" class="form-control form-control-lg auth-input" id="confirmPassword" name="confirmPassword" placeholder="••••••••" autocomplete="new-password" required>
                                     </div>
                                 </div>
 

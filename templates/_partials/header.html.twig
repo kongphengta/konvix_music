@@ -1,36 +1,17 @@
-<header class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary">
-    <div class="container-fluid px-4 py-3">
-        <a class="navbar-brand fw-bold text-white me-4" href="{{ path('app_home') }}">Konvix Music</a>
+<header class="artist-header">
+	<div class="artist-header__nav">
+		<a class="artist-header__title" href="{{ path('app_home') }}" aria-label="Konvix Music">Konvix Music</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+		<nav class="artist-header__tabs" aria-label="Navigation principale">
+			<a class="is-active" href="{{ path('app_home', {'_fragment': 'releases'}) }}">Releases</a>
+			<a href="{{ path('app_home', {'_fragment': 'songs'}) }}">Songs</a>
+			<a href="{{ path('app_home', {'_fragment': 'playlists'}) }}">Playlists</a>
+			<a href="{{ path('app_home', {'_fragment': 'upcoming'}) }}">Upcoming</a>
+		</nav>
 
-        <div class="collapse navbar-collapse" id="mainNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link active text-white-50" href="{{ path('app_home') }}">Accueil</a></li>
-                <li class="nav-item"><a class="nav-link text-white-50" href="#">Nouveautés</a></li>
-                <li class="nav-item"><a class="nav-link text-white-50" href="#">Radio</a></li>
-                <li class="nav-item"><a class="nav-link text-white-50" href="#">Explorer</a></li>
-            </ul>
-
-            <div class="d-flex align-items-center gap-3">
-                <form class="d-none d-lg-flex" role="search">
-                    <input class="form-control form-control-sm bg-secondary text-white border-0" type="search" placeholder="Rechercher" aria-label="Rechercher" />
-                </form>
-
-                <a href="{{ path('app_login') }}" class="btn btn-outline-light btn-sm">Se connecter</a>
-
-                <div class="dropdown">
-                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        S’inscrire
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                        <li><a class="dropdown-item" href="{{ path('app_register') }}">Artiste</a></li>
-                        <li><a class="dropdown-item" href="{{ path('app_register_listener') }}">Auditeur</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
+		<div class="artist-header__cta-group">
+			<a href="{{ path('app_login') }}" class="artist-header__login">Se connecter</a>
+			<a href="{{ path('app_register') }}" class="artist-header__signup">S’inscrire</a>
+		</div>
+	</div>
 </header>

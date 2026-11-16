@@ -19,7 +19,7 @@
 
                             <div class="d-flex flex-wrap gap-3">
                                 <a href="{{ path('app_register') }}" class="btn btn-primary btn-lg px-4 py-3">Créer un compte</a>
-                                <a href="{{ path('app_verify') }}" class="btn btn-outline-light btn-lg px-4 py-3">Vérifier mon code</a>
+                                <a href="{{ path('app_verify') }}" class="btn btn-outline-light btn-lg px-4 py-3">Vérifier mon compte</a>
                             </div>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
             </div>
         </section>
 
-        <section class="container-fluid px-4 px-lg-5 pb-5">
+        <section id="releases" class="container-fluid px-4 px-lg-5 pb-5">
             <div class="row g-4">
                 <div class="col-12 col-lg-4">
                     <article class="media-card">
@@ -50,8 +50,8 @@
                 <div class="col-12 col-lg-4">
                     <article class="media-card primary">
                         <div class="media-label">Featured</div>
-                        <h3>Le Code</h3>
-                        <p>Une énergie digitale, synthétique et moderne conçue pour les artistes qui veulent se distinguer.</p>
+                        <h3>Konvix Select</h3>
+                        <p>Une sélection digitale et moderne pensée pour les artistes et les auditeurs qui aiment le son qui marque.</p>
                     </article>
                 </div>
 
@@ -65,20 +65,20 @@
             </div>
         </section>
 
-        <section class="music-showcase container-fluid px-4 px-lg-5">
+        <section id="songs" class="music-showcase container-fluid px-4 px-lg-5">
             <div class="section-heading">
                 <div>
                     <span class="section-tag">À l’écoute</span>
                     <h2 class="mt-3">Le son du moment</h2>
                 </div>
-                <a href="#" class="btn btn-outline-light btn-sm px-3">Voir la radio</a>
+                <a href="#upcoming" class="btn btn-outline-light btn-sm px-3">Voir la radio</a>
             </div>
 
             <div class="playlist-panel" data-player-playlist>
                 {% if tracks is not empty %}
                     {% for track in tracks %}
-                        {% set audioUrl = track.audioFileName ? asset('uploads/tracks/audio/' ~ track.audioFileName) : null %}
-                        <div class="track-row{% if loop.first %} is-active{% endif %}" data-track-title="{{ track.title }}" data-track-artist="{{ track.artistName }}" data-track-url="{{ audioUrl ?? '' }}" data-track-cover="{{ track.coverFileName ? asset('uploads/tracks/covers/' ~ track.coverFileName) : '' }}">
+                        {% set audioUrl = track.audioFileName is not empty ? asset('uploads/tracks/audio/' ~ track.audioFileName) : null %}
+                        <div class="track-row{% if loop.first %} is-active{% endif %}" data-track-title="{{ track.title }}" data-track-artist="{{ track.artistName }}" data-track-url="{{ audioUrl is not null ? audioUrl : '' }}" data-track-cover="{{ track.coverFileName is not empty ? asset('uploads/tracks/covers/' ~ track.coverFileName) : '' }}">
                             <div class="track-cover">{{ loop.index <= 9 ? '0' ~ loop.index : loop.index }}</div>
                             <div class="track-info">
                                 <span class="track-title">{{ track.title }}</span>
@@ -133,6 +133,39 @@
                         <span class="text-white-50">🔊</span>
                         <input class="form-range" type="range" min="0" max="100" value="72" aria-label="Volume" id="volume-control" />
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="upcoming" class="container-fluid px-4 px-lg-5 pb-5">
+            <div class="section-heading">
+                <div>
+                    <span class="section-tag">Upcoming</span>
+                    <h2 class="mt-3">Prochains drops</h2>
+                </div>
+            </div>
+
+            <div class="row g-4 mt-2">
+                <div class="col-12 col-md-4">
+                    <article class="media-card">
+                        <div class="media-label">Release</div>
+                        <h3>Night Ritual</h3>
+                        <p>Nouvelle sortie prévue dans les prochains jours avec une atmosphère plus noire et immersive.</p>
+                    </article>
+                </div>
+                <div class="col-12 col-md-4">
+                    <article class="media-card primary">
+                        <div class="media-label">Featured</div>
+                        <h3>Afterglow</h3>
+                        <p>Une sélection en avant-première pour les artistes qui façonnent les playlists de demain.</p>
+                    </article>
+                </div>
+                <div class="col-12 col-md-4">
+                    <article class="media-card">
+                        <div class="media-label">Live</div>
+                        <h3>Stage 27</h3>
+                        <p>Conférences, live sessions et performances en direct à suivre sur la plateforme.</p>
+                    </article>
                 </div>
             </div>
         </section>
