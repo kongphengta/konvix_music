@@ -27,7 +27,7 @@
                                 </div>
                             {% endif %}
 
-                            <form method="post" enctype="multipart/form-data" novalidate>
+                            <form method="post" enctype="multipart/form-data" novalidate data-turbo="false">
                                 <div class="mb-3">
                                     <label for="title" class="form-label text-white-50">Titre du morceau <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg auth-input" id="title" name="title" value="{{ formData.title|default('') }}" placeholder="Midnight Echo" required>
@@ -73,16 +73,16 @@
             const coverInput = document.querySelector('[data-file-input="cover"]');
             const audioPreview = document.getElementById('audioPreview');
             const imagePreview = document.getElementById('imagePreview');
-            const audioName = audioPreview.querySelector('.audio-name');
+            const audioName = audioPreview ? audioPreview.querySelector('.audio-name') : null;
             const previewImage = document.getElementById('previewImage');
 
             if (audioInput) {
                 audioInput.addEventListener('change', function(e) {
                     const file = e.target.files[0];
-                    if (file) {
+                    if (file && audioPreview && audioName) {
                         audioName.textContent = file.name;
                         audioPreview.style.display = 'block';
-                    } else {
+                    } else if (audioPreview) {
                         audioPreview.style.display = 'none';
                     }
                 });
@@ -91,14 +91,14 @@
             if (coverInput) {
                 coverInput.addEventListener('change', function(e) {
                     const file = e.target.files[0];
-                    if (file) {
+                    if (file && imagePreview && previewImage) {
                         const reader = new FileReader();
                         reader.onload = function(event) {
                             previewImage.src = event.target.result;
                             imagePreview.style.display = 'block';
                         };
                         reader.readAsDataURL(file);
-                    } else {
+                    } else if (imagePreview) {
                         imagePreview.style.display = 'none';
                     }
                 });

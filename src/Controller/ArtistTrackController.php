@@ -13,13 +13,45 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ArtistTrackController extends AbstractController
 {
-    #[Route('/artist/{slug}', name: 'app_artist_public', methods: ['GET'])]
+    #[Route('/artist/dashboard', name: 'app_artist_dashboard', methods: ['GET'])]
+    public function dashboard(EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+        }
+
+        if (!$user->isVerified()) {
+            $this->addFlash('error', 'Please verify your account first.');
+
+            return $this->redirectToRoute('app_verify', ['email' => $user->getEmail()], Response::HTTP_SEE_OTHER);
+        }
+
+        $profile = $user->getArtistProfile();
+        if (!$profile) {
+            $this->addFlash('info', 'Complete your artist profile first.');
+
+            return $this->redirectToRoute('app_artist_profile', [], Response::HTTP_SEE_OTHER);
+        }
+
+        $trackCount = $entityManager->getRepository(Track::class)->count(['artist' => $user]);
+        $recentTracks = $entityManager->getRepository(Track::class)->findBy(['artist' => $user], ['createdAt' => 'DESC'], 5);
+
+        return $this->render('artist/dashboard.html.twig', [
+            'profile' => $profile,
+            'trackCount' => $trackCount,
+            'recentTracks' => $recentTracks,
+        ]);
+    }
+
+    #[Route('/artist/{slug}', name: 'app_artist_public', methods: ['GET'], requirements: ['slug' => '^(?!dashboard|tracks)[a-z0-9-]+$'])]
     public function publicProfile(string $slug, EntityManagerInterface $entityManager): Response
     {
         $profile = $entityManager->getRepository(ArtistProfile::class)->findOneBy(['slug' => strtolower(trim($slug))]);
 
         if (!$profile) {
-            throw $this->createNotFoundException('Cet artiste est introuvable.');
+            throw $this->createNotFoundException('This artist is not found.');
         }
 
         $tracks = $entityManager->getRepository(Track::class)->findBy(['artist' => $profile->getUser()], ['createdAt' => 'DESC']);
@@ -52,7 +84,7 @@ final class ArtistTrackController extends AbstractController
         ]);
     }
 
-    #[Route('/artist/tracks/new', name: 'app_artist_tracks_new', methods: ['GET', 'POST'])]
+    #[Route('/artist/tracks/new', name: 'app_artist_tracks_new', methods: ['GET', 'POST'], defaults: ['_profiler_collect' => false])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -87,8 +119,12 @@ final class ArtistTrackController extends AbstractController
                 $errors[] = 'Le titre du morceau est obligatoire.';
             }
 
-            if (!$audioFile || !$audioFile->isValid()) {
-                $errors[] = 'Le fichier audio est obligatoire.';
+            if (!$audioFile) {
+                $errors[] = $request->headers->has('Content-Length')
+                    ? 'Le fichier audio n’a pas été reçu. Vérifiez qu’il ne dépasse pas 80 Mo.'
+                    : 'Le fichier audio est obligatoire.';
+            } elseif (!$audioFile->isValid()) {
+                $errors[] = sprintf('Le fichier audio n’a pas pu être téléversé: %s', $audioFile->getErrorMessage());
             } else {
                 $allowedAudioTypes = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/x-wav', 'audio/aac', 'audio/ogg'];
                 $allowedAudioExtensions = ['mp3', 'wav', 'aac', 'ogg'];
@@ -103,7 +139,9 @@ final class ArtistTrackController extends AbstractController
                 }
             }
 
-            if ($coverImage && $coverImage->isValid()) {
+            if ($coverImage && !$coverImage->isValid()) {
+                $errors[] = sprintf('La pochette n’a pas pu être téléversée: %s', $coverImage->getErrorMessage());
+            } elseif ($coverImage) {
                 $allowedImageMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
                 $allowedImageExtensions = ['jpg', 'jpeg', 'png', 'webp'];
                 $extension = strtolower(pathinfo($coverImage->getClientOriginalName(), PATHINFO_EXTENSION));
@@ -126,7 +164,7 @@ final class ArtistTrackController extends AbstractController
                     $track->setAudioFile($audioFile);
                 }
 
-                if ($coverImage && $coverImage->isValid()) {
+                if ($coverImage) {
                     $track->setCoverImage($coverImage);
                 }
 

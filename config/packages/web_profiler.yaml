@@ -3,7 +3,9 @@ when@dev:
         toolbar: true
 
     framework:
-        profiler: true
+        profiler:
+            enabled: true
+            collect_parameter: _profiler_collect
 
 when@test:
     framework:

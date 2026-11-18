@@ -11,10 +11,20 @@ use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 final class ArtistPublicPageTest extends TestCase
 {
+    public function testTrackUploadRouteDisablesProfilerCollection(): void
+    {
+        $arguments = (new \ReflectionMethod(ArtistTrackController::class, 'new'))
+            ->getAttributes(Route::class)[0]
+            ->getArguments();
+
+        $this->assertFalse($arguments['defaults']['_profiler_collect'] ?? null);
+    }
+
     public function testPublicProfileLoadsArtistDetailsAndTracks(): void
     {
         $user = new User();
