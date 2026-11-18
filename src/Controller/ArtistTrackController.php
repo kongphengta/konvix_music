@@ -13,38 +13,6 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ArtistTrackController extends AbstractController
 {
-    #[Route('/artist/dashboard', name: 'app_artist_dashboard', methods: ['GET'])]
-    public function dashboard(EntityManagerInterface $entityManager): Response
-    {
-        $user = $this->getUser();
-
-        if (!$user instanceof User) {
-            return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
-        }
-
-        if (!$user->isVerified()) {
-            $this->addFlash('error', 'Please verify your account first.');
-
-            return $this->redirectToRoute('app_verify', ['email' => $user->getEmail()], Response::HTTP_SEE_OTHER);
-        }
-
-        $profile = $user->getArtistProfile();
-        if (!$profile) {
-            $this->addFlash('info', 'Complete your artist profile first.');
-
-            return $this->redirectToRoute('app_artist_profile', [], Response::HTTP_SEE_OTHER);
-        }
-
-        $trackCount = $entityManager->getRepository(Track::class)->count(['artist' => $user]);
-        $recentTracks = $entityManager->getRepository(Track::class)->findBy(['artist' => $user], ['createdAt' => 'DESC'], 5);
-
-        return $this->render('artist/dashboard.html.twig', [
-            'profile' => $profile,
-            'trackCount' => $trackCount,
-            'recentTracks' => $recentTracks,
-        ]);
-    }
-
     #[Route('/artist/{slug}', name: 'app_artist_public', methods: ['GET'], requirements: ['slug' => '^(?!dashboard|tracks)[a-z0-9-]+$'])]
     public function publicProfile(string $slug, EntityManagerInterface $entityManager): Response
     {
