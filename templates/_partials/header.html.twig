@@ -10,8 +10,30 @@
 		</nav>
 
 		<div class="artist-header__cta-group">
-			<a href="{{ path('app_login') }}" class="artist-header__login">Se connecter</a>
-			<a href="{{ path('app_register') }}" class="artist-header__signup">S’inscrire</a>
+			{% if app.user %}
+				<div class="user-dropdown" data-controller="user-dropdown">
+					<button class="user-dropdown__trigger" data-user-dropdown-target="trigger" aria-label="Menu utilisateur" aria-expanded="false">
+						<span class="user-dropdown__name">{{ app.user.firstName }}</span>
+						<svg class="user-dropdown__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<polyline points="6 9 12 15 18 9"></polyline>
+						</svg>
+					</button>
+					<div class="user-dropdown__menu" role="menu" data-user-dropdown-target="menu">
+						{% if 'ROLE_ARTIST' in app.user.roles %}
+							<a href="{{ path('app_artist_dashboard') }}" class="user-dropdown__item" role="menuitem">📊 Mon Espace Artiste</a>
+							<a href="{{ path('app_artist_profile') }}" class="user-dropdown__item" role="menuitem">⚙️ Profil</a>
+						{% elseif 'ROLE_LISTENER' in app.user.roles %}
+							<a href="#" class="user-dropdown__item" role="menuitem">🎵 Ma Musique</a>
+							<a href="#" class="user-dropdown__item" role="menuitem">❤️ Favoris</a>
+						{% endif %}
+						<hr class="user-dropdown__divider">
+						<button class="user-dropdown__item user-dropdown__item--logout" data-user-dropdown-target="logoutTrigger" role="menuitem">🚪 Se déconnecter</button>
+					</div>
+				</div>
+			{% else %}
+				<a href="{{ path('app_login') }}" class="artist-header__login">Se connecter</a>
+				<a href="{{ path('app_register') }}" class="artist-header__signup">S'inscrire</a>
+			{% endif %}
 		</div>
 	</div>
 </header>
