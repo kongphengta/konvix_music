@@ -22,6 +22,7 @@
 						{% if 'ROLE_ARTIST' in app.user.roles %}
 							<a href="{{ path('app_artist_dashboard') }}" class="user-dropdown__item" role="menuitem">📊 Mon Espace Artiste</a>
 							<a href="{{ path('app_artist_profile') }}" class="user-dropdown__item" role="menuitem">⚙️ Profil</a>
+							<a href="{{ path('app_artist_tracks') }}" class="user-dropdown__item" role="menuitem">🎵 Mes Morceaux</a>
 						{% elseif 'ROLE_LISTENER' in app.user.roles %}
 							<a href="#" class="user-dropdown__item" role="menuitem">🎵 Ma Musique</a>
 							<a href="#" class="user-dropdown__item" role="menuitem">❤️ Favoris</a>

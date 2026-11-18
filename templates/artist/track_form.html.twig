@@ -29,21 +29,34 @@
 
                             <form method="post" enctype="multipart/form-data" novalidate>
                                 <div class="mb-3">
-                                    <label for="title" class="form-label text-white-50">Titre du morceau</label>
+                                    <label for="title" class="form-label text-white-50">Titre du morceau <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control form-control-lg auth-input" id="title" name="title" value="{{ formData.title|default('') }}" placeholder="Midnight Echo" required>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="audioFile" class="form-label text-white-50">Fichier audio</label>
-                                    <input type="file" class="form-control form-control-lg auth-input" id="audioFile" name="audioFile" accept=".mp3,.wav,.aac,.ogg,audio/mpeg,audio/wav,audio/ogg" required>
+                                    <label for="audioFile" class="form-label text-white-50">Fichier audio <span class="text-danger">*</span></label>
+                                    <div class="file-upload-wrapper">
+                                        <input type="file" class="form-control form-control-lg auth-input" id="audioFile" name="audioFile" accept=".mp3,.wav,.aac,.ogg,audio/mpeg,audio/wav,audio/ogg" required data-file-input="audio">
+                                        <small class="text-white-50 d-block mt-2">Format accepté: MP3, WAV, AAC, OGG (max 80 Mo)</small>
+                                        <div class="mt-2 audio-preview" id="audioPreview" style="display: none;">
+                                            <small class="text-success">✓ <span class="audio-name"></span></small>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="coverImage" class="form-label text-white-50">Pochette (optionnelle)</label>
-                                    <input type="file" class="form-control form-control-lg auth-input" id="coverImage" name="coverImage" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+                                    <div class="file-upload-wrapper">
+                                        <input type="file" class="form-control form-control-lg auth-input" id="coverImage" name="coverImage" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" data-file-input="cover">
+                                        <small class="text-white-50 d-block mt-2">Format accepté: JPG, PNG, WebP (max 5 Mo)</small>
+                                        <div class="mt-2 image-preview" id="imagePreview" style="display: none;">
+                                            <img id="previewImage" src="" alt="Aperçu" class="img-fluid rounded" style="max-height: 150px; max-width: 150px;">
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">Enregistrer le morceau</button>
+                                <button type="submit" class="btn btn-primary btn-lg w-100 mt-4">Enregistrer le morceau</button>
+                                <a href="{{ path('app_artist_tracks') }}" class="btn btn-outline-secondary btn-lg w-100 mt-2">Annuler</a>
                             </form>
                         </div>
                     </div>
@@ -53,4 +66,43 @@
     </main>
 
     {% include '_partials/footer.html.twig' %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const audioInput = document.querySelector('[data-file-input="audio"]');
+            const coverInput = document.querySelector('[data-file-input="cover"]');
+            const audioPreview = document.getElementById('audioPreview');
+            const imagePreview = document.getElementById('imagePreview');
+            const audioName = audioPreview.querySelector('.audio-name');
+            const previewImage = document.getElementById('previewImage');
+
+            if (audioInput) {
+                audioInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        audioName.textContent = file.name;
+                        audioPreview.style.display = 'block';
+                    } else {
+                        audioPreview.style.display = 'none';
+                    }
+                });
+            }
+
+            if (coverInput) {
+                coverInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            previewImage.src = event.target.result;
+                            imagePreview.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        imagePreview.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
 {% endblock %}
