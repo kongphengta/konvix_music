@@ -88,9 +88,14 @@ final class ArtistTrackController extends AbstractController
             }
 
             if (!$audioFile) {
-                $errors[] = $request->headers->has('Content-Length')
-                    ? 'Le fichier audio n’a pas été reçu. Vérifiez qu’il ne dépasse pas 80 Mo.'
-                    : 'Le fichier audio est obligatoire.';
+                $contentLength = $request->headers->get('Content-Length');
+                $size = null !== $contentLength ? filter_var($contentLength, FILTER_VALIDATE_INT) : false;
+
+                if (false !== $size && $size > 80 * 1024 * 1024) {
+                    $errors[] = 'Le fichier audio n’a pas été reçu par le serveur. Vérifiez qu’il ne dépasse pas la limite de téléchargement autorisée (80 Mo max).';
+                } else {
+                    $errors[] = 'Le fichier audio est obligatoire.';
+                }
             } elseif (!$audioFile->isValid()) {
                 $errors[] = sprintf('Le fichier audio n’a pas pu être téléversé: %s', $audioFile->getErrorMessage());
             } else {
@@ -143,6 +148,8 @@ final class ArtistTrackController extends AbstractController
 
                 return $this->redirectToRoute('app_artist_tracks', [], Response::HTTP_SEE_OTHER);
             }
+
+            $this->addFlash('error', 'Le morceau n’a pas pu être enregistré. Merci de corriger les erreurs ci-dessous.');
         }
 
         return $this->render('artist/track_form.html.twig', [
