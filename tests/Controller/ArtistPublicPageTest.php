@@ -8,14 +8,23 @@ use App\Entity\Track;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
-final class ArtistPublicPageTest extends TestCase
+final class ArtistPublicPageTest extends KernelTestCase
 {
+    public function testProfilePathMatchesProfileRoute(): void
+    {
+        self::bootKernel();
+
+        $route = self::getContainer()->get('router')->match('/artist/profile');
+
+        $this->assertSame('app_artist_profile', $route['_route']);
+    }
+
     public function testTrackUploadRouteDisablesProfilerCollection(): void
     {
         $arguments = (new \ReflectionMethod(ArtistTrackController::class, 'new'))

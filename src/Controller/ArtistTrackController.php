@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ArtistTrackController extends AbstractController
 {
-    #[Route('/artist/{slug}', name: 'app_artist_public', methods: ['GET'], requirements: ['slug' => '^(?!dashboard|tracks)[a-z0-9-]+$'])]
+    #[Route('/artist/{slug}', name: 'app_artist_public', methods: ['GET'], requirements: ['slug' => '^(?!(?:dashboard|profile|tracks)$)[a-z0-9-]+$'])]
     public function publicProfile(string $slug, EntityManagerInterface $entityManager): Response
     {
         $profile = $entityManager->getRepository(ArtistProfile::class)->findOneBy(['slug' => strtolower(trim($slug))]);
